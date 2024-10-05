@@ -25,7 +25,6 @@ class Ui_MainWindow
 public:
     QWidget *centralwidget;
     QLabel *label1;
-    QLabel *label_imagen;
     QPushButton *prueba_boton;
     QMenuBar *menubar;
     QStatusBar *statusbar;
@@ -40,9 +39,6 @@ public:
         label1 = new QLabel(centralwidget);
         label1->setObjectName("label1");
         label1->setGeometry(QRect(310, 50, 80, 21));
-        label_imagen = new QLabel(centralwidget);
-        label_imagen->setObjectName("label_imagen");
-        label_imagen->setGeometry(QRect(30, 210, 211, 201));
         prueba_boton = new QPushButton(centralwidget);
         prueba_boton->setObjectName("prueba_boton");
         prueba_boton->setGeometry(QRect(360, 360, 106, 30));
@@ -64,7 +60,6 @@ public:
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         label1->setText(QCoreApplication::translate("MainWindow", "Hola", nullptr));
-        label_imagen->setText(QCoreApplication::translate("MainWindow", "???????????", nullptr));
         prueba_boton->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
     } // retranslateUi
 
