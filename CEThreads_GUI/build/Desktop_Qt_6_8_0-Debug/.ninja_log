@@ -1,0 +1,22 @@
+# ninja log v6
+11	628	1728099501851079869	CEThreads_GUI_autogen/timestamp	7f212a349c1e1cf0
+629	4287	1728099501864079949	CMakeFiles/CEThreads_GUI.dir/mainwindow.cpp.o	320bd256a8c13cf3
+11	628	1728099501851079869	CEThreads_GUI_autogen/mocs_compilation.cpp	7f212a349c1e1cf0
+11	628	1728099501851079869	/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_8_0-Debug/CEThreads_GUI_autogen/timestamp	7f212a349c1e1cf0
+4578	5198	1728099505813104228	CEThreads_GUI	e4cd1f32a2fd3f01
+11	628	1728099501851079869	/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_8_0-Debug/CEThreads_GUI_autogen/mocs_compilation.cpp	7f212a349c1e1cf0
+628	3930	1728099501863079943	CMakeFiles/CEThreads_GUI.dir/CEThreads_GUI_autogen/mocs_compilation.cpp.o	6dc9229bce4f1b0a
+629	4578	1728099501864079949	CMakeFiles/CEThreads_GUI.dir/main.cpp.o	bbd59b9288d65f60
+9	532	1728099705086404911	CEThreads_GUI_autogen/timestamp	7f212a349c1e1cf0
+9	532	1728099705086404911	CEThreads_GUI_autogen/mocs_compilation.cpp	7f212a349c1e1cf0
+9	532	1728099705086404911	/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_8_0-Debug/CEThreads_GUI_autogen/timestamp	7f212a349c1e1cf0
+9	532	1728099705086404911	/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_8_0-Debug/CEThreads_GUI_autogen/mocs_compilation.cpp	7f212a349c1e1cf0
+533	3317	1728099705106405142	CMakeFiles/CEThreads_GUI.dir/CEThreads_GUI_autogen/mocs_compilation.cpp.o	6dc9229bce4f1b0a
+533	3397	1728099705106405142	CMakeFiles/CEThreads_GUI.dir/main.cpp.o	bbd59b9288d65f60
+534	3521	1728099705107405153	CMakeFiles/CEThreads_GUI.dir/mainwindow.cpp.o	320bd256a8c13cf3
+7	35	1728099713771505048	CEThreads_GUI_autogen/timestamp	7f212a349c1e1cf0
+7	35	1728099713771505048	CEThreads_GUI_autogen/mocs_compilation.cpp	7f212a349c1e1cf0
+7	35	1728099713771505048	/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_8_0-Debug/CEThreads_GUI_autogen/timestamp	7f212a349c1e1cf0
+7	35	1728099713771505048	/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_8_0-Debug/CEThreads_GUI_autogen/mocs_compilation.cpp	7f212a349c1e1cf0
+35	3412	1728099713799505370	CMakeFiles/CEThreads_GUI.dir/mainwindow.cpp.o	320bd256a8c13cf3
+3412	4046	1728099717176544174	CEThreads_GUI	e4cd1f32a2fd3f01

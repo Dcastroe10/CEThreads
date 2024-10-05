@@ -1,5 +1,0 @@
-/home/dcastroe/Desktop/ElCanal/El_Canal/build/Desktop_Qt_6_8_0-Debug/CMakeFiles/El_Canal.dir
-/home/dcastroe/Desktop/ElCanal/El_Canal/build/Desktop_Qt_6_8_0-Debug/CMakeFiles/edit_cache.dir
-/home/dcastroe/Desktop/ElCanal/El_Canal/build/Desktop_Qt_6_8_0-Debug/CMakeFiles/rebuild_cache.dir
-/home/dcastroe/Desktop/ElCanal/El_Canal/build/Desktop_Qt_6_8_0-Debug/CMakeFiles/El_Canal_autogen_timestamp_deps.dir
-/home/dcastroe/Desktop/ElCanal/El_Canal/build/Desktop_Qt_6_8_0-Debug/CMakeFiles/El_Canal_autogen.dir
