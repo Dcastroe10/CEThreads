@@ -1,0 +1,7 @@
+MetodoControlFlujo: FIFO
+LargoCanal: 500
+VelocidadBarco: 10
+CantidadBarcos: 15
+TiempoLetrero: 5
+ParametroW: 20
+

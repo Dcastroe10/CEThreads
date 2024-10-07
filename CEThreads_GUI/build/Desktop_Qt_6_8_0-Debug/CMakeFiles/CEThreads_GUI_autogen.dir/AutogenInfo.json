@@ -403,6 +403,12 @@
 	"HEADERS" : 
 	[
 		[
+			"/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/initialize.h",
+			"MU",
+			"EWIEGA46WW/moc_initialize.cpp",
+			null
+		],
+		[
 			"/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/mainwindow.h",
 			"MU",
 			"EWIEGA46WW/moc_mainwindow.cpp",
@@ -474,6 +480,11 @@
 	"SETTINGS_FILE" : "/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_8_0-Debug/CMakeFiles/CEThreads_GUI_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
+		[
+			"/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/initialize.c",
+			"MU",
+			null
+		],
 		[
 			"/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/main.cpp",
 			"MU",

@@ -71,13 +71,13 @@
 			{
 				"command" : 4,
 				"file" : 1,
-				"line" : 64,
+				"line" : 66,
 				"parent" : 0
 			},
 			{
 				"command" : 5,
 				"file" : 1,
-				"line" : 47,
+				"line" : 49,
 				"parent" : 0
 			},
 			{
@@ -377,7 +377,8 @@
 				0,
 				1,
 				2,
-				6
+				6,
+				7
 			]
 		},
 		{
@@ -386,7 +387,8 @@
 			[
 				3,
 				5,
-				7
+				8,
+				9
 			]
 		},
 		{
@@ -394,14 +396,14 @@
 			"sourceIndexes" : 
 			[
 				4,
-				8
+				10
 			]
 		},
 		{
 			"name" : "CMake Rules",
 			"sourceIndexes" : 
 			[
-				9
+				11
 			]
 		}
 	],
@@ -445,6 +447,16 @@
 			"backtrace" : 4,
 			"path" : "prueba.c",
 			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 4,
+			"path" : "initialize.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 4,
+			"path" : "initialize.h",
+			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 0,
