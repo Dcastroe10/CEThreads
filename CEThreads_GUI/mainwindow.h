@@ -21,6 +21,7 @@ public:
 
 private slots:
     void on_prueba_boton_clicked();
+    void on_left_action_clicked();
 
 private:
     Ui::MainWindow *ui;

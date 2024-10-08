@@ -29,6 +29,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     qDebug() << "AJJAJAJAJAJJAJA-> "<<initial_configuration.cantidadBarcos;
+
+    QPixmap bkgnd(":/canalResize.jpg");
+    bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
+    QPalette palette;
+    palette.setBrush(QPalette::Window, bkgnd);
+    this->setPalette(palette);
     //Initialize_Configuration(rutaC);
 }
 
@@ -37,22 +43,26 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::on_left_action_clicked(){
+    qDebug() << "left action pressed ";
+}
+
 void MainWindow::on_prueba_boton_clicked()
 {
-    if (prueba_bool){
+    /*if (prueba_bool){
         ui->label1->setText("Adiós!!");
     }else{
         ui->label1->setText("HOLA!");
-    }
+    }*/
     prueba_bool = !prueba_bool;
     print_desdeC(testing, 0);
     testing = testing +1;
 
 
+//QLabel *canal0 = new QLabel(this);
 
 
-
-
+/*
     QLabel *label_imagen = new QLabel(this);
     label_imagen->setGeometry(50,50,300,300);
 
@@ -60,7 +70,7 @@ void MainWindow::on_prueba_boton_clicked()
     label_imagen->setScaledContents(true);
     label_imagen->setPixmap(pixmap_bote);
     label_imagen->show();
-
+*/
     std::cout<<QCoreApplication::applicationDirPath().toStdString()<<std::endl;
 }
 
