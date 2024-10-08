@@ -20,8 +20,11 @@ public:
     int testing =  0;
 
 private slots:
-    void on_prueba_boton_clicked();
-    void on_left_action_clicked();
+    //void on_prueba_boton_clicked();
+
+    void on_actionleft_triggered();
+
+    void on_actionright_triggered();
 
 private:
     Ui::MainWindow *ui;
