@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QKeyEvent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,6 +28,15 @@ private slots:
     void on_actionright_triggered();
 
     void on_pruebaStructs_clicked();
+
+    void setupQueues();
+
+    void displayQueues();
+
+
+    protected:
+               void keyPressEvent(QKeyEvent *event) override;   // Handle key press
+    void keyReleaseEvent(QKeyEvent *event) override; // Handle key release
 
 private:
     Ui::MainWindow *ui;

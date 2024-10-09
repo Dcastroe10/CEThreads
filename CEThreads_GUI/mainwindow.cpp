@@ -10,10 +10,13 @@
 #include "linkedList.c"
 
 
+std::vector<QLabel*> canal;
+std::vector<QLabel*> colaIzquierda;
+std::vector<QLabel*> colaDerecha;
 
-std::vector<QLabel*> *colaIzquierda ;
-
-
+struct List *dummy_list_left = createList(sizeof(DummieStruct));
+struct List *dummy_list_right = createList(sizeof(DummieStruct));
+DummieStruct *dummy_return = new DummieStruct;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -44,7 +47,20 @@ MainWindow::MainWindow(QWidget *parent)
     qDebug() << "4) Cantidad de Barcos-> "<<initial_configuration.cantidadBarcos;
     qDebug() << "5) Tiempo que cambia el Letrero-> "<<initial_configuration.tiempoLetrero;
     qDebug() << "6) Parámetro W-> "<<initial_configuration.parametroW;
+
+
+
+        //QLabel *element = ui->canal00 ;// Crear un nuevo int en el heap
+
+
+    setupQueues();
+
+
+
+
+
 }
+
 
 
 
@@ -89,30 +105,148 @@ void MainWindow::on_actionright_triggered()
 
 void MainWindow::on_pruebaStructs_clicked()
 {
+    /*
+
+
     DummieStruct *dummie1 = new DummieStruct({10, 1, 101});
     DummieStruct *dummie2 = new DummieStruct({20, 2, 102});
     DummieStruct *dummie3 = new DummieStruct({30, 3, 103});
     DummieStruct *dummie4 = new DummieStruct({40, 4, 104});
     DummieStruct *dummie5 = new DummieStruct({50, 5, 105});
 
-    struct List *dummy_list = createList(sizeof(DummieStruct));
+    //struct List *dummy_list = createList(sizeof(DummieStruct));
 
-    addLast(dummy_list, dummie1);
-    addLast(dummy_list, dummie2);
-    addLast(dummy_list, dummie3);
-    addLast(dummy_list, dummie4);
-    addLast(dummy_list, dummie5);
+    addLast(dummy_list1, dummie1);
+    addLast(dummy_list1, dummie2);
+    addLast(dummy_list1, dummie3);
+    addLast(dummy_list1, dummie4);
+    addLast(dummy_list1, dummie5);
 
 
+*/
+    printf("Left waiting list \n");
+    for (int i = 0; i <= dummy_list_left->length -1; i++) {
 
-    DummieStruct *dummy_return = new DummieStruct;
-    getFirst(dummy_list,dummy_return);
-    printf("DummieStruct 1: Position = %d, Velocidad = %d, Thread ID = %d\n",dummy_return->position, dummy_return->velocidad, dummy_return->thread_ID);
-    removeFirst(dummy_list);
+        //getFirst(dummy_list1,dummy_return);
+        getAt(dummy_list_left,i,dummy_return);
+        printf("DummieStruct %d: Position = %d, Velocidad = %d, Thread ID = %d\n",i,dummy_return->position, dummy_return->velocidad, dummy_return->thread_ID);
+        //removeFirst(dummy_list1);
+        //dummy_return = new DummieStruct;
 
-    getFirst(dummy_list,dummy_return);
+
+    }
+
+    printf("Right waiting list \n");
+    for (int i = 0; i <= dummy_list_right->length -1; i++) {
+
+        //getFirst(dummy_list1,dummy_return);
+        getAt(dummy_list_right,i,dummy_return);
+        printf("DummieStruct %d: Position = %d, Velocidad = %d, Thread ID = %d\n",i,dummy_return->position, dummy_return->velocidad, dummy_return->thread_ID);
+        //removeFirst(dummy_list1);
+        //dummy_return = new DummieStruct;
+
+
+    }
+
+
+    //removeFirst(dummy_list1);
+/*
+    getFirst(dummy_list1,dummy_return);
     printf("DummieStruct 2: Position = %d, Velocidad = %d, Thread ID = %d\n",dummy_return->position, dummy_return->velocidad, dummy_return->thread_ID);
-    removeFirst(dummy_list);
+    removeFirst(dummy_list1);*/
 
+}
+
+void MainWindow::setupQueues()
+{
+
+    qDebug() << "starting setup";
+
+    colaIzquierda.push_back(ui->waitingL0);
+    colaIzquierda.push_back(ui->waitingL1);
+    colaIzquierda.push_back(ui->waitingL2);
+    colaIzquierda.push_back(ui->waitingL3);
+    colaIzquierda.push_back(ui->waitingL4);
+
+
+
+    colaDerecha.push_back(ui->waitingR0);
+    colaDerecha.push_back(ui->waitingR1);
+    colaDerecha.push_back(ui->waitingR2);
+    colaDerecha.push_back(ui->waitingR3);
+    colaDerecha.push_back(ui->waitingR4);
+
+
+    qDebug() << "finishing setup";
+}
+
+void MainWindow::displayQueues()
+{
+    QPixmap *boat2 = new QPixmap(":/boat2.jpg");
+    //std::cout << "right action pressed" << std::endl;
+    QPixmap scaledBoat2 = boat2->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+    for (int i = 0; i <= dummy_list_left->length-1; i++) {
+        //int *element = new int(i); // Crear un nuevo int en el heap
+        //addLast(prueba_lista, element);
+        QLabel *temp = colaIzquierda.at(i);
+        temp->setScaledContents(true);
+        temp->setPixmap(scaledBoat2);
+
+    }
+
+    for (int i = 0; i <= dummy_list_right->length-1; i++) {
+        //int *element = new int(i); // Crear un nuevo int en el heap
+        //addLast(prueba_lista, element);
+        QLabel *temp = colaDerecha.at(i);
+        temp->setScaledContents(true);
+        temp->setPixmap(scaledBoat2);
+
+    }
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Q) {
+        //qDebug() << "Key A pressed";
+
+
+
+        std::cout << "left action pressed" << std::endl;
+
+        DummieStruct *dummie2 = new DummieStruct({20, 2, 102});
+        addLast(dummy_list_left, dummie2);
+
+        displayQueues();
+
+    }
+    else if (event->key() == Qt::Key_E) {
+        //qDebug() << "Key E pressed";
+
+        DummieStruct *dummie1 = new DummieStruct({10, 1, 101});
+        addLast(dummy_list_right, dummie1);
+
+        displayQueues();
+
+    }
+    else {
+        //qDebug() << "Key pressed: " << event->text();
+    }
+
+    // Call the base class event handler for default handling
+    QMainWindow::keyPressEvent(event);
+}
+
+// Handle key release event
+void MainWindow::keyReleaseEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_A) {
+        qDebug() << "Key A released";
+    }
+    else if (event->key() == Qt::Key_Space) {
+        qDebug() << "Spacebar released";
+    }
+
+    QMainWindow::keyReleaseEvent(event);
 }
 
