@@ -1,0 +1,25 @@
+Globales{
+    calendarizador
+    ancho canal
+    MaxBarcos=Hilos
+    Flujo
+    tiempoFlujo
+}; 
+
+Calendarizador{
+    listaDerechaHilos[Barco]
+    ListaIzquierda
+};
+
+Barco{
+    lado (izquierda o derecha)
+    tipo (normal, pesquero, patrulla) * crear enum de velocidad basado en el tipo
+    posicion (no empiecen en la misma, no se solapen)
+    prioridad (menor valor implica menor prioridad)
+    Hilo
+};
+
+Hilo{
+    ID
+    
+};
