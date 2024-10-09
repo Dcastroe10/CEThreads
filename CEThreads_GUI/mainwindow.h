@@ -26,6 +26,8 @@ private slots:
 
     void on_actionright_triggered();
 
+    void on_pruebaStructs_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

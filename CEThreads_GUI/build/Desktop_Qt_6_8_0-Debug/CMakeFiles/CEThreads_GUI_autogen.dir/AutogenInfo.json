@@ -394,7 +394,8 @@
 		"/home/dcastroe/Qt/6.8.0/gcc_64/lib/cmake/Qt6Widgets/Qt6WidgetsMacros.cmake",
 		"/home/dcastroe/Qt/6.8.0/gcc_64/lib/cmake/Qt6Widgets/Qt6WidgetsPlugins.cmake",
 		"/home/dcastroe/Qt/6.8.0/gcc_64/lib/cmake/Qt6Widgets/Qt6WidgetsVersionlessAliasTargets.cmake",
-		"/home/dcastroe/Qt/Tools/CMake/share/cmake-3.29/Modules/GNUInstallDirs.cmake"
+		"/home/dcastroe/Qt/Tools/CMake/share/cmake-3.29/Modules/GNUInstallDirs.cmake",
+		"/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/Resources.qrc"
 	],
 	"CMAKE_SOURCE_DIR" : "/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI",
 	"CROSS_CONFIG" : false,
@@ -406,6 +407,12 @@
 			"/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/initialize.h",
 			"MU",
 			"EWIEGA46WW/moc_initialize.cpp",
+			null
+		],
+		[
+			"/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/linkedList.h",
+			"MU",
+			"EWIEGA46WW/moc_linkedList.cpp",
 			null
 		],
 		[
@@ -482,6 +489,11 @@
 	[
 		[
 			"/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/initialize.c",
+			"MU",
+			null
+		],
+		[
+			"/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/linkedList.c",
 			"MU",
 			null
 		],

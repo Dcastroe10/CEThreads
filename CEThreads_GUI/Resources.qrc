@@ -3,5 +3,6 @@
         <file>canalResize.jpg</file>
         <file>boat1.jpg</file>
         <file>boat2.jpg</file>
+        <file>config.txt</file>
     </qresource>
 </RCC>

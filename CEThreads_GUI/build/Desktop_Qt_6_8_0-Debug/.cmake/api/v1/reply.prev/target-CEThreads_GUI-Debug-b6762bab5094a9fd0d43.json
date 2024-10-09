@@ -71,13 +71,13 @@
 			{
 				"command" : 4,
 				"file" : 1,
-				"line" : 66,
+				"line" : 71,
 				"parent" : 0
 			},
 			{
 				"command" : 5,
 				"file" : 1,
-				"line" : 49,
+				"line" : 54,
 				"parent" : 0
 			},
 			{
@@ -284,7 +284,8 @@
 			[
 				0,
 				1,
-				2
+				2,
+				13
 			]
 		}
 	],
@@ -378,7 +379,9 @@
 				1,
 				2,
 				6,
-				7
+				7,
+				10,
+				13
 			]
 		},
 		{
@@ -388,7 +391,7 @@
 				3,
 				5,
 				8,
-				9
+				11
 			]
 		},
 		{
@@ -396,14 +399,16 @@
 			"sourceIndexes" : 
 			[
 				4,
-				10
+				9,
+				12
 			]
 		},
 		{
 			"name" : "CMake Rules",
 			"sourceIndexes" : 
 			[
-				11
+				14,
+				15
 			]
 		}
 	],
@@ -450,13 +455,23 @@
 		},
 		{
 			"backtrace" : 4,
-			"path" : "setup.c",
+			"path" : "initialize.c",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 4,
-			"path" : "setup.h",
+			"path" : "initialize.h",
 			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 4,
+			"path" : "Resources.qrc",
+			"sourceGroupIndex" : 2
+		},
+		{
+			"backtrace" : 4,
+			"path" : "linkedList.c",
+			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 0,
@@ -472,8 +487,21 @@
 		},
 		{
 			"backtrace" : 0,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "build/Desktop_Qt_6_8_0-Debug/CEThreads_GUI_autogen/EWIEGA46WW/qrc_Resources.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
 			"isGenerated" : true,
 			"path" : "build/Desktop_Qt_6_8_0-Debug/CEThreads_GUI_autogen/timestamp.rule",
+			"sourceGroupIndex" : 3
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/Desktop_Qt_6_8_0-Debug/CEThreads_GUI_autogen/EWIEGA46WW/qrc_Resources.cpp.rule",
 			"sourceGroupIndex" : 3
 		}
 	],
