@@ -1,6 +1,7 @@
 #include "../lib/cethreads.c"
 
 #define CHANNEL_SIZE 10
+#define EQUITY_W 2
 int maxShips = 10;
 
 typedef enum {
