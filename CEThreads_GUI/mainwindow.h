@@ -33,6 +33,9 @@ private slots:
 
     void displayQueues();
 
+    void create_struct(int queue);
+
+    void delete_first_struct(int queue);
 
     protected:
                void keyPressEvent(QKeyEvent *event) override;   // Handle key press
