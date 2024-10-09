@@ -1,7 +1,3 @@
-#include <malloc.h>
-#include <ucontext.h>
-#include <time.h>
-#include <math.h>
 #include "cethreads.h"
 
 

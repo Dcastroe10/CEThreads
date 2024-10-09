@@ -1,4 +1,8 @@
 #include <stdio.h>
+#include <malloc.h>
+#include <ucontext.h>
+#include <time.h>
+#include <math.h>
 
 #define MAX_THREADS 10
 #define THREAD_STACK 1024*1024
