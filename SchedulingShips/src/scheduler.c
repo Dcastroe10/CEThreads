@@ -1,5 +1,17 @@
 #include "ship.c"
 
+/* *********** PENDIENTE *********** */
+//Preguntar por el tipo de flujo (equidad, letrero y tico)
+//Si es equidad, consultar por EQUITY_W y permite que n barcos se muevan de izquierda a derecha y viceversa
+//Si es letrero, definir por cuanta tiempo solo pasan barcos de un lado y luego del otro
+//SI es tico, un random para definir de qué lado se mueve un barco
+
+//Usar y probar sortShipsByPriority para tener listo el calendarizador de Equidad
+//FIFO es el mismo que FCFS
+//Luego sería RoundRobin que se mueve hasta donde llegue con el Quatum que le de
+//SJF creo que toma en cuenta la velocidad del barco y la prioridad
+//Tiempo_real se debe medir cuánta tarda un barco de x tipo en pasar el canal
+
 void ship_generation_test() {
     // Create two ship lists: one for ships on the left and one for ships on the right
     ShipList leftSideShips;

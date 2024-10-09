@@ -36,7 +36,6 @@ void CEthread_yield() {
 			}
 			usleep(200000);
 		}
-		printf("switching \n");
 		incethread = 1;
 		swapcontext(&mainContext, &cethreadList[currentcethread].context);
 		incethread = 0;

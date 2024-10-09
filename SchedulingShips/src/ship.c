@@ -22,38 +22,31 @@ ship_t* create_ship(shipType_t type, channelSide_t side, short priority, int pos
     return newShip;
 }
 
+void updateGUI(int idThread, int position){
+    /* Code to update the GUI with the movement of a Ship */
+}
+
 void move_ship(ship_t *ship){
-    //Preguntar por el tipo de flujo (equidad, letrero y tico)
-    //Si es equidad, consultar por EQUITY_W y permite que n barcos se muevan de izquierda a derecha y viceversa
-    //Si es letrero, definir por cuanta tiempo solo pasan barcos de un lado y luego del otro
-    //SI es tico, un random para definir de qué lado se mueve un barco
-
-    //Usar y probar sortShipsByPriority para tener listo el calendarizador de Equidad
-    //FIFO es el mismo que FCFS
-    //Luego sería RoundRobin que se mueve hasta donde llegue con el Quatum que le de
-    //SJF creo que toma en cuenta la velocidad del barco y la prioridad
-    //Tiempo_real se debe medir cuánta tarda un barco de x tipo en pasar el canal
-
-    for (int i = 0; i < 10000; i++)
+    // sigue moviendose hasta que pase el canal
+    while (1)
     {
         CEmutex_trylock();
         
         printf("before ship position: %d \n", ship->position);
         if (ship->side == LEFT) {
             ship->position = ship->position + ship->type;
-
+            updateGUI(ship->threadId, ship->position); // updates the gui with the movement
             if (ship->position >= CHANNEL_SIZE) {
                 CEthread_end();
             }
         }else {
             ship->position = ship->position - ship->type;
-
+            updateGUI(ship->threadId, ship->position); // updates the gui with the movement
             if (ship->position <= 0) {
                 CEthread_end();
             }
         }
         printf("after ship position: %d \n", ship->position);
-
         CEmutex_unlock();
 		usleep(500000);
 		CEthread_yield();

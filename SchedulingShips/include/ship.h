@@ -24,6 +24,23 @@ typedef struct
     int threadId;
 } ship_t;
 
+typedef enum {
+    RR,             // Round Robin
+    PRIORITY,
+    SJF,            // Shotest Job Firs
+    FCFS,           // FIFO First In First Out
+    REAL_TIME
+} scheduler_t; // scheduler algoritm
+
+typedef enum {
+    EQUITY,
+    SIGN,
+    TICO
+} workflow_t; // 
+
+scheduler_t scheduler = FCFS;
+workflow_t workflow = EQUITY;
+
 /**
  * @brief creates a ship
  * 
@@ -41,6 +58,11 @@ ship_t* create_ship(shipType_t type, channelSide_t side, short priority, int pos
  * @param ship ship needed to move
  */
 void move_ship(ship_t *ship);
+
+void updateGUI(int idThread, int position);
+
+
+/*<><><><><><><> Linked List <><><><><><><>*/
 
 // Estructura para un nodo de la lista enlazada de barcos
 typedef struct ShipNode {
