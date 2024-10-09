@@ -1,4 +1,3 @@
-
 #include "ship.c"
 
 void ship_generation_test() {
@@ -10,21 +9,18 @@ void ship_generation_test() {
     initList(&leftSideShips);
     initList(&rightSideShips);
 
-    // Create 4 ships and add them to the respective lists
-    ship_t* leftShip1 = create_ship(NORMAL, LEFT, 0);
-    addShip(&leftSideShips, leftShip1);
+    // Create an array of ships and add them to the respective lists based on their side
+    for (int i = 0; i < 5; i++) {
+        // Create a ship (you can adjust the type, side, and other parameters as needed)
+        ship_t* ship = create_ship(NORMAL, rand() % 2 == 0 ? LEFT : RIGHT, 0);
 
-    ship_t* leftShip2 = create_ship(NORMAL, LEFT, 0);
-    addShip(&leftSideShips, leftShip2);
-
-    ship_t* rightShip1 = create_ship(NORMAL, RIGHT, 0);
-    addShip(&rightSideShips, rightShip1);
-
-	 ship_t* leftShip3 = create_ship(NORMAL, LEFT, 0);
-    addShip(&leftSideShips, leftShip3);
-
-    ship_t* rightShip2 = create_ship(NORMAL, RIGHT, 0);
-    addShip(&rightSideShips, rightShip2);
+        // Check the side of the ship and add to the appropriate list
+        if (ship->side == LEFT) {
+            addShip(&leftSideShips, ship);
+        } else {
+            addShip(&rightSideShips, ship);
+        }
+    }
 
     // Print the ships in each list for verification
     printf("Ships on the left side:\n");
