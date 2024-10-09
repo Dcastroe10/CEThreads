@@ -1,10 +1,10 @@
 #include "../lib/cethreads.c"
 
-
+#define CHANNEL_SIZE 10
 int maxShips = 10;
 
 typedef enum {
-    NORMAL,
+    NORMAL = 1,
     FISHING,
     PATROL
 } shipType_t; // determines the ship speed
@@ -31,7 +31,7 @@ typedef struct
  * @param priority for the movement of the ship (thread priority)
  * @return a pointer of the created ship
  */
-ship_t* create_ship(shipType_t type, channelSide_t side, short priority);
+ship_t* create_ship(shipType_t type, channelSide_t side, short priority, int position);
 
 
 /**
@@ -82,6 +82,10 @@ void removeShip(ShipList* list, int id);
  * @return Pointer to the found ship node, or NULL if not found.
  */
 ShipNode* findShip(ShipList* list, int id);
+
+ship_t* getLastShip(ShipList* list);
+
+int getNextShipPosition(ShipList* list, channelSide_t side);
 
 /**
  * @brief Sorts the ships in the list by their priority in descending order.

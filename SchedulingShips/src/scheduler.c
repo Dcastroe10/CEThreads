@@ -9,13 +9,26 @@ void ship_generation_test() {
     initList(&leftSideShips);
     initList(&rightSideShips);
 
+    channelSide_t side;
+    int position;
+
     // Create an array of ships and add them to the respective lists based on their side
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 3; i++) {
         // Create a ship (you can adjust the type, side, and other parameters as needed)
-        ship_t* ship = create_ship(NORMAL, rand() % 2 == 0 ? LEFT : RIGHT, 0);
+
+        side = rand() % 2 == 0 ? LEFT : RIGHT;
+        ship_t* ship;
+
+        if (side == LEFT) {
+            position = getNextShipPosition(&leftSideShips, side);
+            ship = create_ship(NORMAL, side, 0, position);
+        } else {
+            position = getNextShipPosition(&rightSideShips, side);
+            ship = create_ship(NORMAL, side, 0, position);
+        }
 
         // Check the side of the ship and add to the appropriate list
-        if (ship->side == LEFT) {
+        if (side == LEFT) {
             addShip(&leftSideShips, ship);
         } else {
             addShip(&rightSideShips, ship);

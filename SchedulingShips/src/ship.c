@@ -1,6 +1,6 @@
 #include "../include/ship.h"
 
-ship_t* create_ship(shipType_t type, channelSide_t side, short priority) {
+ship_t* create_ship(shipType_t type, channelSide_t side, short priority, int position) {
     // Asignar memoria dinámicamente para el nuevo barco
     ship_t *newShip = (ship_t *)malloc(sizeof(ship_t));
 
@@ -9,7 +9,7 @@ ship_t* create_ship(shipType_t type, channelSide_t side, short priority) {
     newShip->type = type;
     newShip->side = side;
     newShip->priority = priority;
-    newShip->position = 0;  // Revisar lista de barcos y tomar la última posición o la debida
+    newShip->position = position;  // Revisar lista de barcos y tomar la última posición o la debida
 
     // Crear el hilo para mover el barco y obtener el ID
     int id = CEthread_create(&move_ship, newShip);  // Pasar el puntero directamente
@@ -26,8 +26,15 @@ void move_ship(ship_t *ship){
     for (int i = 0; i < 10; i++)
     {
         CEmutex_trylock();
-        ship->position++;
-        printf("ship position: %d \n", ship->position);
+        
+        printf("before ship position: %d \n", ship->position);
+        if (ship->side == LEFT) {
+            ship->position = ship->position + ship->type;
+        }else {
+            ship->position = ship->position - ship->type;
+        }
+        printf("after ship position: %d \n", ship->position);
+
         CEmutex_unlock();
 		sleep( 1 );
 		CEthread_yield();
@@ -101,6 +108,42 @@ ShipNode* findShip(ShipList* list, int id) {
         current = current->next;
     }
     return NULL; // Not found
+}
+
+/**
+ * @brief Retrieves the last ship in the list.
+ * @param list Pointer to the ship list.
+ * @return Pointer to the last ship node, or NULL if the list is empty.
+ */
+ship_t* getLastShip(ShipList* list) {
+    if (list->head == NULL) {
+        return NULL; // La lista está vacía
+    }
+
+    ShipNode* current = list->head;
+    while (current->next != NULL) {
+        current = current->next; // Avanzar al siguiente nodo hasta llegar al último
+    }
+
+    return current->ship; // Retornar el último nodo
+}
+
+int getNextShipPosition(ShipList* list, channelSide_t side) {
+    ship_t* tempShip = getLastShip(list);
+
+    if (tempShip == NULL){
+        if (side == LEFT) {
+            return 0;
+        }else {
+            return CHANNEL_SIZE+1;
+        }
+    }
+
+    if (side == LEFT) {
+        return tempShip->position--;
+    }else {
+        return tempShip->position++;
+    }
 }
 
 /**

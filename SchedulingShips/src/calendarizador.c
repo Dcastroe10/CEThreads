@@ -3,11 +3,9 @@
 
 void ship_generation_test(){
 
-    ship_t* newShip1 = create_ship(NORMAL, RIGHT, 0);
-    ship_t* newShip2 = create_ship(FISHING, RIGHT, 0);
+    ship_t* newShip1 = create_ship(NORMAL, RIGHT, 0, 0);
+    ship_t* newShip2 = create_ship(FISHING, RIGHT, 0, 0);
     CEthread_wait();
-
-
 }
 
 int main(){
