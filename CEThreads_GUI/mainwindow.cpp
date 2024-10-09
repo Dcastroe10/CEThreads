@@ -186,6 +186,24 @@ void MainWindow::displayQueues()
     //std::cout << "right action pressed" << std::endl;
     QPixmap scaledBoat2 = boat2->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
+    for (int i = 0; i <= colaIzquierda.size()-1; i++) {
+        //int *element = new int(i); // Crear un nuevo int en el heap
+        //addLast(prueba_lista, element);
+        QLabel *temp = colaIzquierda.at(i);
+        temp->clear();
+        //temp->setPixmap(scaledBoat2);
+
+    }
+
+    for (int i = 0; i <= colaDerecha.size()-1; i++) {
+        //int *element = new int(i); // Crear un nuevo int en el heap
+        //addLast(prueba_lista, element);
+        QLabel *temp = colaDerecha.at(i);
+        temp->clear();
+        //temp->setPixmap(scaledBoat2);
+
+    }
+
     for (int i = 0; i <= dummy_list_left->length-1; i++) {
         //int *element = new int(i); // Crear un nuevo int en el heap
         //addLast(prueba_lista, element);
@@ -205,17 +223,47 @@ void MainWindow::displayQueues()
     }
 }
 
+void MainWindow::create_struct(int queue)
+{
+    if(queue == 0){
+        DummieStruct *dummie2 = new DummieStruct({20, 2, 102});
+        addLast(dummy_list_left, dummie2);
+    }else if(queue == 1){
+        DummieStruct *dummie1 = new DummieStruct({10, 1, 101});
+        addLast(dummy_list_right, dummie1);
+    }else if(queue == 2){
+
+    }else{
+
+    }
+}
+
+void MainWindow::delete_first_struct(int queue)
+{
+
+    if(queue == 0){
+        removeFirst(dummy_list_left);
+    }else if(queue == 1){
+        removeFirst(dummy_list_right);
+    }else if(queue == 2){
+
+    }else{
+
+    }
+
+
+}
+
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Q) {
         //qDebug() << "Key A pressed";
 
 
+        create_struct(0);
+        //std::cout << "left action pressed" << std::endl;
 
-        std::cout << "left action pressed" << std::endl;
 
-        DummieStruct *dummie2 = new DummieStruct({20, 2, 102});
-        addLast(dummy_list_left, dummie2);
 
         displayQueues();
 
@@ -223,13 +271,27 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_E) {
         //qDebug() << "Key E pressed";
 
-        DummieStruct *dummie1 = new DummieStruct({10, 1, 101});
-        addLast(dummy_list_right, dummie1);
+
+        create_struct(1);
 
         displayQueues();
 
     }
-    else {
+    else if (event->key() == Qt::Key_A) {
+        //qDebug() << "Key E pressed";
+
+        delete_first_struct(0);
+        displayQueues();
+
+    } else if (event->key() == Qt::Key_D) {
+        //qDebug() << "Key E pressed";
+
+
+        delete_first_struct(1);
+        displayQueues();
+
+    }
+    else{
         //qDebug() << "Key pressed: " << event->text();
     }
 
