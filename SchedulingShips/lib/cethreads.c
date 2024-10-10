@@ -141,7 +141,7 @@ void CEthread_pause(double pause) {
 	cethreadList[currentcethread].pause = 0;
 }
 
-void set_context(int i) {
+int set_context(int i) {
 	currentcethread = i;
 
 	swapcontext(&mainContext, &cethreadList[i].context);
@@ -154,8 +154,14 @@ void set_context(int i) {
 			cethreadList[currentcethread] = cethreadList[activeThreads];
 		}
 		cethreadList[activeThreads].active = 0;
-		return;
+
+		return 0;
 	}
+	else
+	{
+		return 1;
+	}
+	
 }
 
 

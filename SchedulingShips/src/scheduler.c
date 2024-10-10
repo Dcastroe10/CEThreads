@@ -12,6 +12,7 @@
 //SJF creo que toma en cuenta la velocidad del barco y la prioridad
 //Tiempo_real se debe medir cuánta tarda un barco de x tipo en pasar el canal
 
+
 void ship_generation_test() {
     // Create two ship lists: one for ships on the left and one for ships on the right
     ShipList leftSideShips;
@@ -25,7 +26,7 @@ void ship_generation_test() {
     int position;
 
     // Create an array of ships and add them to the respective lists based on their side
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 10; i++) {
         // Create a ship (you can adjust the type, side, and other parameters as needed)
 
         side = rand() % 2 == 0 ? LEFT : RIGHT;
@@ -91,15 +92,70 @@ void ship_generation_test() {
         case EQUITY:
             printf("Processing EQUITY workflow.\n");
             side = rand() % 2 == 0 ? LEFT : RIGHT;
-            if (side == LEFT) {
-                for (int i=0; i<EQUITY_W; i++) {
-                    int threadId = getFirstShipID(&leftSideShips);
-                    while (1)
-                    {
-                        set_context(threadId);
-                    }
-                }
+            ShipList* currentList; 
+            if (side == LEFT)
+            {
+                currentList = &leftSideShips;
             }
+            else
+            {
+                currentList = &rightSideShips;
+            }
+            
+            
+            while (getShipCount(&leftSideShips) > 0 || getShipCount(&rightSideShips) > 0 )
+            {
+                int shipsRowSize = 0;
+                if (getShipCount(currentList) >= EQUITY_W)
+                {
+                    shipsRowSize = EQUITY_W;
+                }
+                else
+                {
+                    shipsRowSize = getShipCount(currentList);
+                }
+                
+                
+                int* shipsRow = (int*)malloc(shipsRowSize * sizeof(int));
+                for (int i = 0; i < shipsRowSize; i++) {
+                    shipsRow[i] = getShipIdByPosition(currentList, i);
+                }
+                int shipsCrossed = 0;
+                int active = 1;
+                while (shipsCrossed < shipsRowSize)
+                {
+                    for (int i=0; i<shipsRowSize; i++) {
+                        if (shipsRow[i] != -1)
+                        {
+                            active = set_context(shipsRow[i]); // ejecuta el hilo y guarda su estado
+                            if (active == 0)
+                            {
+                                active = 1;
+                                removeShip(currentList, shipsRow[i]);
+                                shipsRow[i] = -1;
+                                shipsCrossed++;
+                            }
+                        }
+                    }
+                 
+                }
+                //printf("se ejecutaron todos los de un lado");
+                
+                //checkShip(currentList);///
+
+                if (side == LEFT) {
+                    //printf("Hola, como estas");
+                    currentList = &rightSideShips;
+                    side = RIGHT;
+                }
+                else
+                {
+                    currentList = &leftSideShips;
+                    side = LEFT;
+                }
+                
+            }
+            
             break;
             
         case SIGN:

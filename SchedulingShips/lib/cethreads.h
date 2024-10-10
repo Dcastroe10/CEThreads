@@ -84,7 +84,7 @@ int CEthread_join(int id);
  */
 int CEthread_wait();
 
-void set_context(int i);
+int set_context(int i);
 
 /**
  * @brief Initializes a mutex.

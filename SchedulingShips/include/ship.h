@@ -115,6 +115,14 @@ ShipNode* findShip(ShipList* list, int id);
 int getFirstShipID(ShipList* list);
 
 /**
+ * @brief Retrieves the thread ID of the ship located at a given position in the list.
+ * @param list Pointer to the ship list.
+ * @param position The position index of the desired ship.
+ * @return The thread ID of the ship at the given position, or -1 if the position is invalid.
+ */
+int getShipIdByPosition(ShipList* list, int position);
+
+/**
  * @brief Retrieves the last ship in the list. 
  * @param list Pointer to the ship list.
  * @return Pointer to the last ship in the list, or NULL if the list is empty.

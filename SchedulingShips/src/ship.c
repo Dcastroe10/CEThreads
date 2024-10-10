@@ -55,7 +55,7 @@ void move_ship(ship_t *ship){
         }
         printf("after change ship position: %d \n", ship->position);
         CEmutex_unlock();
-		usleep(500000);
+		usleep(100000);
 		returnContext();
     }
 }
@@ -170,6 +170,14 @@ int getFirstShipID(ShipList* list) {
     }
 
     return list->head->ship->threadId; // Retornar el ID del primer barco/hilo
+}
+
+int getShipIdByPosition(ShipList* list, int position) {
+    ShipNode* node = getShipByIndex(list, position);
+    if (node == NULL) {
+        return -1; // La posición es inválida o no existe.
+    }
+    return node->ship->threadId;
 }
 
 
