@@ -26,13 +26,20 @@ void updateGUI(int idThread, int position){
     /* Code to update the GUI with the movement of a Ship */
 }
 
+void returnContext() {
+    swapcontext(&cethreadList[currentcethread].context, &mainContext);
+	//currentcethread = -1;
+}
+
 void move_ship(ship_t *ship){
+
     // sigue moviendose hasta que pase el canal
     while (1)
     {
         CEmutex_trylock();
         
-        printf("before ship position: %d \n", ship->position);
+        printf("thread id: %d \n", ship->threadId);
+        printf("before change ship position: %d \n", ship->position);
         if (ship->side == LEFT) {
             ship->position = ship->position + ship->type;
             updateGUI(ship->threadId, ship->position); // updates the gui with the movement
@@ -46,12 +53,11 @@ void move_ship(ship_t *ship){
                 CEthread_end();
             }
         }
-        printf("after ship position: %d \n", ship->position);
+        printf("after change ship position: %d \n", ship->position);
         CEmutex_unlock();
 		usleep(500000);
-		CEthread_yield();
+		returnContext();
     }
-    
 }
 
 /**
@@ -106,6 +112,24 @@ void removeShip(ShipList* list, int id) {
 }
 
 /**
+ * @brief Counts the number of ships in the list.
+ * @param list Pointer to the ship list.
+ * @return The number of ships in the list.
+ */
+int getShipCount(ShipList* list) {
+    int count = 0;
+    ShipNode* current = list->head;
+    
+    // Recorre la lista y cuenta cada nodo.
+    while (current != NULL) {
+        count++;
+        current = current->next;
+    }
+    
+    return count;
+}
+
+/**
  * @brief Finds a ship in the list by its thread ID.
  * @param list Pointer to the ship list.
  * @param id The thread ID of the ship to find.
@@ -121,6 +145,33 @@ ShipNode* findShip(ShipList* list, int id) {
     }
     return NULL; // Not found
 }
+
+ShipNode* getShipByIndex(ShipList* list, int index) {
+    ShipNode* current = list->head;
+    int count = 0;
+    while (current != NULL) {
+        if (count == index) {
+            return current;
+        }
+        count++;
+        current = current->next;
+    }
+    return NULL; // Si el índice es mayor que el número de barcos en la lista.
+}
+
+/**
+ * @brief Retrieves the ID of the first ship in the list.
+ * @param list Pointer to the ship list.
+ * @return The ID of the first ship, or -1 if the list is empty.
+ */
+int getFirstShipID(ShipList* list) {
+    if (list->head == NULL) {
+        return -1; // La lista está vacía
+    }
+
+    return list->head->ship->threadId; // Retornar el ID del primer barco/hilo
+}
+
 
 /**
  * @brief Retrieves the last ship in the list.

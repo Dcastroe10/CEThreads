@@ -25,7 +25,7 @@ void ship_generation_test() {
     int position;
 
     // Create an array of ships and add them to the respective lists based on their side
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 6; i++) {
         // Create a ship (you can adjust the type, side, and other parameters as needed)
 
         side = rand() % 2 == 0 ? LEFT : RIGHT;
@@ -53,9 +53,70 @@ void ship_generation_test() {
 
     printf("Ships on the right side:\n");
     printList(&rightSideShips);
+
+    // Ordenar las listas de acuerdo con el calendarizador
+    switch (scheduler) {
+        case RR:
+            // Code to handle the Round Robin scheduling algorithm.
+            printf("Executing Round Robin scheduling.\n");
+            break;
+
+        case PRIORITY:
+            // Code to handle the Priority-based scheduling algorithm.
+            printf("Executing Priority-based scheduling.\n");
+            break;
+
+        case SJF:
+            // Code to handle the Shortest Job First (SJF) scheduling algorithm.
+            printf("Executing Shortest Job First scheduling.\n");
+            break;
+
+        case FCFS:
+            // Code to handle the First In First Out (FIFO) scheduling algorithm.
+            printf("Executing First Come First Served scheduling.\n");
+            break;
+
+        case REAL_TIME:
+            // Code to handle the Real-Time scheduling algorithm.
+            printf("Executing Real-Time scheduling.\n");
+            break;
+
+        default:
+            // Code to handle an unrecognized scheduler value.
+            printf("Unknown scheduling algorithm.\n");
+            break;
+    }
+
+    switch (workflow) {
+        case EQUITY:
+            printf("Processing EQUITY workflow.\n");
+            side = rand() % 2 == 0 ? LEFT : RIGHT;
+            if (side == LEFT) {
+                for (int i=0; i<EQUITY_W; i++) {
+                    int threadId = getFirstShipID(&leftSideShips);
+                    while (1)
+                    {
+                        set_context(threadId);
+                    }
+                }
+            }
+            break;
+            
+        case SIGN:
+            printf("Processing SIGN workflow.\n");
+            break;
+
+        case TICO:
+            printf("Processing TICO workflow.\n");
+            break;
+
+        default:
+            printf("Unknown workflow type.\n");
+            break;
+    }
     
     // Wait for threads to finish (if necessary for synchronization)
-    CEthread_wait();
+    //CEthread_wait();
 }
 
 int main() {

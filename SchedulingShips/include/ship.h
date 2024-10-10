@@ -1,7 +1,6 @@
 #include "../lib/cethreads.c"
 
 #define CHANNEL_SIZE 10
-#define EQUITY_W 2
 int maxShips = 10;
 
 typedef enum {
@@ -40,6 +39,7 @@ typedef enum {
 
 scheduler_t scheduler = FCFS;
 workflow_t workflow = EQUITY;
+const int EQUITY_W = 2;
 
 /**
  * @brief creates a ship
@@ -51,6 +51,7 @@ workflow_t workflow = EQUITY;
  */
 ship_t* create_ship(shipType_t type, channelSide_t side, short priority, int position);
 
+void return_context();
 
 /**
  * @brief moves the given ship through the channel
@@ -106,8 +107,26 @@ void removeShip(ShipList* list, int id);
  */
 ShipNode* findShip(ShipList* list, int id);
 
+/**
+ * @brief Retrieves the ID of the first ship in the list.
+ * @param list Pointer to the ship list.
+ * @return The ID of the first ship, or -1 if the list is empty.
+ */
+int getFirstShipID(ShipList* list);
+
+/**
+ * @brief Retrieves the last ship in the list. 
+ * @param list Pointer to the ship list.
+ * @return Pointer to the last ship in the list, or NULL if the list is empty.
+ */
 ship_t* getLastShip(ShipList* list);
 
+/**
+ * @brief Determines the next position for a ship based on the side.
+ * @param list Pointer to the ship list.
+ * @param side The side of the channel where the new ship will be placed.
+ * @return The calculated position for the new ship.
+ */
 int getNextShipPosition(ShipList* list, channelSide_t side);
 
 /**

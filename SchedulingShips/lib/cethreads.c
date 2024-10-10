@@ -131,7 +131,7 @@ int CEthread_join(int id) {
 	return 0;
 }
 
-void Lthread_pause(double pause) {
+void CEthread_pause(double pause) {
 	clock_t start, end;
 	start = clock();
 	cethreadList[currentcethread].time = start;
@@ -139,6 +139,23 @@ void Lthread_pause(double pause) {
 	CEthread_yield();
 	printf("%d \n", cethreadList[currentcethread].id);
 	cethreadList[currentcethread].pause = 0;
+}
+
+void set_context(int i) {
+	currentcethread = i;
+
+	swapcontext(&mainContext, &cethreadList[i].context);
+
+	if (cethreadList[currentcethread].active == 0) {
+		printf("cethread has finished \n");
+		free(cethreadList[currentcethread].context.uc_stack.ss_sp);
+		--activeThreads;
+		if (currentcethread != activeThreads) {
+			cethreadList[currentcethread] = cethreadList[activeThreads];
+		}
+		cethreadList[activeThreads].active = 0;
+		return;
+	}
 }
 
 
