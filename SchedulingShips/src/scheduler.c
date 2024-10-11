@@ -16,10 +16,6 @@
 // Function to handle the scheduling
 void handle_scheduler(scheduler_t scheduler, ShipList* leftSideShips, ShipList* rightSideShips) {
     switch (scheduler) {
-        case RR:
-            printf("\nExecuting Round Robin scheduling.\n");
-            break;
-
         case PRIORITY:
             printf("\nExecuting Priority-based scheduling.\n");
 
@@ -34,20 +30,80 @@ void handle_scheduler(scheduler_t scheduler, ShipList* leftSideShips, ShipList* 
 
             break;
 
-        case SJF:
-            printf("\nExecuting Shortest Job First scheduling.\n");
+        case RR:
+            printf("\nExecuting Round Robin scheduling.\n");
+
+            ShipList* combinedList;
+            int shipCount;
+            if (getShipCount(leftSideShips) > 0 || getShipCount(rightSideShips) > 0) {
+                // Combine the ships from both lists into a single list.
+                combinedList = combineShipLists(leftSideShips, rightSideShips);
+                shipCount = getShipCount(combinedList);
+            } else {
+                break; // No ships to process
+            }
+
+            // Allocate memory for shipsRow to store ship IDs
+            int* shipsRow = (int*)malloc(shipCount * sizeof(int));
+            if (!shipsRow) {
+                // Handle memory allocation failure
+                fprintf(stderr, "Memory allocation failed for shipsRow.\n");
+                free(combinedList); // Free combinedList before exiting
+                break;
+            }
+
+            while (getShipCount(combinedList) > 0) {
+                shipCount = getShipCount(combinedList);
+                printf("CombinedList size: %d\n", shipCount);
+
+                // Store ship IDs in shipsRow for safe manipulation
+                for (int i = 0; i < shipCount; i++) {
+                    shipsRow[i] = getShipIdByPosition(combinedList, i);
+                }
+
+                // Iterate through shipsRow to process each ship
+                for (int i = 0; i < shipCount; i++) {
+                    int shipId = shipsRow[i];
+                    if (shipId == -1) {
+                        continue; // Skip if the ship ID is invalid or already processed
+                    }
+
+                    // Execute the context of the ship for a fixed quantum
+                    int active = set_context_with_quantum(shipId, QUANTUM);
+
+                    // Check if the ship has completed its execution
+                    if (active == 0) {
+                        // Remove the ship from the combined list if it has finished
+                        removeShip(combinedList, shipId);
+                        shipsRow[i] = -1; // Mark this ship as processed in shipsRow
+                    } else {
+                        // If the ship has not finished, move it to the end of the list
+                        moveShipToEnd(combinedList, shipId);
+                    }
+                }
+            }
+
+            // Free the memory allocated for shipsRow and combinedList
+            free(shipsRow);
+            free(combinedList);
             break;
 
-        case FCFS:
-            printf("\nExecuting First Come First Served scheduling.\n");
+
+        case SJF:
+            printf("\nExecuting Shortest Job First scheduling.\n");
             break;
 
         case REAL_TIME:
             printf("\nExecuting Real-Time scheduling.\n");
             break;
 
+        case FCFS:
+            printf("\nExecuting First Come First Served scheduling.\n");
+
         default:
-            printf("\nUnknown scheduling algorithm.\n");
+            if (scheduler != FCFS) {
+                printf("\nUnknown scheduler type, falling back to default behavior.\n");
+            }
             break;
     }
 }
@@ -306,7 +362,10 @@ void ship_generation_test() {
 
     // Handle scheduler and workflow
     handle_scheduler(scheduler, &leftSideShips, &rightSideShips);
-    handle_workflow(workflow, &leftSideShips, &rightSideShips);
+
+    if (scheduler != RR) { // NOTE: I think workflow doesn't make much sense with the RR scheduler
+        handle_workflow(workflow, &leftSideShips, &rightSideShips);   
+    }
 
     // Wait for threads to finish (if necessary for synchronization)
     // CEthread_wait();

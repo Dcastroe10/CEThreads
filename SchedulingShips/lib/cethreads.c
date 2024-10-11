@@ -1,6 +1,5 @@
 #include "cethreads.h"
 
-
 void initCEthreads() {
 	int i;
 	for (i = 0; i < MAX_THREADS; ++i) {
@@ -145,9 +144,8 @@ int set_context(int i) {
 	currentcethread = i;
 
 	swapcontext(&mainContext, &cethreadList[i].context);
-
 	if (cethreadList[currentcethread].active == 0) {
-		printf("cethread has finished \n");
+		printf("cethread has finished.\n");
 		free(cethreadList[currentcethread].context.uc_stack.ss_sp);
 		--activeThreads;
 		if (currentcethread != activeThreads) {
@@ -157,11 +155,46 @@ int set_context(int i) {
 
 		return 0;
 	}
-	else
-	{
-		return 1;
-	}
-	
+	return 1;
+}
+
+int set_context_with_quantum(int i, int quantum) {
+    currentcethread = i;
+    
+    // Record the start time
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
+
+    while (1) {
+        // Switch to the thread's context
+        swapcontext(&mainContext, &cethreadList[i].context);
+
+        // Check if the thread has finished its execution
+        if (cethreadList[currentcethread].active == 0) {
+            printf("cethread has finished.\n");
+            free(cethreadList[currentcethread].context.uc_stack.ss_sp);
+            --activeThreads;
+
+            if (currentcethread != activeThreads) {
+                cethreadList[currentcethread] = cethreadList[activeThreads];
+            }
+            cethreadList[activeThreads].active = 0;
+            return 0; // The thread has finished
+        }
+
+        // Calculate the elapsed time since the thread started running
+        gettimeofday(&end, NULL);
+        double elapsedTime = (end.tv_sec - start.tv_sec) + 
+                             (end.tv_usec - start.tv_usec) / 1000000.0;
+
+        // Check if the elapsed time exceeds the quantum
+        if (elapsedTime >= quantum) {
+            printf("Quantum expired for thread %d\n", i);
+			printf("elapsedTime: %f\n", elapsedTime);
+			printf("quantum: %d\n", quantum);
+            return 1; // The thread is still active but time slice expired
+        }
+    }
 }
 
 
