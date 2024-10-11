@@ -49,12 +49,9 @@ MainWindow::MainWindow(QWidget *parent)
     qDebug() << "6) Parámetro W-> "<<initial_configuration.parametroW;
 
 
-
-        //QLabel *element = ui->canal00 ;// Crear un nuevo int en el heap
-
-
+     //QLabel *element = ui->canal00 ;// Crear un nuevo int en el heap
     setupQueues();
-
+    setupCanal(initial_configuration.largoCanal);
 
 
 
@@ -75,8 +72,8 @@ void MainWindow::on_actionleft_triggered()
     QPixmap *boat1 = new QPixmap(":/boat1.jpg");
     std::cout << "left action pressed" << std::endl;
     QPixmap scaledBoat1 = boat1->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    ui->canal09->setScaledContents(true);
-    ui->canal09->setPixmap(scaledBoat1);
+    //ui->canal09->setScaledContents(true);
+    //ui->canal09->setPixmap(scaledBoat1);  //---------------------------------------------------------------------
 
     delete boat1; //liberar la memoria del boat1
 
@@ -98,8 +95,8 @@ void MainWindow::on_actionright_triggered()
     QPixmap *boat2 = new QPixmap(":/boat2.jpg");
     std::cout << "right action pressed" << std::endl;
     QPixmap scaledBoat2 = boat2->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    ui->canal00->setScaledContents(true);
-    ui->canal00->setPixmap(scaledBoat2);
+    //ui->canal00->setScaledContents(true);
+    //ui->canal00->setPixmap(scaledBoat2);
     //delete boat2;
 }
 
@@ -161,7 +158,6 @@ void MainWindow::setupQueues()
 {
 
     qDebug() << "starting setup";
-
     colaIzquierda.push_back(ui->waitingL0);
     colaIzquierda.push_back(ui->waitingL1);
     colaIzquierda.push_back(ui->waitingL2);
@@ -169,14 +165,11 @@ void MainWindow::setupQueues()
     colaIzquierda.push_back(ui->waitingL4);
 
 
-
     colaDerecha.push_back(ui->waitingR0);
     colaDerecha.push_back(ui->waitingR1);
     colaDerecha.push_back(ui->waitingR2);
     colaDerecha.push_back(ui->waitingR3);
     colaDerecha.push_back(ui->waitingR4);
-
-
     qDebug() << "finishing setup";
 }
 
@@ -310,5 +303,37 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
     }
 
     QMainWindow::keyReleaseEvent(event);
+}
+
+
+void MainWindow::on_pruebaAddLabel_clicked()
+{
+    // Crear un nuevo QLabel con el texto "holaN" donde N puede ser un número o identificador______________________-
+    QLabel *label = new QLabel("holaN", this);
+
+    // Asumiendo que ya tienes un QHBoxLayout llamado "El_canal"
+    QHBoxLayout *layout = findChild<QHBoxLayout*>("El_canal");
+
+    // Verificar que el layout exista
+    if(layout)
+    {
+        // Agregar el QLabel al QHBoxLayout
+        layout->addWidget(label);
+    }
+    else
+    {
+        // Si el layout no existe, podrías manejar el error o crear uno nuevo
+        qDebug() << "No se encontró el layout 'El_canal'";
+    }
+
+}
+
+void MainWindow::setupCanal(int ancho){
+    qDebug()<<"LALALLAL";
+    for (int i = 0;i < ancho; i++){
+        QLabel *label = new QLabel("holaN", this);
+        QHBoxLayout *layout = findChild<QHBoxLayout*>("El_canal");
+        layout->addWidget(label);
+    }
 }
 

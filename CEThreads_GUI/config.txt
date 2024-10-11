@@ -1,5 +1,5 @@
 MetodoControlFlujo: FIFO
-LargoCanal: 500
+LargoCanal: 5
 VelocidadBarco: 10
 CantidadBarcos: 13
 TiempoLetrero: 5

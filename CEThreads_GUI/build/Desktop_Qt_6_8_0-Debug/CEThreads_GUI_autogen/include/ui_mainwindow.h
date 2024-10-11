@@ -41,26 +41,18 @@ public:
     QLabel *waitingR2;
     QLabel *waitingR3;
     QLabel *waitingR4;
+    QSpacerItem *verticalSpacer_2;
+    QSpacerItem *verticalSpacer;
+    QPushButton *pruebaStructs;
+    QPushButton *pruebaAddLabel;
     QVBoxLayout *Waiting_Left;
     QLabel *waitingL0;
     QLabel *waitingL1;
     QLabel *waitingL2;
     QLabel *waitingL3;
     QLabel *waitingL4;
-    QSpacerItem *verticalSpacer_2;
-    QSpacerItem *verticalSpacer;
     QHBoxLayout *El_canal;
-    QLabel *canal09;
-    QLabel *canal08;
-    QLabel *canal07;
-    QLabel *canal06;
-    QLabel *canal05;
-    QLabel *canal04;
-    QLabel *canal03;
-    QLabel *canal02;
-    QLabel *canal01;
-    QLabel *canal00;
-    QPushButton *pruebaStructs;
+    QSpacerItem *horizontalSpacer;
     QMenuBar *menubar;
     QMenu *menupiporin;
     QMenu *menucreate_boat;
@@ -119,7 +111,25 @@ public:
         Waiting_Right->addWidget(waitingR4);
 
 
-        gridLayout->addLayout(Waiting_Right, 0, 2, 4, 1);
+        gridLayout->addLayout(Waiting_Right, 0, 2, 5, 1);
+
+        verticalSpacer_2 = new QSpacerItem(20, 200, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
+
+        gridLayout->addItem(verticalSpacer_2, 0, 1, 1, 1);
+
+        verticalSpacer = new QSpacerItem(20, 200, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
+
+        gridLayout->addItem(verticalSpacer, 4, 1, 1, 1);
+
+        pruebaStructs = new QPushButton(gridLayoutWidget);
+        pruebaStructs->setObjectName("pruebaStructs");
+
+        gridLayout->addWidget(pruebaStructs, 2, 1, 1, 1);
+
+        pruebaAddLabel = new QPushButton(gridLayoutWidget);
+        pruebaAddLabel->setObjectName("pruebaAddLabel");
+
+        gridLayout->addWidget(pruebaAddLabel, 1, 1, 1, 1);
 
         Waiting_Left = new QVBoxLayout();
         Waiting_Left->setSpacing(10);
@@ -139,6 +149,9 @@ public:
 
         waitingL1 = new QLabel(gridLayoutWidget);
         waitingL1->setObjectName("waitingL1");
+        sizePolicy.setHeightForWidth(waitingL1->sizePolicy().hasHeightForWidth());
+        waitingL1->setSizePolicy(sizePolicy);
+        waitingL1->setMinimumSize(QSize(100, 100));
 
         Waiting_Left->addWidget(waitingL1);
 
@@ -167,108 +180,19 @@ public:
         Waiting_Left->addWidget(waitingL4);
 
 
-        gridLayout->addLayout(Waiting_Left, 0, 0, 4, 1);
-
-        verticalSpacer_2 = new QSpacerItem(20, 200, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
-
-        gridLayout->addItem(verticalSpacer_2, 0, 1, 1, 1);
-
-        verticalSpacer = new QSpacerItem(20, 200, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
-
-        gridLayout->addItem(verticalSpacer, 3, 1, 1, 1);
+        gridLayout->addLayout(Waiting_Left, 0, 0, 5, 1);
 
         El_canal = new QHBoxLayout();
         El_canal->setSpacing(10);
         El_canal->setObjectName("El_canal");
         El_canal->setSizeConstraint(QLayout::SizeConstraint::SetFixedSize);
         El_canal->setContentsMargins(5, 5, 5, 5);
-        canal09 = new QLabel(gridLayoutWidget);
-        canal09->setObjectName("canal09");
-        sizePolicy.setHeightForWidth(canal09->sizePolicy().hasHeightForWidth());
-        canal09->setSizePolicy(sizePolicy);
-        canal09->setMinimumSize(QSize(100, 100));
+        horizontalSpacer = new QSpacerItem(900, 10, QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Minimum);
 
-        El_canal->addWidget(canal09);
-
-        canal08 = new QLabel(gridLayoutWidget);
-        canal08->setObjectName("canal08");
-        sizePolicy.setHeightForWidth(canal08->sizePolicy().hasHeightForWidth());
-        canal08->setSizePolicy(sizePolicy);
-        canal08->setMinimumSize(QSize(100, 100));
-
-        El_canal->addWidget(canal08);
-
-        canal07 = new QLabel(gridLayoutWidget);
-        canal07->setObjectName("canal07");
-        sizePolicy.setHeightForWidth(canal07->sizePolicy().hasHeightForWidth());
-        canal07->setSizePolicy(sizePolicy);
-        canal07->setMinimumSize(QSize(100, 100));
-
-        El_canal->addWidget(canal07);
-
-        canal06 = new QLabel(gridLayoutWidget);
-        canal06->setObjectName("canal06");
-        sizePolicy.setHeightForWidth(canal06->sizePolicy().hasHeightForWidth());
-        canal06->setSizePolicy(sizePolicy);
-        canal06->setMinimumSize(QSize(100, 100));
-
-        El_canal->addWidget(canal06);
-
-        canal05 = new QLabel(gridLayoutWidget);
-        canal05->setObjectName("canal05");
-        sizePolicy.setHeightForWidth(canal05->sizePolicy().hasHeightForWidth());
-        canal05->setSizePolicy(sizePolicy);
-        canal05->setMinimumSize(QSize(100, 100));
-
-        El_canal->addWidget(canal05);
-
-        canal04 = new QLabel(gridLayoutWidget);
-        canal04->setObjectName("canal04");
-        sizePolicy.setHeightForWidth(canal04->sizePolicy().hasHeightForWidth());
-        canal04->setSizePolicy(sizePolicy);
-        canal04->setMinimumSize(QSize(100, 100));
-
-        El_canal->addWidget(canal04);
-
-        canal03 = new QLabel(gridLayoutWidget);
-        canal03->setObjectName("canal03");
-        sizePolicy.setHeightForWidth(canal03->sizePolicy().hasHeightForWidth());
-        canal03->setSizePolicy(sizePolicy);
-        canal03->setMinimumSize(QSize(100, 100));
-
-        El_canal->addWidget(canal03);
-
-        canal02 = new QLabel(gridLayoutWidget);
-        canal02->setObjectName("canal02");
-        sizePolicy.setHeightForWidth(canal02->sizePolicy().hasHeightForWidth());
-        canal02->setSizePolicy(sizePolicy);
-        canal02->setMinimumSize(QSize(100, 100));
-
-        El_canal->addWidget(canal02);
-
-        canal01 = new QLabel(gridLayoutWidget);
-        canal01->setObjectName("canal01");
-        sizePolicy.setHeightForWidth(canal01->sizePolicy().hasHeightForWidth());
-        canal01->setSizePolicy(sizePolicy);
-        canal01->setMinimumSize(QSize(100, 100));
-
-        El_canal->addWidget(canal01);
-
-        canal00 = new QLabel(gridLayoutWidget);
-        canal00->setObjectName("canal00");
-        sizePolicy.setHeightForWidth(canal00->sizePolicy().hasHeightForWidth());
-        canal00->setSizePolicy(sizePolicy);
-        canal00->setMinimumSize(QSize(100, 100));
-
-        El_canal->addWidget(canal00);
+        El_canal->addItem(horizontalSpacer);
 
 
-        gridLayout->addLayout(El_canal, 2, 1, 1, 1);
-
-        pruebaStructs = new QPushButton(gridLayoutWidget);
-        pruebaStructs->setObjectName("pruebaStructs");
-
-        gridLayout->addWidget(pruebaStructs, 1, 1, 1, 1);
+        gridLayout->addLayout(El_canal, 3, 1, 1, 1);
 
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
@@ -314,22 +238,13 @@ public:
         waitingR2->setText(QCoreApplication::translate("MainWindow", "waitingR2", nullptr));
         waitingR3->setText(QCoreApplication::translate("MainWindow", "waitingR3", nullptr));
         waitingR4->setText(QCoreApplication::translate("MainWindow", "waitingR4", nullptr));
+        pruebaStructs->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
+        pruebaAddLabel->setText(QCoreApplication::translate("MainWindow", "AddLabel", nullptr));
         waitingL0->setText(QCoreApplication::translate("MainWindow", "waitingL0", nullptr));
         waitingL1->setText(QCoreApplication::translate("MainWindow", "waitingL1", nullptr));
         waitingL2->setText(QCoreApplication::translate("MainWindow", "waitingL2", nullptr));
         waitingL3->setText(QCoreApplication::translate("MainWindow", "waitingL3", nullptr));
         waitingL4->setText(QCoreApplication::translate("MainWindow", "waitingL4", nullptr));
-        canal09->setText(QCoreApplication::translate("MainWindow", "Canal09", nullptr));
-        canal08->setText(QCoreApplication::translate("MainWindow", "Canal08", nullptr));
-        canal07->setText(QCoreApplication::translate("MainWindow", "Canal07", nullptr));
-        canal06->setText(QCoreApplication::translate("MainWindow", "Canal06", nullptr));
-        canal05->setText(QCoreApplication::translate("MainWindow", "Canal05", nullptr));
-        canal04->setText(QCoreApplication::translate("MainWindow", "Canal04", nullptr));
-        canal03->setText(QCoreApplication::translate("MainWindow", "Canal03", nullptr));
-        canal02->setText(QCoreApplication::translate("MainWindow", "Canal02", nullptr));
-        canal01->setText(QCoreApplication::translate("MainWindow", "Canal01", nullptr));
-        canal00->setText(QCoreApplication::translate("MainWindow", "Canal00", nullptr));
-        pruebaStructs->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
         menupiporin->setTitle(QCoreApplication::translate("MainWindow", "piporin", nullptr));
         menucreate_boat->setTitle(QCoreApplication::translate("MainWindow", "create boat", nullptr));
     } // retranslateUi

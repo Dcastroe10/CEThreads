@@ -1,5 +1,10 @@
 /home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_8_0-Debug/CEThreads_GUI_autogen/EWIEGA46WW/moc_mainwindow.cpp: /home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/mainwindow.h \
   /home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_8_0-Debug/CEThreads_GUI_autogen/moc_predefs.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/QList \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/QObject \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/QRect \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/QSize \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/QSizeF \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/q20functional.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/q20iterator.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/q20memory.h \
@@ -30,10 +35,16 @@
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qcontainerinfo.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qcontainertools_impl.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qcontiguouscache.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qcoreapplication.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qcoreapplication_platform.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qcoreevent.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qdarwinhelpers.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qdatastream.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qdeadlinetimer.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qdebug.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qelapsedtimer.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qendian.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qeventloop.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qexceptionhandling.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qflags.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qfloat16.h \
@@ -45,12 +56,14 @@
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qglobalstatic.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qhash.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qhashfunctions.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qiodevice.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qiodevicebase.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qiterable.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qiterator.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qlatin1stringview.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qline.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qlist.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qlocale.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qlogging.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qmalloc.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qmap.h \
@@ -60,6 +73,7 @@
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qmetatype.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qminmax.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qnamespace.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qnativeinterface.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qnumeric.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qobject.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qobject_impl.h \
@@ -114,35 +128,49 @@
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qtversionchecks.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qtypeinfo.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qtypes.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qurl.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qutf8stringview.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qvariant.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qvarlengtharray.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qversiontagging.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qxptype_traits.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/qyieldcpu.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/QKeyEvent \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/QTransform \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qaction.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qbitmap.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qbrush.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qcolor.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qcursor.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qevent.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qeventpoint.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qfont.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qfontinfo.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qfontmetrics.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qguiapplication.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qguiapplication_platform.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qicon.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qimage.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qinputdevice.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qinputmethod.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qkeysequence.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qpaintdevice.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qpalette.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qpixelformat.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qpixmap.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qpointingdevice.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qpolygon.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qregion.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qrgb.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qrgba64.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qscreen.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qscreen_platform.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qtgui-config.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qtguiexports.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qtguiglobal.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qtransform.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qvector2d.h \
+  /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qvectornd.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtGui/qwindowdefs.h \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtWidgets/QMainWindow \
   /home/dcastroe/Qt/6.8.0/gcc_64/include/QtWidgets/qmainwindow.h \

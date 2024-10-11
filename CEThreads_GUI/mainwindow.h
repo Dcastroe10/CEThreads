@@ -37,7 +37,11 @@ private slots:
 
     void delete_first_struct(int queue);
 
-    protected:
+    void on_pruebaAddLabel_clicked();
+
+    void setupCanal(int ancho);
+
+protected:
                void keyPressEvent(QKeyEvent *event) override;   // Handle key press
     void keyReleaseEvent(QKeyEvent *event) override; // Handle key release
 
