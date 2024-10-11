@@ -196,6 +196,11 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
         case TICO:
             printf("\nProcessing TICO workflow.\n");
 
+        default:
+            if (workflow != TICO) {
+                printf("\nUnknown workflow type, falling back to default behavior.\n");
+            }
+
             // Preallocate a single slot for the shipsRow array since it only processing one ship at a time
             int* shipRowTico = (int*)malloc(sizeof(int));
             if (!shipRowTico) {
@@ -246,10 +251,6 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
             }
 
             free(shipRowTico);
-            break;
-
-        default:
-            printf("\nUnknown workflow type.\n");
             break;
     }
 }
