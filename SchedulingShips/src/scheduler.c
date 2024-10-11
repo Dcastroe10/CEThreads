@@ -195,6 +195,57 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
 
         case TICO:
             printf("\nProcessing TICO workflow.\n");
+
+            // Preallocate a single slot for the shipsRow array since it only processing one ship at a time
+            int* shipRowTico = (int*)malloc(sizeof(int));
+            if (!shipRowTico) {
+                // Handle memory allocation failure
+                fprintf(stderr, "Memory allocation failed for shipRowTico.\n");
+                break;
+            }
+
+            while (getShipCount(leftSideShips) > 0 || getShipCount(rightSideShips) > 0) {
+                // Decide from which side to pick a ship
+                if (getShipCount(leftSideShips) > 0 && getShipCount(rightSideShips) > 0) {
+                    // Randomly choose a side if both have ships
+                    side = rand() % 2 == 0 ? LEFT : RIGHT;
+                } else if (getShipCount(leftSideShips) > 0) {
+                    // Pick from the left if only the left side has ships
+                    side = LEFT;
+                } else if (getShipCount(rightSideShips) > 0) {
+                    // Pick from the right if only the right side has ships
+                    side = RIGHT;
+                } else {
+                    // No ships left to process
+                    break;
+                }
+
+                // Select the current list based on the chosen side
+                ShipList* currentTicoList = (side == LEFT) ? leftSideShips : rightSideShips;
+
+                // Get the ID of a random ship from the selected list
+                int shipCount = getShipCount(currentTicoList);
+                //int randomIndex = rand() % shipCount;
+                int shipId = getShipIdByPosition(currentTicoList, 0);
+
+                // Store the selected ship ID in shipRowTico
+                shipRowTico[0] = shipId;
+
+                // Process the selected ship until it completes its crossing
+                while (shipRowTico[0] != -1) {
+                    // Execute the context of the ship
+                    int active = set_context(shipRowTico[0]);
+
+                    // Check if the ship has completed its execution
+                    if (active == 0) {
+                        // Remove the ship from the list and mark the slot as free
+                        removeShip(currentTicoList, shipRowTico[0]);
+                        shipRowTico[0] = -1; // Mark as crossed
+                    }
+                }
+            }
+
+            free(shipRowTico);
             break;
 
         default:
@@ -216,7 +267,7 @@ void ship_generation_test() {
     int position;
 
     // Create an array of ships and add them to the respective lists based on their side
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 7; i++) {
         side = rand() % 2 == 0 ? LEFT : RIGHT;
         ship_t* ship;
         position = (side == LEFT) ? getNextShipPosition(&leftSideShips, side) : getNextShipPosition(&rightSideShips, side);

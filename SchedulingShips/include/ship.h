@@ -38,7 +38,7 @@ typedef enum {
 } workflow_t; // workflow algoritm
 
 scheduler_t scheduler = FCFS;
-workflow_t workflow = SIGN;
+workflow_t workflow = TICO;
 const int EQUITY_W = 2;
 const int SIGN_TIME = 4;
 
