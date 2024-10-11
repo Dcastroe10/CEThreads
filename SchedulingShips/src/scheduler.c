@@ -14,23 +14,38 @@
 
 
 // Function to handle the scheduling
-void handle_scheduler(scheduler_t scheduler) {
+void handle_scheduler(scheduler_t scheduler, ShipList* leftSideShips, ShipList* rightSideShips) {
     switch (scheduler) {
         case RR:
             printf("\nExecuting Round Robin scheduling.\n");
             break;
+
         case PRIORITY:
             printf("\nExecuting Priority-based scheduling.\n");
+
+            sortShipsByPriority(leftSideShips);
+            sortShipsByPriority(rightSideShips);
+
+            // Print the ships in each list for verification
+            printf("\nShips on the left side sorted by priority:\n");
+            printList(leftSideShips);
+            printf("\nShips on the right side orted by priority:\n");
+            printList(rightSideShips);
+
             break;
+
         case SJF:
             printf("\nExecuting Shortest Job First scheduling.\n");
             break;
+
         case FCFS:
             printf("\nExecuting First Come First Served scheduling.\n");
             break;
+
         case REAL_TIME:
             printf("\nExecuting Real-Time scheduling.\n");
             break;
+
         default:
             printf("\nUnknown scheduling algorithm.\n");
             break;
@@ -266,13 +281,15 @@ void ship_generation_test() {
 
     channelSide_t side;
     int position;
+    int priority;
 
     // Create an array of ships and add them to the respective lists based on their side
     for (int i = 0; i < 7; i++) {
         side = rand() % 2 == 0 ? LEFT : RIGHT;
         ship_t* ship;
         position = (side == LEFT) ? getNextShipPosition(&leftSideShips, side) : getNextShipPosition(&rightSideShips, side);
-        ship = create_ship(NORMAL, side, 0, position);
+        priority = rand() % 6; // Generates a number between 0 and 5
+        ship = create_ship(NORMAL, side, priority, position);
 
         if (side == LEFT) {
             addShip(&leftSideShips, ship);
@@ -288,7 +305,7 @@ void ship_generation_test() {
     printList(&rightSideShips);
 
     // Handle scheduler and workflow
-    handle_scheduler(scheduler);
+    handle_scheduler(scheduler, &leftSideShips, &rightSideShips);
     handle_workflow(workflow, &leftSideShips, &rightSideShips);
 
     // Wait for threads to finish (if necessary for synchronization)

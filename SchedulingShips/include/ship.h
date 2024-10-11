@@ -37,14 +37,13 @@ typedef enum {
     TICO
 } workflow_t; // workflow algoritm
 
-scheduler_t scheduler = FCFS;
+scheduler_t scheduler = PRIORITY;
 workflow_t workflow = TICO;
 const int EQUITY_W = 2;
 const int SIGN_TIME = 4;
 
 /**
  * @brief creates a ship
- * 
  * @param type of the ship, determining its speed
  * @param side side of the channel where the ship starts
  * @param priority for the movement of the ship (thread priority)
@@ -56,7 +55,6 @@ void return_context();
 
 /**
  * @brief moves the given ship through the channel
- * 
  * @param ship ship needed to move
  */
 void move_ship(ship_t *ship);
