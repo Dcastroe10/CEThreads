@@ -1,7 +1,7 @@
 #include "../lib/cethreads.c"
 
 #define CHANNEL_SIZE 10
-int maxShips = 10;
+#define MAX_SHIPS 10
 
 typedef enum {
     NORMAL = 1,
@@ -35,11 +35,12 @@ typedef enum {
     EQUITY,
     SIGN,
     TICO
-} workflow_t; // 
+} workflow_t; // workflow algoritm
 
 scheduler_t scheduler = FCFS;
-workflow_t workflow = EQUITY;
+workflow_t workflow = SIGN;
 const int EQUITY_W = 2;
+const int SIGN_TIME = 4;
 
 /**
  * @brief creates a ship

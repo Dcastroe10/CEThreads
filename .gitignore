@@ -54,3 +54,4 @@ dkms.conf
 # End of https://mrkandreev.name/snippets/gitignore-generator/#C
 SchedulingShips/lib/threadTester
 SchedulingShips/src/scheduler
+SchedulingShips/src/scheduler

@@ -28,7 +28,6 @@ void updateGUI(int idThread, int position){
 
 void returnContext() {
     swapcontext(&cethreadList[currentcethread].context, &mainContext);
-	//currentcethread = -1;
 }
 
 void move_ship(ship_t *ship){
@@ -38,7 +37,7 @@ void move_ship(ship_t *ship){
     {
         CEmutex_trylock();
         
-        printf("thread id: %d \n", ship->threadId);
+        printf("\nthread id: %d \n", ship->threadId);
         printf("before change ship position: %d \n", ship->position);
         if (ship->side == LEFT) {
             ship->position = ship->position + ship->type;
@@ -55,7 +54,7 @@ void move_ship(ship_t *ship){
         }
         printf("after change ship position: %d \n", ship->position);
         CEmutex_unlock();
-		usleep(100000);
+		usleep(500000);
 		returnContext();
     }
 }

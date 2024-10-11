@@ -13,8 +13,198 @@
 //Tiempo_real se debe medir cuánta tarda un barco de x tipo en pasar el canal
 
 
+// Function to handle the scheduling
+void handle_scheduler(scheduler_t scheduler) {
+    switch (scheduler) {
+        case RR:
+            printf("\nExecuting Round Robin scheduling.\n");
+            break;
+        case PRIORITY:
+            printf("\nExecuting Priority-based scheduling.\n");
+            break;
+        case SJF:
+            printf("\nExecuting Shortest Job First scheduling.\n");
+            break;
+        case FCFS:
+            printf("\nExecuting First Come First Served scheduling.\n");
+            break;
+        case REAL_TIME:
+            printf("\nExecuting Real-Time scheduling.\n");
+            break;
+        default:
+            printf("\nUnknown scheduling algorithm.\n");
+            break;
+    }
+}
+
+// Function to handle the workflow
+void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rightSideShips) {
+    channelSide_t side;
+    switch (workflow) {
+        case EQUITY:
+            printf("\nProcessing EQUITY workflow.\n");
+            
+            // Preallocating the shipsRow array with the maximum possible size
+            int* shipsRow = (int*)malloc(EQUITY_W * sizeof(int));
+            if (!shipsRow) {
+                // Handle memory allocation failure
+                fprintf(stderr, "Memory allocation failed for shipsRow.\n");
+                break;
+            }
+
+            // Randomly decide the initial side
+            side = rand() % 2 == 0 ? LEFT : RIGHT;
+            ShipList* currentList = (side == LEFT) ? leftSideShips : rightSideShips;
+            ShipList* otherList = (side == LEFT) ? rightSideShips : leftSideShips;
+
+            while (getShipCount(leftSideShips) > 0 || getShipCount(rightSideShips) > 0) {
+                int shipsRowSize = (getShipCount(currentList) >= EQUITY_W) ? EQUITY_W : getShipCount(currentList);
+                
+                // Fill shipsRow with ship IDs up to shipsRowSize
+                for (int i = 0; i < shipsRowSize; i++) {
+                    shipsRow[i] = getShipIdByPosition(currentList, i);
+                }
+
+                int shipsCrossed = 0;
+                while (shipsCrossed < shipsRowSize) {
+                    for (int i = 0; i < shipsRowSize; i++) {
+                        if (shipsRow[i] != -1) {
+                            int active = set_context(shipsRow[i]);
+                            if (active == 0) {
+                                removeShip(currentList, shipsRow[i]);
+                                shipsRow[i] = -1; // Mark as crossed
+                                shipsCrossed++;
+                            }
+                        }
+                    }
+                }
+
+                // Swap currentList and otherList
+                ShipList* temp = currentList;
+                currentList = otherList;
+                otherList = temp;
+            }
+
+            free(shipsRow);
+            break;
+
+        case SIGN:
+            printf("\nProcessing SIGN workflow.\n");
+
+            // Preallocating the shipsRow array with a reasonable initial size
+            int* shipsRowSign = (int*)malloc(MAX_SHIPS * sizeof(int));
+            if (!shipsRowSign) {
+                // Handle memory allocation failure
+                fprintf(stderr, "Memory allocation failed for shipsRowSign.\n");
+                break;
+            }
+
+            // Randomly decide the initial side
+            side = rand() % 2 == 0 ? LEFT : RIGHT;
+            ShipList* currentSignList = (side == LEFT) ? leftSideShips : rightSideShips;
+            ShipList* otherSignList = (side == LEFT) ? rightSideShips : leftSideShips;
+
+            // Record the start time
+            time_t startTime, currentTime;
+            time(&startTime);
+            double elapsedTime;
+
+            while (getShipCount(leftSideShips) > 0 || getShipCount(rightSideShips) > 0) {
+
+                // Only proceed if there are ships in the current list
+                if (getShipCount(currentSignList) == 0) {
+                    printf("\nNo ships in the current list, checking the other side.\n");
+                    // Switch to the other side if it has ships
+                    if (getShipCount(otherSignList) > 0) {
+                        ShipList* temp = currentSignList;
+                        currentSignList = otherSignList;
+                        otherSignList = temp;
+                        time(&startTime); // Restart the timer for the new side
+                        continue; // Restart the loop with the new side
+                    } else {
+                        // If no ships on either side, break the loop to avoid infinite looping
+                        printf("\nNo ships left on either side, exiting.\n");
+                        break;
+                    }
+                }
+
+                // Get the number of ships from the current list
+                int shipsRowSizeSign = getShipCount(currentSignList);
+
+                // Fill shipsRowSign with ship IDs up to shipsRowSizeSign
+                for (int i = 0; i < shipsRowSizeSign; i++) {
+                    shipsRowSign[i] = getShipIdByPosition(currentSignList, i);
+                }
+
+                int shipsCrossedSign = 0;
+                while (shipsCrossedSign < shipsRowSizeSign) {
+                    for (int i = 0; i < shipsRowSizeSign; i++) {
+                        if (shipsRowSign[i] != -1) {
+                            // Execute the context of the ship
+                            int active = set_context(shipsRowSign[i]);
+
+                            // Check if the ship has completed its execution
+                            if (active == 0) {
+                                removeShip(currentSignList, shipsRowSign[i]);
+                                shipsRowSign[i] = -1; // Mark as crossed
+                                shipsCrossedSign++;
+                            }
+
+                            // Re-check elapsed time immediately after each context switch
+                            time(&currentTime);
+                            elapsedTime = difftime(currentTime, startTime);
+
+                            if (elapsedTime >= SIGN_TIME) {
+                                printf("TIME OVER\n");
+                                printf("Elapsed time: %f seconds\n", elapsedTime);
+                                printf("SIGN_TIME: %d seconds\n", SIGN_TIME);
+
+                                // Only switch sides if the other side has ships
+                                if (getShipCount(otherSignList) > 0) {
+                                    // Reset the timer and switch sides
+                                    time(&startTime); // Restart the timer
+                                    ShipList* temp = currentSignList;
+                                    currentSignList = otherSignList;
+                                    otherSignList = temp;
+
+                                    printf("Switching sides to process the other side.\n");
+
+                                    // Re-fetch the number of ships for the new current side
+                                    shipsRowSizeSign = getShipCount(currentSignList);
+
+                                    // Re-fill shipsRowSign with the IDs of the ships from the new side
+                                    for (int j = 0; j < shipsRowSizeSign; j++) {
+                                        shipsRowSign[j] = getShipIdByPosition(currentSignList, j);
+                                    }
+                                } else {
+                                    // If the other side is empty, continue with the current list
+                                    printf("The other side has no ships, continuing with the current side.\n");
+                                    time(&startTime); // Restart the timer for the same side
+                                }
+
+                                // Break out of the inner while loop to process the side accordingly
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            free(shipsRowSign);
+            break;
+
+        case TICO:
+            printf("\nProcessing TICO workflow.\n");
+            break;
+
+        default:
+            printf("\nUnknown workflow type.\n");
+            break;
+    }
+}
+
+// Main function
 void ship_generation_test() {
-    // Create two ship lists: one for ships on the left and one for ships on the right
     ShipList leftSideShips;
     ShipList rightSideShips;
     
@@ -26,21 +216,12 @@ void ship_generation_test() {
     int position;
 
     // Create an array of ships and add them to the respective lists based on their side
-    for (int i = 0; i < 10; i++) {
-        // Create a ship (you can adjust the type, side, and other parameters as needed)
-
+    for (int i = 0; i < 3; i++) {
         side = rand() % 2 == 0 ? LEFT : RIGHT;
         ship_t* ship;
+        position = (side == LEFT) ? getNextShipPosition(&leftSideShips, side) : getNextShipPosition(&rightSideShips, side);
+        ship = create_ship(NORMAL, side, 0, position);
 
-        if (side == LEFT) {
-            position = getNextShipPosition(&leftSideShips, side);
-            ship = create_ship(NORMAL, side, 0, position);
-        } else {
-            position = getNextShipPosition(&rightSideShips, side);
-            ship = create_ship(NORMAL, side, 0, position);
-        }
-
-        // Check the side of the ship and add to the appropriate list
         if (side == LEFT) {
             addShip(&leftSideShips, ship);
         } else {
@@ -49,130 +230,17 @@ void ship_generation_test() {
     }
 
     // Print the ships in each list for verification
-    printf("Ships on the left side:\n");
+    printf("\nShips on the left side:\n");
     printList(&leftSideShips);
-
-    printf("Ships on the right side:\n");
+    printf("\nShips on the right side:\n");
     printList(&rightSideShips);
 
-    // Ordenar las listas de acuerdo con el calendarizador
-    switch (scheduler) {
-        case RR:
-            // Code to handle the Round Robin scheduling algorithm.
-            printf("Executing Round Robin scheduling.\n");
-            break;
+    // Handle scheduler and workflow
+    handle_scheduler(scheduler);
+    handle_workflow(workflow, &leftSideShips, &rightSideShips);
 
-        case PRIORITY:
-            // Code to handle the Priority-based scheduling algorithm.
-            printf("Executing Priority-based scheduling.\n");
-            break;
-
-        case SJF:
-            // Code to handle the Shortest Job First (SJF) scheduling algorithm.
-            printf("Executing Shortest Job First scheduling.\n");
-            break;
-
-        case FCFS:
-            // Code to handle the First In First Out (FIFO) scheduling algorithm.
-            printf("Executing First Come First Served scheduling.\n");
-            break;
-
-        case REAL_TIME:
-            // Code to handle the Real-Time scheduling algorithm.
-            printf("Executing Real-Time scheduling.\n");
-            break;
-
-        default:
-            // Code to handle an unrecognized scheduler value.
-            printf("Unknown scheduling algorithm.\n");
-            break;
-    }
-
-    switch (workflow) {
-        case EQUITY:
-            printf("Processing EQUITY workflow.\n");
-            side = rand() % 2 == 0 ? LEFT : RIGHT;
-            ShipList* currentList; 
-            if (side == LEFT)
-            {
-                currentList = &leftSideShips;
-            }
-            else
-            {
-                currentList = &rightSideShips;
-            }
-            
-            
-            while (getShipCount(&leftSideShips) > 0 || getShipCount(&rightSideShips) > 0 )
-            {
-                int shipsRowSize = 0;
-                if (getShipCount(currentList) >= EQUITY_W)
-                {
-                    shipsRowSize = EQUITY_W;
-                }
-                else
-                {
-                    shipsRowSize = getShipCount(currentList);
-                }
-                
-                
-                int* shipsRow = (int*)malloc(shipsRowSize * sizeof(int));
-                for (int i = 0; i < shipsRowSize; i++) {
-                    shipsRow[i] = getShipIdByPosition(currentList, i);
-                }
-                int shipsCrossed = 0;
-                int active = 1;
-                while (shipsCrossed < shipsRowSize)
-                {
-                    for (int i=0; i<shipsRowSize; i++) {
-                        if (shipsRow[i] != -1)
-                        {
-                            active = set_context(shipsRow[i]); // ejecuta el hilo y guarda su estado
-                            if (active == 0)
-                            {
-                                active = 1;
-                                removeShip(currentList, shipsRow[i]);
-                                shipsRow[i] = -1;
-                                shipsCrossed++;
-                            }
-                        }
-                    }
-                 
-                }
-                //printf("se ejecutaron todos los de un lado");
-                
-                //checkShip(currentList);///
-
-                if (side == LEFT) {
-                    //printf("Hola, como estas");
-                    currentList = &rightSideShips;
-                    side = RIGHT;
-                }
-                else
-                {
-                    currentList = &leftSideShips;
-                    side = LEFT;
-                }
-                
-            }
-            
-            break;
-            
-        case SIGN:
-            printf("Processing SIGN workflow.\n");
-            break;
-
-        case TICO:
-            printf("Processing TICO workflow.\n");
-            break;
-
-        default:
-            printf("Unknown workflow type.\n");
-            break;
-    }
-    
     // Wait for threads to finish (if necessary for synchronization)
-    //CEthread_wait();
+    // CEthread_wait();
 }
 
 int main() {
