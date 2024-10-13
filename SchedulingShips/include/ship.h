@@ -159,6 +159,13 @@ ship_t* getLastShip(ShipList* list);
 int getNextShipPosition(ShipList* list, channelSide_t side);
 
 /**
+ * @brief Reasign ship position according with the scheduler.
+ * @param ship Pointer to the ship.
+ * @param index Relative position on the list.
+ */
+void asignShipPosition(ship_t* ship, int index);
+
+/**
  * @brief Sorts the ships in the list by their priority in descending order.
  * @param list Pointer to the ship list to be sorted.
  */

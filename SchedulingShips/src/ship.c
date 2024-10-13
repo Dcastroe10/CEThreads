@@ -270,6 +270,20 @@ int getNextShipPosition(ShipList* list, channelSide_t side) {
 }
 
 /**
+ * @brief Reasign ship position according with the scheduler.
+ * @param ship Pointer to the ship.
+ * @param index Relative position on the list.
+ */
+void asignShipPosition(ship_t* ship, int index) {
+    if (ship->side == LEFT) {
+        ship->position = -index;
+    }
+    else {
+        ship->position = CHANNEL_SIZE + index + 1;
+    }
+}
+
+/**
  * @brief Sorts the ships in the list by their priority in descending order.
  * @param list Pointer to the ship list to be sorted.
  */
@@ -285,7 +299,8 @@ void sortShipsByPriority(ShipList* list) {
     do {
         swapped = 0;
         current = list->head;
-
+        
+        int index = 0;
         while (current->next != last) {
             if (current->ship->priority < current->next->ship->priority) {
                 ship_t* temp = current->ship;
@@ -293,6 +308,8 @@ void sortShipsByPriority(ShipList* list) {
                 current->next->ship = temp;
                 swapped = 1;
             }
+            asignShipPosition(current->ship, index);
+            index++;
             current = current->next;
         }
         last = current;
