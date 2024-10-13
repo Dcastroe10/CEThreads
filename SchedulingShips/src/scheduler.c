@@ -216,6 +216,7 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
                     shipsRowSign[i] = getShipIdByPosition(currentSignList, i);
                 }
 
+                updateWaitingLine(currentSignList);
                 int shipsCrossedSign = 0;
                 while (shipsCrossedSign < shipsRowSizeSign) {
                     for (int i = 0; i < shipsRowSizeSign; i++) {
