@@ -88,9 +88,17 @@ void handle_scheduler(scheduler_t scheduler, ShipList* leftSideShips, ShipList* 
             free(combinedList);
             break;
 
-
         case SJF:
             printf("\nExecuting Shortest Job First scheduling.\n");
+
+            sortShipsByShortestTime(leftSideShips);
+            sortShipsByShortestTime(rightSideShips);
+
+            // Print the ships in each list for verification
+            printf("\nShips on the left side sorted by sjf:\n");
+            printList(leftSideShips);
+            printf("\nShips on the right side orted by sjf:\n");
+            printList(rightSideShips);
             break;
 
         case REAL_TIME:
@@ -301,12 +309,12 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
 
                 // Get the ID of a random ship from the selected list
                 int shipCount = getShipCount(currentTicoList);
-                //int randomIndex = rand() % shipCount;
                 int shipId = getShipIdByPosition(currentTicoList, 0);
 
                 // Store the selected ship ID in shipRowTico
                 shipRowTico[0] = shipId;
 
+                updateWaitingLine(currentTicoList);
                 // Process the selected ship until it completes its crossing
                 while (shipRowTico[0] != -1) {
                     // Execute the context of the ship
@@ -335,17 +343,19 @@ void ship_generation_test() {
     initList(&leftSideShips);
     initList(&rightSideShips);
 
+    int type;
     channelSide_t side;
     int position;
     int priority;
 
     // Create an array of ships and add them to the respective lists based on their side
     for (int i = 0; i < 7; i++) {
+        type = (rand() % 3) + 1;
         side = rand() % 2 == 0 ? LEFT : RIGHT;
         ship_t* ship;
         position = (side == LEFT) ? getNextShipPosition(&leftSideShips, side) : getNextShipPosition(&rightSideShips, side);
         priority = rand() % 6; // Generates a number between 0 and 5
-        ship = create_ship(NORMAL, side, priority, position);
+        ship = create_ship(type, side, priority, position);
 
         if (side == LEFT) {
             addShip(&leftSideShips, ship);

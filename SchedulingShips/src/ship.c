@@ -17,6 +17,7 @@ ship_t* create_ship(shipType_t type, channelSide_t side, short priority, int pos
     newShip->side = side;
     newShip->priority = priority;
     newShip->position = position; 
+    newShip->time = CHANNEL_SIZE / type;
 
     // Create the thread to move the ship and get the ID
     int id = CEthread_create(&move_ship, newShip);
@@ -223,6 +224,15 @@ int getShipIdByPosition(ShipList* list, int position) {
     return node->ship->threadId;
 }
 
+ship_t* getShipByPosition(ShipList* list, int position) {
+    ShipNode* node = getShipByIndex(list, position);
+    if (node == NULL) {
+        return NULL; // The position is invalid or does not exist.
+    }
+
+    return node->ship;
+}
+
 /**
  * @brief Retrieves the last ship in the list.
  * @param list Pointer to the ship list.
@@ -269,17 +279,26 @@ int getNextShipPosition(ShipList* list, channelSide_t side) {
     }
 }
 
+updateWaitingLine(ShipList* list) {
+    for (int i=0; i<getShipCount(list); i++) {
+        asignShipPosition(getShipByPosition(list, i), i);
+    }
+}
+
 /**
  * @brief Reasign ship position according with the scheduler.
  * @param ship Pointer to the ship.
  * @param index Relative position on the list.
  */
 void asignShipPosition(ship_t* ship, int index) {
-    if (ship->side == LEFT) {
+    if (ship->side == LEFT && !(ship->position > 0)) {
         ship->position = -index;
     }
-    else {
+    else if (ship->side == RIGHT && !(ship->position < CHANNEL_SIZE)) {
         ship->position = CHANNEL_SIZE + index + 1;
+    }
+    else {
+        return;
     }
 }
 
@@ -300,7 +319,6 @@ void sortShipsByPriority(ShipList* list) {
         swapped = 0;
         current = list->head;
         
-        int index = 0;
         while (current->next != last) {
             if (current->ship->priority < current->next->ship->priority) {
                 ship_t* temp = current->ship;
@@ -308,12 +326,40 @@ void sortShipsByPriority(ShipList* list) {
                 current->next->ship = temp;
                 swapped = 1;
             }
-            asignShipPosition(current->ship, index);
-            index++;
             current = current->next;
         }
         last = current;
     } while (swapped);
+
+    updateWaitingLine(list);
+}
+
+void sortShipsByShortestTime(ShipList* list) {
+    if (list->head == NULL || list->head->next == NULL) {
+        return;
+    }
+
+    int swapped;
+    ShipNode* current;
+    ShipNode* last = NULL;
+
+    do {
+        swapped = 0;
+        current = list->head;
+        
+        while (current->next != last) {
+            if (current->ship->time > current->next->ship->time) {
+                ship_t* temp = current->ship;
+                current->ship = current->next->ship;
+                current->next->ship = temp;
+                swapped = 1;
+            }
+            current = current->next;
+        }
+        last = current;
+    } while (swapped);
+
+    updateWaitingLine(list);
 }
 
 /**
@@ -409,8 +455,8 @@ void moveShipToEnd(ShipList* list, int shipId) {
 void printList(const ShipList* list) {
     ShipNode* current = list->head;
     while (current != NULL) {
-        printf("Ship ID: %d, Type: %d, Priority: %d, Side: %d, Position: %d\n", 
-            current->ship->threadId, current->ship->type, current->ship->priority, 
+        printf("Ship ID: %d, Type: %d, Time: %d, Priority: %d, Side: %d, Position: %d\n", 
+            current->ship->threadId, current->ship->type, current->ship->time, current->ship->priority, 
             current->ship->side, current->ship->position);
         current = current->next;
     }

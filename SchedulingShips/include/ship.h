@@ -21,6 +21,7 @@ typedef struct
     short priority;
     int position;
     int threadId;
+    int time; // Process time remaining to cross the channel 
 } ship_t;
 
 typedef enum {
@@ -37,7 +38,7 @@ typedef enum {
     TICO
 } workflow_t; // Workflow algoritm
 
-scheduler_t scheduler = PRIORITY;
+scheduler_t scheduler = SJF;
 workflow_t workflow = TICO;
 const int EQUITY_W = 2;
 const int SIGN_TIME = 4;
@@ -141,6 +142,8 @@ int getFirstShipID(ShipList* list);
  * @return The thread ID of the ship at the specified position, or -1 if the position is invalid.
  */
 int getShipIdByPosition(ShipList* list, int position);
+
+ship_t* getShipByPosition(ShipList* list, int position);
 
 /**
  * @brief Retrieves the last ship in the list.
