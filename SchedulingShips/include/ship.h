@@ -1,7 +1,11 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "../lib/cethreads.c"
 
 #define CHANNEL_SIZE 10
-#define MAX_SHIPS 20
+#define MAX_SHIPS 10
 
 typedef enum {
     NORMAL = 1,
@@ -21,28 +25,28 @@ typedef struct
     short priority;
     int position;
     int threadId;
-    int time; // Process time remaining to cross the channel 
+    int time; // Process time remaining to cross the channel
 } ship_t;
 
 typedef enum {
     RR,             // Round Robin
     PRIORITY,
-    SJF,            // Shotest Job Firs
+    SJF,            // Shortest Job First
     FCFS,           // FIFO First In First Out
     REAL_TIME
-} scheduler_t; // Scheduler algoritm
+} scheduler_t; // Scheduler algorithm
 
 typedef enum {
     EQUITY,
     SIGN,
     TICO
-} workflow_t; // Workflow algoritm
+} workflow_t; // Workflow algorithm
 
-scheduler_t scheduler = REAL_TIME;
-workflow_t workflow = SIGN;
+scheduler_t scheduler = SJF;
+workflow_t workflow = TICO;
 const int EQUITY_W = 2;
 const int SIGN_TIME = 4;
-const int QUANTUM = 2; 
+const int QUANTUM = 2;
 
 /**
  * @brief Creates a new ship with specified properties and starts its associated thread.
@@ -71,18 +75,16 @@ void move_ship(ship_t *ship);
 
 /*<><><><><><><> Linked List <><><><><><><>*/
 
-// Estructura para un nodo de la lista enlazada de barcos
+// Structure for a ship linked list node
 typedef struct ShipNode {
     ship_t *ship;
     struct ShipNode *next;
 } ShipNode;
 
-
-// Estructura de la lista de barcos
+// Structure for the ship list
 typedef struct {
     ShipNode *head;
 } ShipList;
-
 
 // Function declarations for linked list management
 /**
@@ -143,14 +145,6 @@ int getFirstShipID(ShipList* list);
  */
 int getShipIdByPosition(ShipList* list, int position);
 
-/**
- * @brief Retrieves a ship by its ID from the list.
- * @param list Pointer to the ship list.
- * @param id The ID of the ship to search for.
- * @return Pointer to the ship if found, or NULL if no ship with the specified ID exists.
- */
-ship_t* getShipById(ShipList* list, int position);
-
 ship_t* getShipByPosition(ShipList* list, int position);
 
 /**
@@ -170,9 +164,9 @@ ship_t* getLastShip(ShipList* list);
 int getNextShipPosition(ShipList* list, channelSide_t side);
 
 /**
- * @brief Reasign ship position according with the scheduler.
+ * @brief Reassign ship position according to the scheduler.
  * @param ship Pointer to the ship.
- * @param index Relative position on the list.
+ * @param index Relative position in the list.
  */
 void asignShipPosition(ship_t* ship, int index);
 
@@ -202,3 +196,7 @@ void moveShipToEnd(ShipList* list, int shipId);
  * @param list Pointer to the ship list to be printed.
  */
 void printList(const ShipList* list);
+
+#ifdef __cplusplus
+}
+#endif

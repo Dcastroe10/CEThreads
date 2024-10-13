@@ -31,6 +31,12 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         Resources.qrc
         linkedList.c
         linkedList.h
+        ../SchedulingShips/src/scheduler.c ../SchedulingShips/src/ship.c
+        ../SchedulingShips/include/scheduler.h ../SchedulingShips/include/ship.h
+        ../SchedulingShips/lib/cethreads.h
+        ../SchedulingShips/lib/cethreads.c ../SchedulingShips/lib/threadTester.c
+        cToSerial.h
+        cToSerial.c
 
 
     )
