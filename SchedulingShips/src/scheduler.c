@@ -144,6 +144,7 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
                     shipsRow[i] = getShipIdByPosition(currentList, i);
                 }
 
+                updateWaitingLine(currentList);
                 int shipsCrossed = 0;
                 while (shipsCrossed < shipsRowSize) {
                     for (int i = 0; i < shipsRowSize; i++) {

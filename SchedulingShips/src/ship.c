@@ -61,7 +61,7 @@ void move_ship(ship_t *ship) {
             ship->position = ship->position + ship->type;
 
             // Check if the ship has crossed the channel
-            if (ship->position >= CHANNEL_SIZE) {
+            if (ship->position > CHANNEL_SIZE) {
                 CEthread_end();
             }
         } else {

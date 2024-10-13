@@ -1,7 +1,7 @@
 #include "../lib/cethreads.c"
 
 #define CHANNEL_SIZE 10
-#define MAX_SHIPS 10
+#define MAX_SHIPS 20
 
 typedef enum {
     NORMAL = 1,
@@ -39,7 +39,7 @@ typedef enum {
 } workflow_t; // Workflow algoritm
 
 scheduler_t scheduler = SJF;
-workflow_t workflow = TICO;
+workflow_t workflow = EQUITY;
 const int EQUITY_W = 2;
 const int SIGN_TIME = 4;
 const int QUANTUM = 2; 
