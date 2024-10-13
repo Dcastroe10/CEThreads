@@ -45,7 +45,7 @@ typedef enum {
 } workflow_t; // Workflow algorithm
 
 scheduler_t scheduler = SJF;
-workflow_t workflow = TICO;
+workflow_t workflow = EQUITY;
 const int EQUITY_W = 2;
 const int SIGN_TIME = 4;
 const int QUANTUM = 2;
