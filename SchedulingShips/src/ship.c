@@ -1,4 +1,5 @@
 #include "../include/ship.h"
+#include <stdio.h>
 
 /**
  * @brief Creates a new ship with specified properties and starts its associated thread.
@@ -22,7 +23,6 @@ ship_t* create_ship(shipType_t type, channelSide_t side, short priority, int pos
     // Create the thread to move the ship and get the ID
     //int id = CEthread_create(&move_ship, newShip);  //----------------------------------------------
     int id = CEthread_create((void (*)(void *))move_ship, (void *)newShip);
-
 
     printf("creation id %d\n", id);
 
@@ -64,7 +64,7 @@ void move_ship(ship_t *ship) {
             ship->position = ship->position + ship->type;
 
             // Check if the ship has crossed the channel
-            if (ship->position >= CHANNEL_SIZE) {
+            if (ship->position > CHANNEL_SIZE) {
                 CEthread_end();
             }
         } else {
@@ -98,7 +98,6 @@ void initList(ShipList* list) {
     list->head = NULL;
 }
 
-#include <stdio.h> //------------------------------------------------------------------------
 void print_desde_Ship() {
     printf(" ESTO SE IMPRIME DESDE Ship: ");
 } 
@@ -188,17 +187,11 @@ ShipNode* findShip(ShipList* list, int id) {
  * @return Pointer to the ship node at the specified index, or NULL if the index is out of bounds.
  */
 ShipNode* getShipByIndex(ShipList* list, int index) {
-    printf("get ship called");
     ShipNode* current = list->head;
     int count = 0;
 
-    printf("into getship");
-
     // Iterate through the list until the specified index is reached
     while (current != NULL) {
-
-        printf("pipo");
-
         if (count == index) {
             return current; // Return the node if the index matches
         }
@@ -236,6 +229,30 @@ int getShipIdByPosition(ShipList* list, int position) {
     }
 
     return node->ship->threadId;
+}
+
+/**
+ * @brief Retrieves a ship by its ID from the list.
+ * @param list Pointer to the ship list.
+ * @param id The ID of the ship to search for.
+ * @return Pointer to the ship if found, or NULL if no ship with the specified ID exists.
+ */
+ship_t* getShipById(ShipList* list, int id) {
+    if (list->head == NULL) {
+        return NULL; // The list is empty
+    }
+
+    ShipNode* current = list->head;
+    
+    // Traverse the list to find the ship with the matching ID
+    while (current != NULL) {
+        if (current->ship->threadId == id) {
+            return current->ship; // Ship with the matching ID found
+        }
+        current = current->next; // Move to the next node
+    }
+
+    return NULL; // No ship with the specified ID found
 }
 
 ship_t* getShipByPosition(ShipList* list, int position) {

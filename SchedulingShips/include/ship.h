@@ -163,6 +163,8 @@ ship_t* getLastShip(ShipList* list);
  */
 int getNextShipPosition(ShipList* list, channelSide_t side);
 
+void updateWaitingLine(ShipList* list);
+
 /**
  * @brief Reassign ship position according to the scheduler.
  * @param ship Pointer to the ship.

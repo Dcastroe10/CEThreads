@@ -99,10 +99,21 @@ void handle_scheduler(scheduler_t scheduler, ShipList* leftSideShips, ShipList* 
             printList(leftSideShips);
             printf("\nShips on the right side orted by sjf:\n");
             printList(rightSideShips);
+
             break;
 
         case REAL_TIME:
             printf("\nExecuting Real-Time scheduling.\n");
+
+            sortShipsByShortestTime(leftSideShips);
+            sortShipsByShortestTime(rightSideShips);
+
+            // Print the ships in each list for verification
+            printf("\nShips on the left side sorted by sjf:\n");
+            printList(leftSideShips);
+            printf("\nShips on the right side orted by sjf:\n");
+            printList(rightSideShips);
+
             break;
 
         case FCFS:
@@ -135,6 +146,8 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
             side = rand() % 2 == 0 ? LEFT : RIGHT;
             ShipList* currentList = (side == LEFT) ? leftSideShips : rightSideShips;
             ShipList* otherList = (side == LEFT) ? rightSideShips : leftSideShips;
+            ship_t* ship;
+            int position;
 
             while (getShipCount(leftSideShips) > 0 || getShipCount(rightSideShips) > 0) {
                 int shipsRowSize = (getShipCount(currentList) >= EQUITY_W) ? EQUITY_W : getShipCount(currentList);
@@ -144,17 +157,51 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
                     shipsRow[i] = getShipIdByPosition(currentList, i);
                 }
 
+                updateWaitingLine(currentList);
                 int shipsCrossed = 0;
                 while (shipsCrossed < shipsRowSize) {
                     for (int i = 0; i < shipsRowSize; i++) {
-                        if (shipsRow[i] != -1) {
-                            int active = set_context(shipsRow[i]);
-                            if (active == 0) {
-                                removeShip(currentList, shipsRow[i]);
-                                shipsRow[i] = -1; // Mark as crossed
-                                shipsCrossed++;
+                        if (scheduler == REAL_TIME) {
+                            if (shipsRow[i] != -1) {
+                                int active = set_context(shipsRow[i]);
+
+                                if (active == 1){
+                                    ship = getShipById(currentList, shipsRow[i]);
+
+                                    if (ship->side == LEFT) {
+                                        position = ship->position;
+                                        position = position + ship->type; 
+
+                                        if (position > CHANNEL_SIZE) {
+                                            active = set_context(shipsRow[i]);
+                                        }
+                                    } else {
+                                        position = ship->position;
+                                        position = position - ship->type;
+
+                                        if (position < 0) {
+                                            active = set_context(shipsRow[i]);
+                                        }
+                                    }
+                                }
+                                
+                                if (active == 0) {
+                                    removeShip(currentList, shipsRow[i]);
+                                    shipsRow[i] = -1; // Mark as crossed
+                                    shipsCrossed++;
+                                }
                             }
                         }
+                        else {
+                            if (shipsRow[i] != -1) {
+                                int active = set_context(shipsRow[i]);
+                                if (active == 0) {
+                                    removeShip(currentList, shipsRow[i]);
+                                    shipsRow[i] = -1; // Mark as crossed
+                                    shipsCrossed++;
+                                }
+                            }
+                        }   
                     }
                 }
 
@@ -215,54 +262,127 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
                     shipsRowSign[i] = getShipIdByPosition(currentSignList, i);
                 }
 
+                ship_t* ship;
+                int position;
+                updateWaitingLine(currentSignList);
                 int shipsCrossedSign = 0;
                 while (shipsCrossedSign < shipsRowSizeSign) {
                     for (int i = 0; i < shipsRowSizeSign; i++) {
-                        if (shipsRowSign[i] != -1) {
-                            // Execute the context of the ship
-                            int active = set_context(shipsRowSign[i]);
+                        if (scheduler == REAL_TIME) {
+                            if (shipsRowSign[i] != -1) {
+                                // Execute the context of the ship
+                                int active = set_context(shipsRowSign[i]);
 
-                            // Check if the ship has completed its execution
-                            if (active == 0) {
-                                removeShip(currentSignList, shipsRowSign[i]);
-                                shipsRowSign[i] = -1; // Mark as crossed
-                                shipsCrossedSign++;
-                            }
+                                if (active == 1){
+                                    ship = getShipById(currentSignList, shipsRowSign[i]);
 
-                            // Re-check elapsed time immediately after each context switch
-                            time(&currentTime);
-                            elapsedTime = difftime(currentTime, startTime);
+                                    if (ship->side == LEFT) {
+                                        position = ship->position;
+                                        position = position + ship->type; 
 
-                            if (elapsedTime >= SIGN_TIME) {
-                                printf("TIME OVER\n");
-                                printf("Elapsed time: %f seconds\n", elapsedTime);
-                                printf("SIGN_TIME: %d seconds\n", SIGN_TIME);
+                                        if (position > CHANNEL_SIZE) {
+                                            active = set_context(shipsRowSign[i]);
+                                        }
+                                    } else {
+                                        position = ship->position;
+                                        position = position - ship->type;
 
-                                // Only switch sides if the other side has ships
-                                if (getShipCount(otherSignList) > 0) {
-                                    // Reset the timer and switch sides
-                                    time(&startTime); // Restart the timer
-                                    ShipList* temp = currentSignList;
-                                    currentSignList = otherSignList;
-                                    otherSignList = temp;
-
-                                    printf("Switching sides to process the other side.\n");
-
-                                    // Re-fetch the number of ships for the new current side
-                                    shipsRowSizeSign = getShipCount(currentSignList);
-
-                                    // Re-fill shipsRowSign with the IDs of the ships from the new side
-                                    for (int j = 0; j < shipsRowSizeSign; j++) {
-                                        shipsRowSign[j] = getShipIdByPosition(currentSignList, j);
+                                        if (position < 0) {
+                                            active = set_context(shipsRowSign[i]);
+                                        }
                                     }
-                                } else {
-                                    // If the other side is empty, continue with the current list
-                                    printf("The other side has no ships, continuing with the current side.\n");
-                                    time(&startTime); // Restart the timer for the same side
                                 }
 
-                                // Break out of the inner while loop to process the side accordingly
-                                break;
+                                // Check if the ship has completed its execution
+                                if (active == 0) {
+                                    removeShip(currentSignList, shipsRowSign[i]);
+                                    shipsRowSign[i] = -1; // Mark as crossed
+                                    shipsCrossedSign++;
+                                }
+
+                                // Re-check elapsed time immediately after each context switch
+                                time(&currentTime);
+                                elapsedTime = difftime(currentTime, startTime);
+
+                                if (elapsedTime >= SIGN_TIME) {
+                                    printf("TIME OVER\n");
+                                    printf("Elapsed time: %f seconds\n", elapsedTime);
+                                    printf("SIGN_TIME: %d seconds\n", SIGN_TIME);
+
+                                    // Only switch sides if the other side has ships
+                                    if (getShipCount(otherSignList) > 0) {
+                                        // Reset the timer and switch sides
+                                        time(&startTime); // Restart the timer
+                                        ShipList* temp = currentSignList;
+                                        currentSignList = otherSignList;
+                                        otherSignList = temp;
+
+                                        printf("Switching sides to process the other side.\n");
+
+                                        // Re-fetch the number of ships for the new current side
+                                        shipsRowSizeSign = getShipCount(currentSignList);
+
+                                        // Re-fill shipsRowSign with the IDs of the ships from the new side
+                                        for (int j = 0; j < shipsRowSizeSign; j++) {
+                                            shipsRowSign[j] = getShipIdByPosition(currentSignList, j);
+                                        }
+                                    } else {
+                                        // If the other side is empty, continue with the current list
+                                        printf("The other side has no ships, continuing with the current side.\n");
+                                        time(&startTime); // Restart the timer for the same side
+                                    }
+
+                                    // Break out of the inner while loop to process the side accordingly
+                                    break;
+                                }
+                            }
+                        } else {
+                            if (shipsRowSign[i] != -1) {
+                                // Execute the context of the ship
+                                int active = set_context(shipsRowSign[i]);
+
+                                // Check if the ship has completed its execution
+                                if (active == 0) {
+                                    removeShip(currentSignList, shipsRowSign[i]);
+                                    shipsRowSign[i] = -1; // Mark as crossed
+                                    shipsCrossedSign++;
+                                }
+
+                                // Re-check elapsed time immediately after each context switch
+                                time(&currentTime);
+                                elapsedTime = difftime(currentTime, startTime);
+
+                                if (elapsedTime >= SIGN_TIME) {
+                                    printf("TIME OVER\n");
+                                    printf("Elapsed time: %f seconds\n", elapsedTime);
+                                    printf("SIGN_TIME: %d seconds\n", SIGN_TIME);
+
+                                    // Only switch sides if the other side has ships
+                                    if (getShipCount(otherSignList) > 0) {
+                                        // Reset the timer and switch sides
+                                        time(&startTime); // Restart the timer
+                                        ShipList* temp = currentSignList;
+                                        currentSignList = otherSignList;
+                                        otherSignList = temp;
+
+                                        printf("Switching sides to process the other side.\n");
+
+                                        // Re-fetch the number of ships for the new current side
+                                        shipsRowSizeSign = getShipCount(currentSignList);
+
+                                        // Re-fill shipsRowSign with the IDs of the ships from the new side
+                                        for (int j = 0; j < shipsRowSizeSign; j++) {
+                                            shipsRowSign[j] = getShipIdByPosition(currentSignList, j);
+                                        }
+                                    } else {
+                                        // If the other side is empty, continue with the current list
+                                        printf("The other side has no ships, continuing with the current side.\n");
+                                        time(&startTime); // Restart the timer for the same side
+                                    }
+
+                                    // Break out of the inner while loop to process the side accordingly
+                                    break;
+                                }
                             }
                         }
                     }
