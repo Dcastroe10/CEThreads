@@ -13,8 +13,102 @@
 //Tiempo_real se debe medir cuánta tarda un barco de x tipo en pasar el canal
 
 
+
 // Function to handle the scheduling
 void handle_scheduler(scheduler_t scheduler, ShipList* leftSideShips, ShipList* rightSideShips) {
+    if (scheduler == PRIORITY){
+        printf("\nExecuting Priority-based scheduling.\n");
+
+        sortShipsByPriority(leftSideShips);
+        sortShipsByPriority(rightSideShips);
+
+        // Print the ships in each list for verification
+        printf("\nShips on the left side sorted by priority:\n");
+        printList(leftSideShips);
+        printf("\nShips on the right side orted by priority:\n");
+        printList(rightSideShips);
+    }else if (scheduler == RR){
+        printf("\nExecuting Round Robin scheduling.\n");
+
+        ShipList* combinedList;
+        int shipCount;
+        if (getShipCount(leftSideShips) > 0 || getShipCount(rightSideShips) > 0) {
+            // Combine the ships from both lists into a single list.
+            combinedList = combineShipLists(leftSideShips, rightSideShips);
+            shipCount = getShipCount(combinedList);
+        }
+
+        // Allocate memory for shipsRow to store ship IDs
+        int* shipsRow = (int*)malloc(shipCount * sizeof(int));
+        if (!shipsRow) {
+            // Handle memory allocation failure
+            fprintf(stderr, "Memory allocation failed for shipsRow.\n");
+            free(combinedList); // Free combinedList before exiting
+        }
+
+        while (getShipCount(combinedList) > 0) {
+            shipCount = getShipCount(combinedList);
+            printf("CombinedList size: %d\n", shipCount);
+
+            // Store ship IDs in shipsRow for safe manipulation
+            for (int i = 0; i < shipCount; i++) {
+                shipsRow[i] = getShipIdByPosition(combinedList, i);
+            }
+
+            // Iterate through shipsRow to process each ship
+            for (int i = 0; i < shipCount; i++) {
+                int shipId = shipsRow[i];
+                if (shipId == -1) {
+                    continue; // Skip if the ship ID is invalid or already processed
+                }
+
+                // Execute the context of the ship for a fixed quantum
+                int active = set_context_with_quantum(shipId, QUANTUM);
+
+                // Check if the ship has completed its execution
+                if (active == 0) {
+                    // Remove the ship from the combined list if it has finished
+                    removeShip(combinedList, shipId);
+                    shipsRow[i] = -1; // Mark this ship as processed in shipsRow
+                } else {
+                    // If the ship has not finished, move it to the end of the list
+                    moveShipToEnd(combinedList, shipId);
+                }
+            }
+        }
+
+        // Free the memory allocated for shipsRow and combinedList
+        free(shipsRow);
+        free(combinedList);
+    } else if (scheduler == SJF){
+        printf("\nExecuting Shortest Job First scheduling.\n");
+        sortShipsByShortestTime(leftSideShips);
+        sortShipsByShortestTime(rightSideShips);
+
+        // Print the ships in each list for verification
+        printf("\nShips on the left side sorted by sjf:\n");
+        printList(leftSideShips);
+        printf("\nShips on the right side orted by sjf:\n");
+        printList(rightSideShips);
+    } else if(scheduler == REAL_TIME){
+        printf("\nExecuting Real-Time scheduling.\n");
+
+        sortShipsByShortestTime(leftSideShips);
+        sortShipsByShortestTime(rightSideShips);
+
+        // Print the ships in each list for verification
+        printf("\nShips on the left side sorted by sjf:\n");
+        printList(leftSideShips);
+        printf("\nShips on the right side orted by sjf:\n");
+        printList(rightSideShips);
+    } else if(scheduler == FCFS){
+        printf("\nExecuting First Come First Served scheduling.\n");
+    }else{
+        if (scheduler != FCFS) {
+            printf("\nUnknown scheduler type, falling back to default behavior.\n");
+        }
+    }
+    /*
     switch (scheduler) {
         case PRIORITY:
             printf("\nExecuting Priority-based scheduling.\n");
@@ -124,12 +218,14 @@ void handle_scheduler(scheduler_t scheduler, ShipList* leftSideShips, ShipList* 
                 printf("\nUnknown scheduler type, falling back to default behavior.\n");
             }
             break;
-    }
+    }*/
 }
 
 // Function to handle the workflow
 void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rightSideShips) {
     channelSide_t side;
+
+    /*
     switch (workflow) {
         case EQUITY:
             printf("\nProcessing EQUITY workflow.\n");
@@ -452,6 +548,7 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
             free(shipRowTico);
             break;
     }
+*/
 }
 
 // Main function
@@ -470,7 +567,8 @@ void ship_generation_test() {
 
     // Create an array of ships and add them to the respective lists based on their side
     for (int i = 0; i < 7; i++) {
-        type = (rand() % 3) + 1;
+        //type = (rand() % 3) + 1;
+        shipType_t type = (shipType_t)((rand() % 3) + 1);
         side = rand() % 2 == 0 ? LEFT : RIGHT;
         ship_t* ship;
         position = (side == LEFT) ? getNextShipPosition(&leftSideShips, side) : getNextShipPosition(&rightSideShips, side);
@@ -500,7 +598,7 @@ void ship_generation_test() {
     // Wait for threads to finish (if necessary for synchronization)
     // CEthread_wait();
 }
-
+/*
 int main() {
     initCEthreads();
     CEmutex_init();
@@ -511,3 +609,4 @@ int main() {
     
     return 0;
 }
+*/

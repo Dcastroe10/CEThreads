@@ -8,7 +8,8 @@
 #include "prueba.c"
 #include "initialize.c"
 #include "linkedList.c"
-#include "../SchedulingShips/src/ship.c"
+//#include "../SchedulingShips/src/ship.c"
+#include "../SchedulingShips/src/scheduler.c"
 #include "cToSerial.c"
 
 char buffer[256];
@@ -18,7 +19,6 @@ int rightCounter = 1;
 
 ShipList leftList;
 ShipList rightList;
-
 ship_t *ship_return;
 
 
@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setFixedSize(1400,700);
+    this->setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
     QPixmap bkgnd(":/canalResize.jpg");
     bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
     QPalette palette;
@@ -65,20 +67,19 @@ MainWindow::MainWindow(QWidget *parent)
     setupQueues();
     setupCanal(initial_configuration.largoCanal);
 
-    //print_desde_Ship();
-
     initList(&leftList);
     initList(&rightList);
 
 
 
+    //initCEthreads();
+    //CEmutex_init();
+
+    //srand(time(0));
 
 
 
 }
-
-
-
 
 
 MainWindow::~MainWindow()
@@ -107,8 +108,6 @@ void MainWindow::on_actionleft_triggered()
 
 }
 
-
-
 void MainWindow::on_actionright_triggered()
 {
     QPixmap *boat2 = new QPixmap(":/boat2.jpg");
@@ -121,6 +120,7 @@ void MainWindow::on_actionright_triggered()
 
 void MainWindow::on_pruebaStructs_clicked()
 {
+    handle_scheduler(SJF, &leftList, &rightList);//___________________________________
 
     qDebug() << "on prueba clicked ";
 
@@ -370,7 +370,6 @@ void MainWindow::keyReleaseEvent(QKeyEvent *event)
 
     QMainWindow::keyReleaseEvent(event);
 }
-
 
 void MainWindow::on_pruebaAddLabel_clicked()
 {

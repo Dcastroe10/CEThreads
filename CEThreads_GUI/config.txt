@@ -1,7 +1,6 @@
 MetodoControlFlujo: FIFO
-LargoCanal: 5
+LargoCanal: 8
 VelocidadBarco: 10
 CantidadBarcos: 13
 TiempoLetrero: 5
 ParametroW: 20
-

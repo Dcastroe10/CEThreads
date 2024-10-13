@@ -7,6 +7,8 @@ extern "C" {
 #define CHANNEL_SIZE 10
 #define MAX_SHIPS 10
 
+
+
 typedef enum {
     NORMAL = 1,
     FISHING,
@@ -47,6 +49,7 @@ workflow_t workflow = TICO;
 const int EQUITY_W = 2;
 const int SIGN_TIME = 4;
 const int QUANTUM = 2;
+
 
 /**
  * @brief Creates a new ship with specified properties and starts its associated thread.
