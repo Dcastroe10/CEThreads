@@ -38,8 +38,8 @@ typedef enum {
     TICO
 } workflow_t; // Workflow algoritm
 
-scheduler_t scheduler = SJF;
-workflow_t workflow = SIGN;
+scheduler_t scheduler = REAL_TIME;
+workflow_t workflow = EQUITY;
 const int EQUITY_W = 2;
 const int SIGN_TIME = 4;
 const int QUANTUM = 2; 
@@ -142,6 +142,14 @@ int getFirstShipID(ShipList* list);
  * @return The thread ID of the ship at the specified position, or -1 if the position is invalid.
  */
 int getShipIdByPosition(ShipList* list, int position);
+
+/**
+ * @brief Retrieves a ship by its ID from the list.
+ * @param list Pointer to the ship list.
+ * @param id The ID of the ship to search for.
+ * @return Pointer to the ship if found, or NULL if no ship with the specified ID exists.
+ */
+ship_t* getShipById(ShipList* list, int position);
 
 ship_t* getShipByPosition(ShipList* list, int position);
 

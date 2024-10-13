@@ -99,10 +99,21 @@ void handle_scheduler(scheduler_t scheduler, ShipList* leftSideShips, ShipList* 
             printList(leftSideShips);
             printf("\nShips on the right side orted by sjf:\n");
             printList(rightSideShips);
+
             break;
 
         case REAL_TIME:
             printf("\nExecuting Real-Time scheduling.\n");
+
+            sortShipsByShortestTime(leftSideShips);
+            sortShipsByShortestTime(rightSideShips);
+
+            // Print the ships in each list for verification
+            printf("\nShips on the left side sorted by sjf:\n");
+            printList(leftSideShips);
+            printf("\nShips on the right side orted by sjf:\n");
+            printList(rightSideShips);
+
             break;
 
         case FCFS:
@@ -135,6 +146,8 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
             side = rand() % 2 == 0 ? LEFT : RIGHT;
             ShipList* currentList = (side == LEFT) ? leftSideShips : rightSideShips;
             ShipList* otherList = (side == LEFT) ? rightSideShips : leftSideShips;
+            ship_t* ship;
+            int position;
 
             while (getShipCount(leftSideShips) > 0 || getShipCount(rightSideShips) > 0) {
                 int shipsRowSize = (getShipCount(currentList) >= EQUITY_W) ? EQUITY_W : getShipCount(currentList);
@@ -148,14 +161,47 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
                 int shipsCrossed = 0;
                 while (shipsCrossed < shipsRowSize) {
                     for (int i = 0; i < shipsRowSize; i++) {
-                        if (shipsRow[i] != -1) {
-                            int active = set_context(shipsRow[i]);
-                            if (active == 0) {
-                                removeShip(currentList, shipsRow[i]);
-                                shipsRow[i] = -1; // Mark as crossed
-                                shipsCrossed++;
+                        if (scheduler == REAL_TIME) {
+                            if (shipsRow[i] != -1) {
+                                int active = set_context(shipsRow[i]);
+
+                                if (active == 1){
+                                    ship = getShipById(currentList, shipsRow[i]);
+
+                                    if (ship->side == LEFT) {
+                                        position = ship->position;
+                                        position = position + ship->type; 
+
+                                        if (position > CHANNEL_SIZE) {
+                                            active = set_context(shipsRow[i]);
+                                        }
+                                    } else {
+                                        position = ship->position;
+                                        position = position - ship->type;
+
+                                        if (position < 0) {
+                                            active = set_context(shipsRow[i]);
+                                        }
+                                    }
+                                }
+                                
+                                if (active == 0) {
+                                    removeShip(currentList, shipsRow[i]);
+                                    shipsRow[i] = -1; // Mark as crossed
+                                    shipsCrossed++;
+                                }
                             }
                         }
+                        else {
+                            if (shipsRow[i] != -1) {
+                                int active = set_context(shipsRow[i]);
+                                if (active == 0) {
+                                    removeShip(currentList, shipsRow[i]);
+                                    shipsRow[i] = -1; // Mark as crossed
+                                    shipsCrossed++;
+                                }
+                            }
+                        }   
                     }
                 }
 

@@ -224,6 +224,30 @@ int getShipIdByPosition(ShipList* list, int position) {
     return node->ship->threadId;
 }
 
+/**
+ * @brief Retrieves a ship by its ID from the list.
+ * @param list Pointer to the ship list.
+ * @param id The ID of the ship to search for.
+ * @return Pointer to the ship if found, or NULL if no ship with the specified ID exists.
+ */
+ship_t* getShipById(ShipList* list, int id) {
+    if (list->head == NULL) {
+        return NULL; // The list is empty
+    }
+
+    ShipNode* current = list->head;
+    
+    // Traverse the list to find the ship with the matching ID
+    while (current != NULL) {
+        if (current->ship->threadId == id) {
+            return current->ship; // Ship with the matching ID found
+        }
+        current = current->next; // Move to the next node
+    }
+
+    return NULL; // No ship with the specified ID found
+}
+
 ship_t* getShipByPosition(ShipList* list, int position) {
     ShipNode* node = getShipByIndex(list, position);
     if (node == NULL) {
