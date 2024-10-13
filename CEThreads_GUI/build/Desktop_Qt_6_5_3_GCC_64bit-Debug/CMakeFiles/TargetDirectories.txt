@@ -1,0 +1,9 @@
+/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/CMakeFiles/CEThreads_GUI.dir
+/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/CMakeFiles/edit_cache.dir
+/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/CMakeFiles/rebuild_cache.dir
+/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/CMakeFiles/list_install_components.dir
+/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/CMakeFiles/install.dir
+/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/CMakeFiles/install/local.dir
+/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/CMakeFiles/install/strip.dir
+/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/CMakeFiles/CEThreads_GUI_autogen_timestamp_deps.dir
+/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/CMakeFiles/CEThreads_GUI_autogen.dir

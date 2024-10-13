@@ -188,11 +188,17 @@ ShipNode* findShip(ShipList* list, int id) {
  * @return Pointer to the ship node at the specified index, or NULL if the index is out of bounds.
  */
 ShipNode* getShipByIndex(ShipList* list, int index) {
+    printf("get ship called");
     ShipNode* current = list->head;
     int count = 0;
 
+    printf("into getship");
+
     // Iterate through the list until the specified index is reached
     while (current != NULL) {
+
+        printf("pipo");
+
         if (count == index) {
             return current; // Return the node if the index matches
         }

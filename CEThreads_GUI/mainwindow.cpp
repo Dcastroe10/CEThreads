@@ -9,8 +9,19 @@
 #include "initialize.c"
 #include "linkedList.c"
 #include "../SchedulingShips/src/ship.c"
+#include "cToSerial.c"
 
-ShipList *pruebashiplist;
+char buffer[256];
+
+int leftCounter = 1;
+int rightCounter = 1;
+
+ShipList leftList;
+ShipList rightList;
+
+ship_t *ship_return;
+
+
 std::vector<QLabel*> canal;
 std::vector<QLabel*> colaIzquierda;
 std::vector<QLabel*> colaDerecha;
@@ -54,9 +65,12 @@ MainWindow::MainWindow(QWidget *parent)
     setupQueues();
     setupCanal(initial_configuration.largoCanal);
 
-    print_desde_Ship();
+    //print_desde_Ship();
 
-    //innitList(pruebashiplist);
+    initList(&leftList);
+    initList(&rightList);
+
+
 
 
 
@@ -107,60 +121,48 @@ void MainWindow::on_actionright_triggered()
 
 void MainWindow::on_pruebaStructs_clicked()
 {
-    /*
+
+    qDebug() << "on prueba clicked ";
+
+    qDebug()<<"Left waiting list \n";
 
 
-    DummieStruct *dummie1 = new DummieStruct({10, 1, 101});
-    DummieStruct *dummie2 = new DummieStruct({20, 2, 102});
-    DummieStruct *dummie3 = new DummieStruct({30, 3, 103});
-    DummieStruct *dummie4 = new DummieStruct({40, 4, 104});
-    DummieStruct *dummie5 = new DummieStruct({50, 5, 105});
+    ShipNode* current1 = leftList.head;
+    while (current1 != NULL) {
+        qDebug() << "Ship ID:" << current1->ship->threadId
+                 << ", Type:" << current1->ship->type
+                 << ", Time:" << current1->ship->time
+                 << ", Priority:" << current1->ship->priority
+                 << ", Side:" << current1->ship->side
+                 << ", Position:" << current1->ship->position;
 
-    //struct List *dummy_list = createList(sizeof(DummieStruct));
-
-    addLast(dummy_list1, dummie1);
-    addLast(dummy_list1, dummie2);
-    addLast(dummy_list1, dummie3);
-    addLast(dummy_list1, dummie4);
-    addLast(dummy_list1, dummie5);
-
-
-*/
-    printf("Left waiting list \n");
-    for (int i = 0; i <= dummy_list_left->length -1; i++) {
-
-        //getFirst(dummy_list1,dummy_return);
-        getAt(dummy_list_left,i,dummy_return);
-        printf("DummieStruct %d: Position = %d, Velocidad = %d, Thread ID = %d\n",i,dummy_return->position, dummy_return->velocidad, dummy_return->thread_ID);
-        //removeFirst(dummy_list1);
-        //dummy_return = new DummieStruct;
-
-
-    }
-
-    printf("Right waiting list \n");
-    for (int i = 0; i <= dummy_list_right->length -1; i++) {
-
-        //getFirst(dummy_list1,dummy_return);
-        getAt(dummy_list_right,i,dummy_return);
-        printf("DummieStruct %d: Position = %d, Velocidad = %d, Thread ID = %d\n",i,dummy_return->position, dummy_return->velocidad, dummy_return->thread_ID);
-        //removeFirst(dummy_list1);
-        //dummy_return = new DummieStruct;
-
+        current1 = current1->next;
 
     }
 
 
-    //removeFirst(dummy_list1);
-/*
-    getFirst(dummy_list1,dummy_return);
-    printf("DummieStruct 2: Position = %d, Velocidad = %d, Thread ID = %d\n",dummy_return->position, dummy_return->velocidad, dummy_return->thread_ID);
-    removeFirst(dummy_list1);*/
+
+    qDebug()<<"right waiting list \n";
+
+
+    ShipNode* current2 = rightList.head;
+    while (current2 != NULL) {
+        qDebug() << "Ship ID:" << current2->ship->threadId
+                 << ", Type:" << current2->ship->type
+                 << ", Time:" << current2->ship->time
+                 << ", Priority:" << current2->ship->priority
+                 << ", Side:" << current2->ship->side
+                 << ", Position:" << current2->ship->position;
+
+        current2 = current2->next;
+
+    }
 
 }
 
 void MainWindow::setupQueues()
 {
+    qDebug() << "setting up ";
 
     qDebug() << "starting setup";
     colaIzquierda.push_back(ui->waitingL0);
@@ -202,36 +204,65 @@ void MainWindow::displayQueues()
 
     }
 
-    for (int i = 0; i <= dummy_list_left->length-1; i++) {
-        //int *element = new int(i); // Crear un nuevo int en el heap
-        //addLast(prueba_lista, element);
+
+    ShipNode* current1 = leftList.head;
+    int i = 0;
+    while (current1 != NULL) {
+
         QLabel *temp = colaIzquierda.at(i);
         temp->setScaledContents(true);
         temp->setPixmap(scaledBoat2);
 
-    }
+        current1 = current1->next;
+        i++;
 
-    for (int i = 0; i <= dummy_list_right->length-1; i++) {
-        //int *element = new int(i); // Crear un nuevo int en el heap
-        //addLast(prueba_lista, element);
-        QLabel *temp = colaDerecha.at(i);
+    }
+    //i = 0;
+
+    ShipNode* current2  = rightList.head;
+    int j= 0;
+    while (current2 != NULL) {
+
+        QLabel *temp = colaDerecha.at(j);
         temp->setScaledContents(true);
         temp->setPixmap(scaledBoat2);
 
+        current2 = current2->next;
+        j++;
     }
+
+
+
+
 }
 
 void MainWindow::create_struct(int queue)
 {
+    if(rightCounter + leftCounter < 13  ){
+
+
+
     if(queue == 0){
-        DummieStruct *dummie2 = new DummieStruct({20, 2, 102});
-        addLast(dummy_list_left, dummie2);
+
+            if(leftCounter < 6){
+
+        ship_t *shipTemp = create_ship(NORMAL, LEFT, 1,leftCounter);
+        addShip(&leftList,shipTemp);
+        leftCounter++;
+            }
     }else if(queue == 1){
-        DummieStruct *dummie1 = new DummieStruct({10, 1, 101});
-        addLast(dummy_list_right, dummie1);
+
+        if(rightCounter < 6){
+
+        ship_t *shipTemp = create_ship(NORMAL, RIGHT, 1,rightCounter);
+        addShip(&rightList,shipTemp);
+        rightCounter++;
+        }
     }else if(queue == 2){
 
     }else{
+
+    }
 
     }
 }
@@ -239,15 +270,35 @@ void MainWindow::create_struct(int queue)
 void MainWindow::delete_first_struct(int queue)
 {
 
+    if(rightCounter != 0 && leftCounter != 0){
+
+
+
+
     if(queue == 0){
-        removeFirst(dummy_list_left);
+
+        if( leftCounter > 1){
+
+
+        ship_t *temp = getLastShip(&leftList);
+        removeShip(&leftList,temp->threadId);
+        leftCounter--;
+
+        }
     }else if(queue == 1){
-        removeFirst(dummy_list_right);
+
+        if(rightCounter > 1 ){
+        ship_t *temp = getLastShip(&rightList);
+        removeShip(&rightList,temp->threadId);
+        rightCounter--;
+
+        }
     }else if(queue == 2){
 
     }else{
 
     }
+        }
 
 
 }
@@ -288,9 +339,17 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         delete_first_struct(1);
         displayQueues();
 
+    } else if(event->key() == Qt::Key_G){
+
+        int fd = serial_init("/dev/ttyUSB0",9600);
+        serial_send(fd,"sentFromCpp");
+
+        serial_close(fd);
     }
     else{
         //qDebug() << "Key pressed: " << event->text();
+
+
     }
 
     // Call the base class event handler for default handling
@@ -300,11 +359,13 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 // Handle key release event
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_A) {
-        qDebug() << "Key A released";
+    if (event->key() == Qt::Key_W) {
+        //qDebug() << "Key A released";
     }
     else if (event->key() == Qt::Key_Space) {
-        qDebug() << "Spacebar released";
+        //qDebug() << "Spacebar released";
+
+
     }
 
     QMainWindow::keyReleaseEvent(event);
@@ -334,10 +395,9 @@ void MainWindow::on_pruebaAddLabel_clicked()
 }
 
 void MainWindow::setupCanal(int ancho){
-    qDebug()<<"LALALLAL";
+    QHBoxLayout *layout = findChild<QHBoxLayout*>("El_canal");
     for (int i = 0;i < ancho; i++){
-        QLabel *label = new QLabel("holaN", this);
-        QHBoxLayout *layout = findChild<QHBoxLayout*>("El_canal");
+        QLabel *label = new QLabel("hola" + QString::number(i), this);
         layout->addWidget(label);
     }
 }

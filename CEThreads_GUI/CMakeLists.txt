@@ -35,6 +35,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ../SchedulingShips/include/scheduler.h ../SchedulingShips/include/ship.h
         ../SchedulingShips/lib/cethreads.h
         ../SchedulingShips/lib/cethreads.c ../SchedulingShips/lib/threadTester.c
+        cToSerial.h
+        cToSerial.c
 
 
     )
