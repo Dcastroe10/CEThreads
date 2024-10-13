@@ -8,8 +8,9 @@
 #include "prueba.c"
 #include "initialize.c"
 #include "linkedList.c"
+#include "../SchedulingShips/src/ship.c"
 
-
+ShipList *pruebashiplist;
 std::vector<QLabel*> canal;
 std::vector<QLabel*> colaIzquierda;
 std::vector<QLabel*> colaDerecha;
@@ -52,6 +53,10 @@ MainWindow::MainWindow(QWidget *parent)
      //QLabel *element = ui->canal00 ;// Crear un nuevo int en el heap
     setupQueues();
     setupCanal(initial_configuration.largoCanal);
+
+    print_desde_Ship();
+
+    //innitList(pruebashiplist);
 
 
 

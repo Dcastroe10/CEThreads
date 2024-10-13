@@ -71,13 +71,13 @@
 			{
 				"command" : 4,
 				"file" : 1,
-				"line" : 71,
+				"line" : 75,
 				"parent" : 0
 			},
 			{
 				"command" : 5,
 				"file" : 1,
-				"line" : 54,
+				"line" : 58,
 				"parent" : 0
 			},
 			{
@@ -285,7 +285,7 @@
 				0,
 				1,
 				2,
-				13
+				19
 			]
 		}
 	],
@@ -381,7 +381,9 @@
 				6,
 				7,
 				10,
-				13
+				12,
+				13,
+				19
 			]
 		},
 		{
@@ -391,7 +393,11 @@
 				3,
 				5,
 				8,
-				11
+				11,
+				14,
+				15,
+				16,
+				17
 			]
 		},
 		{
@@ -400,15 +406,15 @@
 			[
 				4,
 				9,
-				12
+				18
 			]
 		},
 		{
 			"name" : "CMake Rules",
 			"sourceIndexes" : 
 			[
-				14,
-				15
+				20,
+				21
 			]
 		}
 	],
@@ -472,6 +478,36 @@
 			"backtrace" : 4,
 			"path" : "linkedList.c",
 			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 4,
+			"path" : "linkedList.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 4,
+			"path" : "/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/src/scheduler.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 4,
+			"path" : "/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/src/ship.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 4,
+			"path" : "/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/include/scheduler.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 4,
+			"path" : "/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/include/ship.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 4,
+			"path" : "/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/lib/cethreads.h",
+			"sourceGroupIndex" : 1
 		},
 		{
 			"backtrace" : 0,

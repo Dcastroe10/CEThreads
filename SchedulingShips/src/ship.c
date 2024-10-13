@@ -20,7 +20,10 @@ ship_t* create_ship(shipType_t type, channelSide_t side, short priority, int pos
     newShip->time = CHANNEL_SIZE / type;
 
     // Create the thread to move the ship and get the ID
-    int id = CEthread_create(&move_ship, newShip);
+    //int id = CEthread_create(&move_ship, newShip);  //----------------------------------------------
+    int id = CEthread_create((void (*)(void *))move_ship, (void *)newShip);
+
+
     printf("creation id %d\n", id);
 
     // Assign the thread ID to the ship
@@ -94,6 +97,11 @@ void move_ship(ship_t *ship) {
 void initList(ShipList* list) {
     list->head = NULL;
 }
+
+#include <stdio.h> //------------------------------------------------------------------------
+void print_desde_Ship() {
+    printf(" ESTO SE IMPRIME DESDE Ship: ");
+} 
 
 /**
  * @brief Adds a ship to the beginning of the ship list.
@@ -279,7 +287,7 @@ int getNextShipPosition(ShipList* list, channelSide_t side) {
     }
 }
 
-updateWaitingLine(ShipList* list) {
+void updateWaitingLine(ShipList* list) {
     for (int i=0; i<getShipCount(list); i++) {
         asignShipPosition(getShipByPosition(list, i), i);
     }

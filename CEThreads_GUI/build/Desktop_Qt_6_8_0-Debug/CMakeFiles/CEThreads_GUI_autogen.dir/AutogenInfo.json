@@ -426,6 +426,24 @@
 			"MU",
 			"EWIEGA46WW/moc_prueba.cpp",
 			null
+		],
+		[
+			"/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/include/scheduler.h",
+			"MU",
+			"IZNICPEFKV/moc_scheduler.cpp",
+			null
+		],
+		[
+			"/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/include/ship.h",
+			"MU",
+			"IZNICPEFKV/moc_ship.cpp",
+			null
+		],
+		[
+			"/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/lib/cethreads.h",
+			"MU",
+			"LCCQ7MWL6Q/moc_cethreads.cpp",
+			null
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
@@ -509,6 +527,26 @@
 		],
 		[
 			"/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/prueba.c",
+			"MU",
+			null
+		],
+		[
+			"/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/lib/cethreads.c",
+			"MU",
+			null
+		],
+		[
+			"/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/lib/threadTester.c",
+			"MU",
+			null
+		],
+		[
+			"/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/src/scheduler.c",
+			"MU",
+			null
+		],
+		[
+			"/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/src/ship.c",
 			"MU",
 			null
 		]

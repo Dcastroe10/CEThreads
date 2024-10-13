@@ -7,7 +7,7 @@
 				{
 					"build" : ".",
 					"hasInstallRule" : true,
-					"jsonFile" : "directory-.-Debug-8ddec244d037c17162eb.json",
+					"jsonFile" : "directory-.-Debug-d6b3664e732cb14d5ab1.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.16"
@@ -44,7 +44,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "CEThreads_GUI::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-CEThreads_GUI-Debug-abd9fd085ebbbbdb6281.json",
+					"jsonFile" : "target-CEThreads_GUI-Debug-8c9060aa552799474b41.json",
 					"name" : "CEThreads_GUI",
 					"projectIndex" : 0
 				},

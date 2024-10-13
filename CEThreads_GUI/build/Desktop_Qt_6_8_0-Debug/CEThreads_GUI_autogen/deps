@@ -14,6 +14,13 @@ CEThreads_GUI_autogen/timestamp: \
 	/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/mainwindow.h \
 	/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/prueba.c \
 	/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/prueba.h \
+	/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/include/scheduler.h \
+	/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/include/ship.h \
+	/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/lib/cethreads.c \
+	/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/lib/cethreads.h \
+	/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/lib/threadTester.c \
+	/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/src/scheduler.c \
+	/home/dcastroe/Desktop/En_Git/CEThreads/SchedulingShips/src/ship.c \
 	/home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/QList \
 	/home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/QObject \
 	/home/dcastroe/Qt/6.8.0/gcc_64/include/QtCore/QRect \
