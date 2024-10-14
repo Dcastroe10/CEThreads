@@ -33,6 +33,9 @@ private slots:
 
     void displayQueues();
 
+    QPixmap selectShipSprite(int type);
+
+
     void create_struct(int queue);
 
     void delete_first_struct(int queue);

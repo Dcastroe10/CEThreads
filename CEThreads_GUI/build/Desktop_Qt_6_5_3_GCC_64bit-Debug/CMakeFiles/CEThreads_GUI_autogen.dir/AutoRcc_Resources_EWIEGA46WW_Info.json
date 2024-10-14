@@ -9,10 +9,11 @@
 	"INCLUDE_DIR" : "/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/CEThreads_GUI_autogen/include",
 	"INPUTS" : 
 	[
-		"/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/boat2.jpg",
 		"/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/config.txt",
+		"/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/NORMAL.png",
+		"/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/FISHING.png",
 		"/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/canalResize.jpg",
-		"/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/boat1.jpg"
+		"/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/PATROL.png"
 	],
 	"LOCK_FILE" : "/home/sebas/Documents/GitHub/CEThreads/CEThreads_GUI/build/Desktop_Qt_6_5_3_GCC_64bit-Debug/CMakeFiles/CEThreads_GUI_autogen.dir/AutoRcc_Resources_EWIEGA46WW_Lock.lock",
 	"MULTI_CONFIG" : false,

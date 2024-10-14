@@ -914,7 +914,7 @@ void ship_generation_test() {
     // CEthread_wait();
 }
 
-int main() {
+/*int main() {
     initCEthreads();
     CEmutex_init();
     
@@ -923,5 +923,5 @@ int main() {
     ship_generation_test();
     
     return 0;
-}
+}*/
 /**/

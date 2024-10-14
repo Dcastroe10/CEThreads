@@ -12,6 +12,8 @@
 #include "../SchedulingShips/src/scheduler.c"
 #include "cToSerial.c"
 
+
+
 char buffer[256];
 
 int leftCounter = 1;
@@ -120,7 +122,7 @@ void MainWindow::on_actionright_triggered()
 
 void MainWindow::on_pruebaStructs_clicked()
 {
-    handle_scheduler(SJF, &leftList, &rightList);//___________________________________
+    handle_scheduler(REAL_TIME, &leftList, &rightList);//___________________________________
 
     qDebug() << "on prueba clicked ";
 
@@ -182,9 +184,7 @@ void MainWindow::setupQueues()
 
 void MainWindow::displayQueues()
 {
-    QPixmap *boat2 = new QPixmap(":/boat2.jpg");
-    //std::cout << "right action pressed" << std::endl;
-    QPixmap scaledBoat2 = boat2->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
 
     for (int i = 0; i <= colaIzquierda.size()-1; i++) {
         //int *element = new int(i); // Crear un nuevo int en el heap
@@ -211,8 +211,10 @@ void MainWindow::displayQueues()
 
         QLabel *temp = colaIzquierda.at(i);
         temp->setScaledContents(true);
-        temp->setPixmap(scaledBoat2);
 
+        QPixmap scaledBoat = selectShipSprite(current1->ship->type);
+
+        temp->setPixmap(scaledBoat);
         current1 = current1->next;
         i++;
 
@@ -225,7 +227,10 @@ void MainWindow::displayQueues()
 
         QLabel *temp = colaDerecha.at(j);
         temp->setScaledContents(true);
-        temp->setPixmap(scaledBoat2);
+
+        QPixmap scaledBoat = selectShipSprite(current2->ship->type);
+
+        temp->setPixmap(scaledBoat);
 
         current2 = current2->next;
         j++;
@@ -236,27 +241,71 @@ void MainWindow::displayQueues()
 
 }
 
+
+
+
+QPixmap MainWindow::selectShipSprite(int type){
+
+
+
+    if(type == 1){
+
+        QPixmap *boat1 = new QPixmap(":/NORMAL.png");
+        //std::cout << "right action pressed" << std::endl;
+        QPixmap scaledBoat1 = boat1->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+
+        return scaledBoat1;
+
+    }else if(type == 2){
+
+        QPixmap *boat2 = new QPixmap(":/FISHING.png");
+        //std::cout << "right action pressed" << std::endl;
+        QPixmap scaledBoat2 = boat2->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+
+        return scaledBoat2;
+
+    }else if(type == 3){
+
+        QPixmap *boat3 = new QPixmap(":/PATROL.png");
+        //std::cout << "right action pressed" << std::endl;
+        QPixmap scaledBoat3 = boat3->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+
+        return scaledBoat3 ;
+
+    }else{
+
+    }
+
+
+
+}
+
+
+
 void MainWindow::create_struct(int queue)
 {
-    if(rightCounter + leftCounter < 13  ){
+    if(rightCounter + leftCounter < 12  ){
 
-
+//rand() % 4
 
     if(queue == 0){
 
             if(leftCounter < 6){
-
-        ship_t *shipTemp = create_ship(NORMAL, LEFT, 1,leftCounter);
-        addShip(&leftList,shipTemp);
-        leftCounter++;
+                shipType_t type = (shipType_t)((rand() % 3) + 1);
+                ship_t *shipTemp = create_ship(type, LEFT, (rand() % 21),leftCounter);
+                addShip(&leftList,shipTemp);
+                leftCounter++;
             }
     }else if(queue == 1){
 
         if(rightCounter < 6){
-
-        ship_t *shipTemp = create_ship(NORMAL, RIGHT, 1,rightCounter);
-        addShip(&rightList,shipTemp);
-        rightCounter++;
+                shipType_t type = (shipType_t)((rand() % 3) + 1);
+                ship_t *shipTemp = create_ship(type, RIGHT, (rand() % 21),rightCounter);
+                addShip(&rightList,shipTemp);
+                rightCounter++;
         }
     }else if(queue == 2){
 
@@ -400,4 +449,6 @@ void MainWindow::setupCanal(int ancho){
         layout->addWidget(label);
     }
 }
+
+
 

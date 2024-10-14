@@ -91,8 +91,12 @@ int getValidID(){
 
 int CEthread_create(void (*func)(void *), void *arg) {
 	int id = getValidID();
+
 	if (id == -1)
 	{
+
+        printf("Maximun threads reached");
+
 		return -1;  // threads has reached its max capacity
 	}
 	
@@ -109,6 +113,9 @@ int CEthread_create(void (*func)(void *), void *arg) {
 	if (cethreadList[id].context.uc_stack.ss_sp == 0) {
 		return -1;
 	}
+
+    currentcethread = id;
+
 	cethreadList[id].active = 1;
 	if (arg == NULL) {
 		makecontext(&cethreadList[id].context, (void (*)(void)) &simple_thread_wrapper, 1, func);
@@ -136,6 +143,7 @@ int CEthread_wait() {
 
 int CEthread_end() {
 	cethreadList[currentcethread].active = 0;
+    activeThreads--;
 	return 0;
 }
 

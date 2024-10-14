@@ -27,7 +27,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         prueba.c
         initialize.c
         initialize.h
-        Resources.qrc
+
         Resources.qrc
         linkedList.c
         linkedList.h
