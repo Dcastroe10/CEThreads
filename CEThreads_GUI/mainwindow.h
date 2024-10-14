@@ -44,6 +44,10 @@ private slots:
 
     void setupCanal(int ancho);
 
+    void Ships_movement();
+
+    void on_pushButton_clicked();
+
 protected:
                void keyPressEvent(QKeyEvent *event) override;   // Handle key press
     void keyReleaseEvent(QKeyEvent *event) override; // Handle key release

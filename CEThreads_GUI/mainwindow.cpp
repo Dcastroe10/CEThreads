@@ -3,6 +3,8 @@
 
 #include <QString>
 #include <QDebug>
+#include <QTimer>
+#include <QThread>
 #include <iostream>
 #include <vector>
 #include "prueba.c"
@@ -73,11 +75,16 @@ MainWindow::MainWindow(QWidget *parent)
     initList(&rightList);
 
 
+
+
     initCEthreads();
     CEmutex_init();
 
     srand(time(0));
 
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &MainWindow::Ships_movement);
+    timer->start(1000);
 
 
 }
@@ -123,7 +130,7 @@ void MainWindow::on_pruebaStructs_clicked()
 {
 
     qDebug() << "on prueba clicked ";
-
+/*
     qDebug()<<"Left waiting list \n";
 
 
@@ -158,13 +165,18 @@ void MainWindow::on_pruebaStructs_clicked()
 
     }
 
-
+*/
     handle_scheduler(PRIORITY, &leftList, &rightList);//___________________________________
 
     displayQueues();
 
+    QThread *updatingThread = QThread::create([=]() {
+        handle_workflow(TICO, &leftList, &rightList);
+    });
+    connect(updatingThread, &QThread::finished, updatingThread, &QObject::deleteLater);
+    updatingThread->start();
 
-    handle_workflow(TICO,&leftList,&rightList);
+    qDebug() << "Workflow started in a separate thread.";
 
 
 }
@@ -247,9 +259,6 @@ void MainWindow::displayQueues()
 
 
 }
-
-
-
 
 QPixmap MainWindow::selectShipSprite(int type){
 
@@ -469,4 +478,30 @@ void MainWindow::setupCanal(int ancho){
 }
 
 
+void MainWindow::Ships_movement() {
+    ShipNode* current1 = leftList.head;
+    if (current1) {
+        qDebug() << "Ship ID---------------------:" << current1->ship->threadId
+                 << ", Type:" << current1->ship->type
+                 << ", Time:" << current1->ship->time
+                 << ", Priority:" << current1->ship->priority
+                 << ", Side:" << current1->ship->side
+                 << ", Position:" << current1->ship->position;
+    }
+    //handle_workflow(EQUITY, &leftSideShips, &rightSideShips);
+    //get_index(leftList)  PARA OBTENER DATOS DE LAS LISTAS(en tiempo real)
+    //QPixmap *boat2 = new QPixmap(":/boat2.jpg");
+    //QPixmap scaledBoat2 = boat2->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    //QLabel *labelespacio0 = canal[0];
+    //labelespacio0->setPixmap(scaledBoat2);
+}
+
+
+
+
+void MainWindow::on_pushButton_clicked()
+{
+    qDebug()<<"Llamada a ships_movement: ";
+    Ships_movement();
+}
 
