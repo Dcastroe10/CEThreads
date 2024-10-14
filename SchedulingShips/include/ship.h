@@ -15,7 +15,8 @@ typedef enum {
 
 typedef enum{
     RIGHT,
-    LEFT
+    LEFT,
+    NONE
 } channelSide_t;
 
 typedef struct
@@ -41,6 +42,7 @@ typedef enum {
     SIGN,
     TICO
 } workflow_t; // Workflow algorithm
+
 
 scheduler_t scheduler = SJF;
 workflow_t workflow = TICO;

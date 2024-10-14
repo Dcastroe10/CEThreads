@@ -20,6 +20,9 @@ char buffer[256];
 
 int leftCounter = 1;
 int rightCounter = 1;
+int largoCanal;
+channelSide_t letrero = NONE;
+QLabel *label_letrero;
 
 ShipList leftList;
 ShipList rightList;
@@ -47,16 +50,9 @@ MainWindow::MainWindow(QWidget *parent)
     palette.setBrush(QPalette::Window, bkgnd);
     this->centralWidget()->setAutoFillBackground(true);
     this->centralWidget()->setPalette(palette);
+    label_letrero = new QLabel(this);
 
-/*
-    //Doing the SetUp
-    QString rutaConfig = QCoreApplication::applicationDirPath() + "/config.txt"; //SetUp("/home/dcastroe/Desktop/En_Git/CEThreads/CEThreads_GUI/config.txt");
-    // Convertir QString a const char*
-    QByteArray ba = rutaConfig.toLocal8Bit();
-    const char *rutaC = ba.data();
-    CanalConfig initial_configuration = Initialize_Configuration(rutaC);
-*/
-
+    //Reading the config.txt
     CanalConfig initial_configuration = Initialize_Configuration(":/config.txt");
     qDebug() << "Datos obtenidos desde el txt:";
     qDebug() << "1) Método de Control de Flujo-> "<<initial_configuration.metodoControlFlujo;
@@ -65,11 +61,11 @@ MainWindow::MainWindow(QWidget *parent)
     qDebug() << "4) Cantidad de Barcos-> "<<initial_configuration.cantidadBarcos;
     qDebug() << "5) Tiempo que cambia el Letrero-> "<<initial_configuration.tiempoLetrero;
     qDebug() << "6) Parámetro W-> "<<initial_configuration.parametroW;
-
+    largoCanal = initial_configuration.largoCanal;
 
      //QLabel *element = ui->canal00 ;// Crear un nuevo int en el heap
     setupQueues();
-    setupCanal(initial_configuration.largoCanal);
+    setupCanal(largoCanal);
 
     initList(&leftList);
     initList(&rightList);
@@ -84,7 +80,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::Ships_movement);
-    timer->start(1000);
+    timer->start(500);
 
 
 }
@@ -171,7 +167,7 @@ void MainWindow::on_pruebaStructs_clicked()
     displayQueues();
 
     QThread *updatingThread = QThread::create([=]() {
-        handle_workflow(TICO, &leftList, &rightList);
+        handle_workflow(SIGN, &leftList, &rightList, &letrero);
     });
     connect(updatingThread, &QThread::finished, updatingThread, &QObject::deleteLater);
     updatingThread->start();
@@ -231,7 +227,7 @@ void MainWindow::displayQueues()
         QLabel *temp = colaIzquierda.at(i);
         temp->setScaledContents(true);
 
-        QPixmap scaledBoat = selectShipSprite(current1->ship->type);
+        QPixmap scaledBoat = selectShipSprite(current1->ship->type).transformed(QTransform().scale(-1,1));
 
         temp->setPixmap(scaledBoat);
         current1 = current1->next;
@@ -474,26 +470,61 @@ void MainWindow::setupCanal(int ancho){
     for (int i = 0;i < ancho; i++){
         QLabel *label = new QLabel("hola" + QString::number(i), this);
         layout->addWidget(label);
+        canal.push_back(label);
     }
 }
 
 
 void MainWindow::Ships_movement() {
-    ShipNode* current1 = leftList.head;
-    if (current1) {
-        qDebug() << "Ship ID---------------------:" << current1->ship->threadId
-                 << ", Type:" << current1->ship->type
-                 << ", Time:" << current1->ship->time
-                 << ", Priority:" << current1->ship->priority
-                 << ", Side:" << current1->ship->side
-                 << ", Position:" << current1->ship->position;
+    //qDebug()<<largoCanal<<" START ship_movement";
+    displayQueues();
+    ShipNode* current_shipR  = rightList.head;
+    for (QLabel* label : canal) {
+        label->clear();
     }
-    //handle_workflow(EQUITY, &leftSideShips, &rightSideShips);
-    //get_index(leftList)  PARA OBTENER DATOS DE LAS LISTAS(en tiempo real)
-    //QPixmap *boat2 = new QPixmap(":/boat2.jpg");
-    //QPixmap scaledBoat2 = boat2->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    //QLabel *labelespacio0 = canal[0];
-    //labelespacio0->setPixmap(scaledBoat2);
+
+    while (current_shipR != NULL) {
+        if (1 < current_shipR->ship->position && current_shipR->ship->position < largoCanal){ //&&esta_activo
+            QPixmap scaledBoat = selectShipSprite(current_shipR->ship->type);
+            QLabel *temp = canal[current_shipR->ship->position - 1];
+            temp->setPixmap(scaledBoat);
+            //enviar posición del barco al arduino "current_shipL->ship->position"
+        }
+        current_shipR = current_shipR->next;
+    }
+
+    ShipNode* current_shipL  = leftList.head;
+    while (current_shipL != NULL) {
+        if (1 < current_shipL->ship->position && current_shipL->ship->position < largoCanal){
+            QPixmap scaledBoat = selectShipSprite(current_shipL->ship->type).transformed(QTransform().scale(-1,1));
+            QLabel *temp = canal[current_shipL->ship->position - 1];
+            temp->setPixmap(scaledBoat);
+            //enviar posición del barco al arduino "current_shipL->ship->position"
+        }
+        current_shipL = current_shipL->next;
+    }
+
+
+
+    if(letrero == RIGHT){
+        qDebug()<<"DERECHA";
+        QPixmap signal (":/DERECHA.png");
+        label_letrero->clear();
+        label_letrero->setPixmap(signal.transformed(QTransform().scale(-1,1)));
+        label_letrero->setGeometry((this->width()-100)/2, 100, 100, 100);
+        label_letrero->setScaledContents(true);
+        label_letrero->show();
+
+    }else if(letrero == LEFT){
+        QPixmap signal (":/DERECHA.png");
+        label_letrero->clear();
+        label_letrero->setPixmap(signal);
+        label_letrero->setGeometry((this->width()-100)/2, 100, 100, 100);
+        label_letrero->setScaledContents(true);
+        label_letrero->show();
+    }else{
+        qDebug()<<"No se ocupa letrero";
+    }
 }
 
 

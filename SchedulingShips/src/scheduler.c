@@ -222,7 +222,7 @@ void handle_scheduler(scheduler_t scheduler, ShipList* leftSideShips, ShipList* 
 }
 
 // Function to handle the workflow
-void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rightSideShips) {
+void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rightSideShips, channelSide_t* letrero) {
     channelSide_t side;
     if(workflow == EQUITY){
         printf("\nProcessing EQUITY workflow.\n");
@@ -308,7 +308,6 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
         }
     }else if(workflow == SIGN){
         printf("\nProcessing SIGN workflow.\n");
-
         // Preallocating the shipsRow array with a reasonable initial size
         int* shipsRowSign = (int*)malloc(MAX_SHIPS * sizeof(int));
         if (!shipsRowSign) {
@@ -319,6 +318,7 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
 
         // Randomly decide the initial side
         side = rand() % 2 == 0 ? LEFT : RIGHT;
+        *letrero = side;
         ShipList* currentSignList = (side == LEFT) ? leftSideShips : rightSideShips;
         ShipList* otherSignList = (side == LEFT) ? rightSideShips : leftSideShips;
 
@@ -335,6 +335,11 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
                 // Switch to the other side if it has ships
                 if (getShipCount(otherSignList) > 0) {
                     ShipList* temp = currentSignList;
+                    if (getShipByIndex(currentSignList,0)->ship->side == LEFT){
+                        *letrero = RIGHT;
+                    }else{
+                        *letrero = LEFT;
+                    }
                     currentSignList = otherSignList;
                     otherSignList = temp;
                     time(&startTime); // Restart the timer for the new side
@@ -406,6 +411,11 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
                                     // Reset the timer and switch sides
                                     time(&startTime); // Restart the timer
                                     ShipList* temp = currentSignList;
+                                    if (getShipByIndex(currentSignList,0)->ship->side == LEFT){
+                                        *letrero = RIGHT;
+                                    }else{
+                                        *letrero = LEFT;
+                                    }
                                     currentSignList = otherSignList;
                                     otherSignList = temp;
 
@@ -454,6 +464,11 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
                                     // Reset the timer and switch sides
                                     time(&startTime); // Restart the timer
                                     ShipList* temp = currentSignList;
+                                    if (getShipByIndex(currentSignList,0)->ship->side == LEFT){
+                                        *letrero = RIGHT;
+                                    }else{
+                                        *letrero = LEFT;
+                                    }
                                     currentSignList = otherSignList;
                                     otherSignList = temp;
 
@@ -907,7 +922,8 @@ void ship_generation_test() {
     handle_scheduler(scheduler, &leftSideShips, &rightSideShips);
 
     if (scheduler != RR) { // NOTE: I think workflow doesn't make much sense with the RR scheduler
-        handle_workflow(workflow, &leftSideShips, &rightSideShips);   
+        channelSide_t side = NONE;
+        handle_workflow(workflow, &leftSideShips, &rightSideShips, &side);
     }
 
     // Wait for threads to finish (if necessary for synchronization)
