@@ -146,6 +146,10 @@ int CEthread_end() {
 	return 0;
 }
 
+void CEthread_force_end(int id){
+	cethreadList[id].active = 0;
+}
+
 int CEthread_join(int id) {
 	for (int i = 0; i <= activeThreads; i++) {
 		if (cethreadList[i].id == id) {

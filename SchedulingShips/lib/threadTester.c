@@ -1,14 +1,15 @@
 #include "cethreads.c"
 
+int i = 2;
+int fact = 1;
+int n = 10;
 
 /***
  *  @brief Calculates the factorial of a number.
 	@return the factorial of n
  */
 void factorial() {
-	int i = 2;
-    int fact = 1;
-	int n = 10;
+
     while (i <= n) {
 		CEmutex_trylock();
         fact *= i;
@@ -20,6 +21,16 @@ void factorial() {
     }
 }
 
+void restarter(){
+	CEmutex_trylock();
+	i = 2;
+	fact = 1;
+	n = 10;
+	printf( "i: %d  fact: %d  n: %d\n", i, fact, n);
+
+	CEmutex_unlock();
+}
+
 
 
 int main(){
@@ -28,8 +39,11 @@ int main(){
 
 	srand(time(0)); 
 
-	CEthread_create( &factorial, NULL);
-	CEthread_create( &factorial, NULL);
+	int ID = CEthread_create( &factorial, NULL);
+	int ID2 = CEthread_create( &factorial, NULL);
+	int ID3 = CEthread_create( &restarter, NULL);
+	CEthread_join(ID2);
+
 
 	CEthread_wait();
 	

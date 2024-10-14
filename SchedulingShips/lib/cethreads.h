@@ -75,6 +75,11 @@ static void thread_wrapper(void (*func)(void *), void *arg);
 int CEthread_end();
 
 /**
+ * @brief forces the end of a thread
+ */
+void CEthread_force_end(int id);
+
+/**
  * @brief Yields execution to another thread.
  */
 void CEthread_yield();
