@@ -1,2 +1,0 @@
-set(__QT_DEPLOY_TARGET_CEThreads_GUI_FILE /home/dcastroe/Desktop/Last_in_git/CEThreads/CEThreads_GUI/build/CEThreads_GUI)
-set(__QT_DEPLOY_TARGET_CEThreads_GUI_TYPE EXECUTABLE)
