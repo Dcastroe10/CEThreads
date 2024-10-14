@@ -7,8 +7,6 @@ extern "C" {
 #define CHANNEL_SIZE 10
 #define MAX_SHIPS 10
 
-
-
 typedef enum {
     NORMAL = 1,
     FISHING,
@@ -45,11 +43,10 @@ typedef enum {
 } workflow_t; // Workflow algorithm
 
 scheduler_t scheduler = SJF;
-workflow_t workflow = EQUITY;
+workflow_t workflow = TICO;
 const int EQUITY_W = 2;
 const int SIGN_TIME = 4;
 const int QUANTUM = 2;
-
 
 /**
  * @brief Creates a new ship with specified properties and starts its associated thread.
@@ -95,6 +92,8 @@ typedef struct {
  * @param list Pointer to the ship list to be initialized.
  */
 void initList(ShipList* list);
+
+void print_desde_Ship();
 
 /**
  * @brief Adds a ship to the beginning of the ship list.
@@ -148,7 +147,21 @@ int getFirstShipID(ShipList* list);
  */
 int getShipIdByPosition(ShipList* list, int position);
 
+/**
+ * @brief Retrieves a ship by its position in the list.
+ * @param list Pointer to the ship list.
+ * @param position The index position of the ship in the list (starting from 0).
+ * @return Pointer to the ship if found, or NULL if the position is invalid or the ship does not exist.
+ */
 ship_t* getShipByPosition(ShipList* list, int position);
+
+/**
+ * @brief Retrieves a ship by its ID from the list.
+ * @param list Pointer to the ship list.
+ * @param id The ID of the ship to search for.
+ * @return Pointer to the ship if found, or NULL if no ship with the specified ID exists.
+ */
+ship_t* getShipById(ShipList* list, int id);
 
 /**
  * @brief Retrieves the last ship in the list.
@@ -166,6 +179,10 @@ ship_t* getLastShip(ShipList* list);
  */
 int getNextShipPosition(ShipList* list, channelSide_t side);
 
+/**
+ * @brief Updates the position of all ships in the waiting line.
+ * @param list Pointer to the ship list.
+ */
 void updateWaitingLine(ShipList* list);
 
 /**
@@ -180,6 +197,12 @@ void asignShipPosition(ship_t* ship, int index);
  * @param list Pointer to the ship list to be sorted.
  */
 void sortShipsByPriority(ShipList* list);
+
+/**
+ * @brief Sorts the ships in the list based on their remaining time in ascending order.
+ * @param list Pointer to the ship list to be sorted.
+ */
+void sortShipsByShortestTime(ShipList* list) ;
 
 /**
  * @brief Combines two ship lists into a single list.
