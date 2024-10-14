@@ -98,9 +98,59 @@ compile_commands.json
 debug/
 saves/
 
+# Archivos de QtCreator
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.creator.user
+*.creator.user.*
+*.autosave
+*.creator
 
-SchedulingShips/lib/threadTester
-SchedulingShips/src/scheduler
+# Archivos de compilación
+*.o
+*.a
+*.so
+*.so.*
+*.dll
+*.dylib
+*.lib
+
+# Directorios de construcción
+build-*/
+debug/
+release/
+
+# Archivos de CMake
+CMakeLists.txt.user
+CMakeLists.txt.user.*
+
+# Archivos de qmake
+Makefile
+Makefile.*
+
+# Archivos de sesión de QtCreator
+*.cproject
+*.project
+*.workspace
+*.replacetokens
+
+# Archivos temporales y logs
+*.log
+*.bak
+*.swp
+*.swm
+*.swo
+*.swn
+
+# Archivos de Mac
+.DS_Store
+
+# Archivos de Windows
+Thumbs.db
+Desktop.ini
+
 
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#C
