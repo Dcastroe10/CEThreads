@@ -103,7 +103,7 @@ void handle_scheduler(scheduler_t scheduler, ShipList* leftSideShips, ShipList* 
         printList(rightSideShips);
     } else if(scheduler == FCFS){
         printf("\nExecuting First Come First Served scheduling.\n");
-    }else{
+
         if (scheduler != FCFS) {
             printf("\nUnknown scheduler type, falling back to default behavior.\n");
         }
