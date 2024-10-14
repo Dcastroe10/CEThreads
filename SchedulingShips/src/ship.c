@@ -83,7 +83,7 @@ void move_ship(ship_t *ship) {
         CEmutex_unlock();
 
         // Sleep for a defined period to simulate movement delay
-        usleep(1000000);
+        usleep(500000);
 
         // Return control back to the main context to allow other threads to execute
 		returnContext();

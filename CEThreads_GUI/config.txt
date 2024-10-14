@@ -1,6 +1,7 @@
-MetodoControlFlujo: FIFO
-LargoCanal: 10
-VelocidadBarco: 10
-CantidadBarcos: 13
-TiempoLetrero: 5
-ParametroW: 20
+CHANNEL_SIZE: 10
+MAX_SHIPS: 10
+scheduler: 1
+workflow: 1
+EQUITY_W: 2
+SIGN_TIME: 4
+QUANTUM: 2

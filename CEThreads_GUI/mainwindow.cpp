@@ -10,24 +10,28 @@
 #include "prueba.c"
 #include "initialize.c"
 #include "linkedList.c"
-//#include "../SchedulingShips/src/ship.c"
 #include "../SchedulingShips/src/scheduler.c"
 #include "cToSerial.c"
-
-
 
 char buffer[256];
 
 int leftCounter = 1;
 int rightCounter = 1;
-int largoCanal;
+int CHANNEL_SIZE_DEFINED;
+int MAX_SHIPS_DEFINED;
+scheduler_t schedulerDefined;
+workflow_t workflowDefined;
+int EQUITY_W_DEFINED;
+int SIGN_TIME_DEFINED;
+int QUANTUM_DEFINED;
+
 channelSide_t letrero = NONE;
 QLabel *label_letrero;
 
 ShipList leftList;
 ShipList rightList;
-ship_t *ship_return;
 
+ship_t *ship_return;
 
 std::vector<QLabel*> canal;
 std::vector<QLabel*> colaIzquierda;
@@ -55,23 +59,29 @@ MainWindow::MainWindow(QWidget *parent)
     //Reading the config.txt
     CanalConfig initial_configuration = Initialize_Configuration(":/config.txt");
     qDebug() << "Datos obtenidos desde el txt:";
-    qDebug() << "1) Método de Control de Flujo-> "<<initial_configuration.metodoControlFlujo;
-    qDebug() << "2) Largo del Canal-> "<<initial_configuration.largoCanal;
-    qDebug() << "3) Velocidad del Barco-> "<<initial_configuration.velocidadBarco;
-    qDebug() << "4) Cantidad de Barcos-> "<<initial_configuration.cantidadBarcos;
-    qDebug() << "5) Tiempo que cambia el Letrero-> "<<initial_configuration.tiempoLetrero;
-    qDebug() << "6) Parámetro W-> "<<initial_configuration.parametroW;
-    largoCanal = initial_configuration.largoCanal;
+    qDebug() << "1) Largo del Canal-> "<<initial_configuration.CHANNEL_SIZE;
+    qDebug() << "2) Máximo de barcos-> "<<initial_configuration.MAX_SHIPS;
+    qDebug() << "3) Calendarizador-> "<<getScheduler(initial_configuration.scheduler);
+    qDebug() << "4) Algoritmo de flujo-> "<<getWorkflow(initial_configuration.workflow);
+    qDebug() << "5) Parámetro W-> "<<initial_configuration.EQUITY_W;
+    qDebug() << "6) Tiempo de Letrero-> "<<initial_configuration.SIGN_TIME;
+    qDebug() << "7) Tiempo de Quantum-> "<<initial_configuration.QUANTUM;
 
-     //QLabel *element = ui->canal00 ;// Crear un nuevo int en el heap
+    CHANNEL_SIZE_DEFINED = initial_configuration.CHANNEL_SIZE;
+    MAX_SHIPS_DEFINED = initial_configuration.MAX_SHIPS;
+    schedulerDefined = (scheduler_t)initial_configuration.scheduler;
+    workflowDefined = (workflow_t)initial_configuration.workflow;
+    EQUITY_W_DEFINED = initial_configuration.EQUITY_W;
+    SIGN_TIME_DEFINED = initial_configuration.SIGN_TIME;
+    QUANTUM_DEFINED = initial_configuration.QUANTUM;
+
+    set_scheduling_workflow_parameters(CHANNEL_SIZE_DEFINED, MAX_SHIPS_DEFINED, EQUITY_W_DEFINED, SIGN_TIME_DEFINED, QUANTUM_DEFINED);
+
     setupQueues();
-    setupCanal(largoCanal);
+    setupCanal(CHANNEL_SIZE_DEFINED);
 
     initList(&leftList);
     initList(&rightList);
-
-
-
 
     initCEthreads();
     CEmutex_init();
@@ -80,9 +90,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     QTimer *timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &MainWindow::Ships_movement);
-    timer->start(500);
-
-
+    timer->start(5);
 }
 
 
@@ -95,9 +103,9 @@ void MainWindow::on_actionleft_triggered()
 {
     QPixmap *boat1 = new QPixmap(":/boat1.jpg");
     std::cout << "left action pressed" << std::endl;
-    QPixmap scaledBoat1 = boat1->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    //QPixmap scaledBoat1 = boat1->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     //ui->canal09->setScaledContents(true);
-    //ui->canal09->setPixmap(scaledBoat1);  //---------------------------------------------------------------------
+    //ui->canal09->setPixmap(scaledBoat1);
 
     delete boat1; //liberar la memoria del boat1
 
@@ -109,14 +117,13 @@ void MainWindow::on_actionleft_triggered()
     }
 
     printIntList(prueba_lista);
-
 }
 
 void MainWindow::on_actionright_triggered()
 {
-    QPixmap *boat2 = new QPixmap(":/boat2.jpg");
-    std::cout << "right action pressed" << std::endl;
-    QPixmap scaledBoat2 = boat2->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    //QPixmap *boat2 = new QPixmap(":/boat2.jpg");
+    //std::cout << "right action pressed" << std::endl;
+    //QPixmap scaledBoat2 = boat2->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     //ui->canal00->setScaledContents(true);
     //ui->canal00->setPixmap(scaledBoat2);
     //delete boat2;
@@ -124,62 +131,22 @@ void MainWindow::on_actionright_triggered()
 
 void MainWindow::on_pruebaStructs_clicked()
 {
-
     qDebug() << "on prueba clicked ";
-/*
-    qDebug()<<"Left waiting list \n";
 
-
-    ShipNode* current1 = leftList.head;
-    while (current1 != NULL) {
-        qDebug() << "Ship ID:" << current1->ship->threadId
-                 << ", Type:" << current1->ship->type
-                 << ", Time:" << current1->ship->time
-                 << ", Priority:" << current1->ship->priority
-                 << ", Side:" << current1->ship->side
-                 << ", Position:" << current1->ship->position;
-
-        current1 = current1->next;
-
-    }
-
-
-
-    qDebug()<<"right waiting list \n";
-
-
-    ShipNode* current2 = rightList.head;
-    while (current2 != NULL) {
-        qDebug() << "Ship ID:" << current2->ship->threadId
-                 << ", Type:" << current2->ship->type
-                 << ", Time:" << current2->ship->time
-                 << ", Priority:" << current2->ship->priority
-                 << ", Side:" << current2->ship->side
-                 << ", Position:" << current2->ship->position;
-
-        current2 = current2->next;
-
-    }
-
-*/
-    handle_scheduler(PRIORITY, &leftList, &rightList);//___________________________________
-
+    displayQueues();
+    handle_scheduler(schedulerDefined, &leftList, &rightList);
     displayQueues();
 
     QThread *updatingThread = QThread::create([=]() {
-        handle_workflow(SIGN, &leftList, &rightList, &letrero);
+        handle_workflow(workflowDefined, &leftList, &rightList, &letrero);
     });
     connect(updatingThread, &QThread::finished, updatingThread, &QObject::deleteLater);
     updatingThread->start();
-
-    qDebug() << "Workflow started in a separate thread.";
-
-
 }
 
 void MainWindow::setupQueues()
 {
-    qDebug() << "setting up ";
+    qDebug() << "setting up";
 
     qDebug() << "starting setup";
     colaIzquierda.push_back(ui->waitingL0);
@@ -187,7 +154,6 @@ void MainWindow::setupQueues()
     colaIzquierda.push_back(ui->waitingL2);
     colaIzquierda.push_back(ui->waitingL3);
     colaIzquierda.push_back(ui->waitingL4);
-
 
     colaDerecha.push_back(ui->waitingR0);
     colaDerecha.push_back(ui->waitingR1);
@@ -257,171 +223,100 @@ void MainWindow::displayQueues()
 }
 
 QPixmap MainWindow::selectShipSprite(int type){
-
-
-
     if(type == 1){
-
         QPixmap *boat1 = new QPixmap(":/NORMAL.png");
-        //std::cout << "right action pressed" << std::endl;
         QPixmap scaledBoat1 = boat1->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-
 
         return scaledBoat1;
 
     }else if(type == 2){
-
         QPixmap *boat2 = new QPixmap(":/FISHING.png");
-        //std::cout << "right action pressed" << std::endl;
         QPixmap scaledBoat2 = boat2->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
 
         return scaledBoat2;
 
     }else if(type == 3){
-
         QPixmap *boat3 = new QPixmap(":/PATROL.png");
-        //std::cout << "right action pressed" << std::endl;
         QPixmap scaledBoat3 = boat3->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-
 
         return scaledBoat3 ;
 
     }else{
+        QPixmap *boat1 = new QPixmap(":/NORMAL.png");
+        QPixmap scaledBoat1 = boat1->scaled(100, 100, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
+        return scaledBoat1;
     }
-
-
-
 }
 
 
 
-void MainWindow::create_struct(int queue)
-{
-
-
-    int position = 0;
-
+void MainWindow::create_struct(int queue){
+    int position;
+    shipType_t type;
+    ship_t *shipTemp;
+    int priority;
 
     if(rightCounter + leftCounter < 12  ){
-
-
-
-    if(queue == 0){
-        position =  getNextShipPosition(&leftList, LEFT) ;
-
-            if(leftCounter < 6){
-                shipType_t type = (shipType_t)((rand() % 3) + 1);
-                ship_t *shipTemp = create_ship(type, LEFT, (rand() % 21),position);
-                addShip(&leftList,shipTemp);
-                leftCounter++;
-
-            }
-    }else if(queue == 1){
-
-        position = getNextShipPosition(&rightList, RIGHT);
-
-        if(rightCounter < 6){
-                shipType_t type = (shipType_t)((rand() % 3) + 1);
-                ship_t *shipTemp = create_ship(type, RIGHT, (rand() % 21),position);
-                addShip(&rightList,shipTemp);
-                rightCounter++;
-
+        if(queue == 0 && leftCounter < 6){
+            position = getNextShipPosition(&leftList, LEFT);
+            type = (shipType_t)((rand() % 3) + 1);
+            priority = rand() % 6;
+            shipTemp = create_ship(type, LEFT, priority, position);
+            addShip(&leftList, shipTemp);
+            leftCounter++;
         }
-
-    }else if(queue == 2){
-
-    }else{
-
-    }
-
+        else if(queue == 1 && rightCounter < 6){
+            position = getNextShipPosition(&rightList, RIGHT);
+            type = (shipType_t)((rand() % 3) + 1);
+            priority = rand() % 6;
+            shipTemp = create_ship(type, RIGHT, priority, position);
+            addShip(&rightList, shipTemp);
+            rightCounter++;
+        }
     }
 }
 
 void MainWindow::delete_first_struct(int queue)
 {
-
     if(rightCounter != 0 && leftCounter != 0){
-
-
-
-
-    if(queue == 0){
-
-        if( leftCounter > 1){
-
-
-        ship_t *temp = getLastShip(&leftList);
-        removeShip(&leftList,temp->threadId);
-        leftCounter--;
-
+        if(queue == 0 && leftCounter > 1){
+            ship_t *temp = getLastShip(&leftList);
+            removeShip(&leftList,temp->threadId);
+            leftCounter--;
         }
-    }else if(queue == 1){
-
-        if(rightCounter > 1 ){
-        ship_t *temp = getLastShip(&rightList);
-        removeShip(&rightList,temp->threadId);
-        rightCounter--;
-
+        else if(queue == 1 && rightCounter > 1){
+            ship_t *temp = getLastShip(&rightList);
+            removeShip(&rightList,temp->threadId);
+            rightCounter--;
         }
-    }else if(queue == 2){
-
-    }else{
-
     }
-        }
-
-
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Q) {
-        //qDebug() << "Key A pressed";
-
-
-        create_struct(0);
-        //std::cout << "left action pressed" << std::endl;
-
-
-
+        create_struct(0); // Agregar barco a la izquierda
         displayQueues();
-
     }
     else if (event->key() == Qt::Key_E) {
-        //qDebug() << "Key E pressed";
-
-
-        create_struct(1);
-
+        create_struct(1); // Agregar barco a la derecha
         displayQueues();
-
     }
     else if (event->key() == Qt::Key_A) {
-        //qDebug() << "Key E pressed";
-
-        delete_first_struct(0);
+        delete_first_struct(0); // Eliminar último barco de la izquierda
         displayQueues();
-
-    } else if (event->key() == Qt::Key_D) {
-        //qDebug() << "Key E pressed";
-
-
-        delete_first_struct(1);
+    }
+    else if (event->key() == Qt::Key_D) {
+        delete_first_struct(1); // Eliminar último barco de la derecha
         displayQueues();
-
-    } else if(event->key() == Qt::Key_G){
+    }
+    else if(event->key() == Qt::Key_G){
 
         int fd = serial_init("/dev/ttyUSB0",9600);
         serial_send(fd,"sentFromCpp");
-
         serial_close(fd);
-    }
-    else{
-        //qDebug() << "Key pressed: " << event->text();
-
-
     }
 
     // Call the base class event handler for default handling
@@ -432,15 +327,14 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_W) {
-        //qDebug() << "Key A released";
+        qDebug() << "Key_W: Quit";
+        QCoreApplication::quit(); // Termina la aplicación
     }
     else if (event->key() == Qt::Key_Space) {
-        //qDebug() << "Spacebar released";
-
-
+        //qDebug() << "Key_Space";
     }
 
-    QMainWindow::keyReleaseEvent(event);
+    QMainWindow::keyReleaseEvent(event); // Propaga el evento hacia el controlador predeterminado
 }
 
 void MainWindow::on_pruebaAddLabel_clicked()
@@ -462,7 +356,6 @@ void MainWindow::on_pruebaAddLabel_clicked()
         // Si el layout no existe, podrías manejar el error o crear uno nuevo
         qDebug() << "No se encontró el layout 'El_canal'";
     }
-
 }
 
 void MainWindow::setupCanal(int ancho){
@@ -476,7 +369,7 @@ void MainWindow::setupCanal(int ancho){
 
 
 void MainWindow::Ships_movement() {
-    //qDebug()<<largoCanal<<" START ship_movement";
+    //qDebug()<<CHANNEL_SIZE_DEFINED<<" START ship_movement";
     displayQueues();
     ShipNode* current_shipR  = rightList.head;
     for (QLabel* label : canal) {
@@ -484,7 +377,7 @@ void MainWindow::Ships_movement() {
     }
 
     while (current_shipR != NULL) {
-        if (1 < current_shipR->ship->position && current_shipR->ship->position < largoCanal){ //&&esta_activo
+        if (1 < current_shipR->ship->position && current_shipR->ship->position < CHANNEL_SIZE_DEFINED){ //&&esta_activo
             QPixmap scaledBoat = selectShipSprite(current_shipR->ship->type);
             QLabel *temp = canal[current_shipR->ship->position - 1];
             temp->setPixmap(scaledBoat);
@@ -495,7 +388,7 @@ void MainWindow::Ships_movement() {
 
     ShipNode* current_shipL  = leftList.head;
     while (current_shipL != NULL) {
-        if (1 < current_shipL->ship->position && current_shipL->ship->position < largoCanal){
+        if (1 < current_shipL->ship->position && current_shipL->ship->position < CHANNEL_SIZE_DEFINED){
             QPixmap scaledBoat = selectShipSprite(current_shipL->ship->type).transformed(QTransform().scale(-1,1));
             QLabel *temp = canal[current_shipL->ship->position - 1];
             temp->setPixmap(scaledBoat);
@@ -503,8 +396,6 @@ void MainWindow::Ships_movement() {
         }
         current_shipL = current_shipL->next;
     }
-
-
 
     if(letrero == RIGHT){
         qDebug()<<"DERECHA";
@@ -522,8 +413,6 @@ void MainWindow::Ships_movement() {
         label_letrero->setGeometry((this->width()-100)/2, 100, 100, 100);
         label_letrero->setScaledContents(true);
         label_letrero->show();
-    }else{
-        qDebug()<<"No se ocupa letrero";
     }
 }
 
@@ -534,5 +423,33 @@ void MainWindow::on_pushButton_clicked()
 {
     qDebug()<<"Llamada a ships_movement: ";
     Ships_movement();
+}
+
+QString MainWindow::getScheduler(int scheduler) {
+    if (scheduler == 0) {
+        return "RR";
+    }else if (scheduler == 1){
+        return "PRIORITY";
+    }else if (scheduler == 2){
+        return "SJF";
+    }else if (scheduler == 3){
+        return "FCFS";
+    }else if (scheduler == 4){
+        return "REAL_TIME";
+    }else{
+        return "FCFS";
+    }
+}
+
+QString MainWindow::getWorkflow(int workflow) {
+    if (workflow == 0) {
+        return "EQUITY";
+    }else if (workflow == 1){
+        return "SIGN";
+    }else if (workflow == 2){
+        return "TICO";
+    }else{
+        return "TICO";
+    }
 }
 

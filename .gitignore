@@ -54,3 +54,4 @@ Desktop.ini
 
 SchedulingShips/lib/threadTester
 SchedulingShips/src/scheduler
+CEThreads_GUI/CMakeLists.txt.user

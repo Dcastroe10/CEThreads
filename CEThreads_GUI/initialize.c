@@ -16,18 +16,20 @@ CanalConfig Initialize_Configuration(const char *nombreArchivo) {
     QTextStream in(&archivo);
     QString linea;
     while (in.readLineInto(&linea)) {
-        if (linea.startsWith("MetodoControlFlujo:")) {
-            sscanf(linea.toStdString().c_str(), "MetodoControlFlujo: %s", config.metodoControlFlujo);
-        } else if (linea.startsWith("LargoCanal:")) {
-            sscanf(linea.toStdString().c_str(), "LargoCanal: %d", &config.largoCanal);
-        } else if (linea.startsWith("VelocidadBarco:")) {
-            sscanf(linea.toStdString().c_str(), "VelocidadBarco: %d", &config.velocidadBarco);
-        } else if (linea.startsWith("CantidadBarcos:")) {
-            sscanf(linea.toStdString().c_str(), "CantidadBarcos: %d", &config.cantidadBarcos);
-        } else if (linea.startsWith("TiempoLetrero:")) {
-            sscanf(linea.toStdString().c_str(), "TiempoLetrero: %d", &config.tiempoLetrero);
-        } else if (linea.startsWith("ParametroW:")) {
-            sscanf(linea.toStdString().c_str(), "ParametroW: %d", &config.parametroW);
+        if (linea.startsWith("CHANNEL_SIZE:")) {
+            sscanf(linea.toStdString().c_str(), "CHANNEL_SIZE: %d", &config.CHANNEL_SIZE);
+        }else if (linea.startsWith("MAX_SHIPS:")) {
+            sscanf(linea.toStdString().c_str(), "MAX_SHIPS: %d", &config.MAX_SHIPS);
+        }else if (linea.startsWith("scheduler:")) {
+            sscanf(linea.toStdString().c_str(), "scheduler: %d", &config.scheduler);
+        } else if (linea.startsWith("workflow:")) {
+            sscanf(linea.toStdString().c_str(), "workflow: %d", &config.workflow);
+        } else if (linea.startsWith("EQUITY_W:")) {
+            sscanf(linea.toStdString().c_str(), "EQUITY_W: %d", &config.EQUITY_W);
+        } else if (linea.startsWith("SIGN_TIME:")) {
+            sscanf(linea.toStdString().c_str(), "SIGN_TIME: %d", &config.SIGN_TIME);
+        }else if (linea.startsWith("QUANTUM:")) {
+            sscanf(linea.toStdString().c_str(), "QUANTUM: %d", &config.QUANTUM);
         }
     }
 

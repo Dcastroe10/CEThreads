@@ -8,12 +8,13 @@ extern "C" {
 
 // Definición de la estructura CanalConfig
 typedef struct {
-    char metodoControlFlujo[20];
-    int largoCanal;
-    int velocidadBarco;
-    int cantidadBarcos;
-    int tiempoLetrero;
-    int parametroW;
+    int MAX_SHIPS;
+    int CHANNEL_SIZE;
+    int scheduler;
+    int workflow;
+    int EQUITY_W;
+    int SIGN_TIME;
+    int QUANTUM;
 } CanalConfig;
 
 

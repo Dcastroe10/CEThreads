@@ -48,6 +48,10 @@ private slots:
 
     void on_pushButton_clicked();
 
+    QString getScheduler(int scheduler);
+
+    QString getWorkflow(int workflow);
+
 protected:
                void keyPressEvent(QKeyEvent *event) override;   // Handle key press
     void keyReleaseEvent(QKeyEvent *event) override; // Handle key release

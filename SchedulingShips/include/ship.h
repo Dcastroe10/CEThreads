@@ -4,8 +4,8 @@ extern "C" {
 
 #include "../lib/cethreads.c"
 
-#define CHANNEL_SIZE 10
-#define MAX_SHIPS 10
+int CHANNEL_SIZE = 10;
+int MAX_SHIPS = 10;
 
 typedef enum {
     NORMAL = 1,
@@ -44,11 +44,11 @@ typedef enum {
 } workflow_t; // Workflow algorithm
 
 
-scheduler_t scheduler = SJF;
+scheduler_t scheduler = PRIORITY;
 workflow_t workflow = TICO;
-const int EQUITY_W = 2;
-const int SIGN_TIME = 4;
-const int QUANTUM = 2;
+int EQUITY_W = 2;
+int SIGN_TIME = 4;
+int QUANTUM = 2;
 
 /**
  * @brief Creates a new ship with specified properties and starts its associated thread.

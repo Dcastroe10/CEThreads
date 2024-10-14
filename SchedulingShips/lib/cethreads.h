@@ -11,7 +11,7 @@ extern "C" {
 #include <unistd.h>
 #include <stdlib.h>
 
-#define MAX_THREADS 10
+#define MAX_THREADS 100
 #define THREAD_STACK (1024 * 1024)
 
 int mutex = 0;
