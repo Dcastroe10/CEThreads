@@ -64,7 +64,7 @@ static void simple_thread_wrapper(void (*func)(void)) {
 
 
 static void thread_wrapper(void (*func)(void *), void *arg) {
-	cethreadList[currentcethread].active = 1;
+	//cethreadList[currentcethread].active = 1;
 	func(arg);
 	cethreadList[currentcethread].active = 0;
 
@@ -72,33 +72,53 @@ static void thread_wrapper(void (*func)(void *), void *arg) {
 	CEthread_yield();
 }
 
-int CEthread_create(void (*func)(void *), void *arg) {
-	if (activeThreads == MAX_THREADS) {
-		return -1;  // error, exceeds thread limit
-	}
-	// Adds the new function to the end of the thread list
-	getcontext(&cethreadList[activeThreads].context);
+int getValidID(){
+    if(activeThreads == MAX_THREADS){
+        return -1; // ERROR: maximun thread capacity cant generate another threads
+    }
+    else
+    {
+        for (int i = 0; i < MAX_THREADS; i++)
+        {
+            if (cethreadList[i].active == 0)
+            {
+                return i;
+            } 
+        }
+    }
+}
 
-	cethreadList[activeThreads].context.uc_link = 0;
-	cethreadList[activeThreads].context.uc_stack.ss_sp = malloc(THREAD_STACK);
-	cethreadList[activeThreads].context.uc_stack.ss_size = THREAD_STACK;
-	cethreadList[activeThreads].context.uc_stack.ss_flags = 0;
-	cethreadList[activeThreads].id = activeThreads;
-	cethreadList[activeThreads].pause = 0;
-	cethreadList[activeThreads].time = 0;
-	if (cethreadList[activeThreads].context.uc_stack.ss_sp == 0) {
+
+int CEthread_create(void (*func)(void *), void *arg) {
+	int id = getValidID();
+	if (id == -1)
+	{
+		return -1;  // threads has reached its max capacity
+	}
+	
+	// Adds the new function to the end of the thread list
+	getcontext(&cethreadList[id].context);
+
+	cethreadList[id].context.uc_link = 0;
+	cethreadList[id].context.uc_stack.ss_sp = malloc(THREAD_STACK);
+	cethreadList[id].context.uc_stack.ss_size = THREAD_STACK;
+	cethreadList[id].context.uc_stack.ss_flags = 0;
+	cethreadList[id].id = id;
+	cethreadList[id].pause = 0;
+	cethreadList[id].time = 0;
+	if (cethreadList[id].context.uc_stack.ss_sp == 0) {
 		return -1;
 	}
-
+	cethreadList[id].active = 1;
 	if (arg == NULL) {
-		makecontext(&cethreadList[activeThreads].context, (void (*)(void)) &simple_thread_wrapper, 1, func);
+		makecontext(&cethreadList[id].context, (void (*)(void)) &simple_thread_wrapper, 1, func);
 	} else {
-		makecontext(&cethreadList[activeThreads].context, (void (*)(void)) &thread_wrapper, 2, func, arg);
+		makecontext(&cethreadList[id].context, (void (*)(void)) &thread_wrapper, 2, func, arg);
 	}
 
 	++activeThreads;
 
-	return activeThreads - 1;
+	return id;
 }
 
 int CEthread_wait() {

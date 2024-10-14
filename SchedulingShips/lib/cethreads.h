@@ -24,7 +24,7 @@ static ucontext_t mainContext;
 
 typedef struct {
     ucontext_t context;
-    int id;
+    int id;                 // could be deleted to use its index on cethreadList instead
     int active;             // 0 inactive, 1 active
     clock_t time;
     double pause;
@@ -36,6 +36,12 @@ static cethread cethreadList[MAX_THREADS];
  * @brief Initializes the list of cethreads, marking all as inactive.
  */
 void initCEthreads();
+
+/**
+ * @brief Gets an ID to create a new thread
+ * @returns a valid thread ID, or -1 if the max capacity is reached
+ */
+int getValidID();
 
 /**
  * @brief Creates a thread with the given function.
