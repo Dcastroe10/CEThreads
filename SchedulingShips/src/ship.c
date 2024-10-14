@@ -39,6 +39,8 @@ ship_t* create_ship(shipType_t type, channelSide_t side, short priority, int pos
  * return control back to the main scheduler or main execution flow.
  */
 void returnContext() {
+    printf("Incethread %d \n", incethread);
+    printf("current thread %d \n", currentcethread);
     swapcontext(&cethreadList[currentcethread].context, &mainContext);
 }
 
@@ -83,7 +85,7 @@ void move_ship(ship_t *ship) {
         CEmutex_unlock();
 
         // Sleep for a defined period to simulate movement delay
-        usleep(1000000);
+		usleep(500000);
 
         // Return control back to the main context to allow other threads to execute
 		returnContext();
@@ -232,21 +234,6 @@ int getShipIdByPosition(ShipList* list, int position) {
 }
 
 /**
- * @brief Retrieves a ship by its position in the list.
- * @param list Pointer to the ship list.
- * @param position The index position of the ship in the list (starting from 0).
- * @return Pointer to the ship if found, or NULL if the position is invalid or the ship does not exist.
- */
-ship_t* getShipByPosition(ShipList* list, int position) {
-    ShipNode* node = getShipByIndex(list, position);
-    if (node == NULL) {
-        return NULL; // The position is invalid or does not exist.
-    }
-
-    return node->ship;
-}
-
-/**
  * @brief Retrieves a ship by its ID from the list.
  * @param list Pointer to the ship list.
  * @param id The ID of the ship to search for.
@@ -268,6 +255,15 @@ ship_t* getShipById(ShipList* list, int id) {
     }
 
     return NULL; // No ship with the specified ID found
+}
+
+ship_t* getShipByPosition(ShipList* list, int position) {
+    ShipNode* node = getShipByIndex(list, position);
+    if (node == NULL) {
+        return NULL; // The position is invalid or does not exist.
+    }
+
+    return node->ship;
 }
 
 /**
@@ -316,10 +312,6 @@ int getNextShipPosition(ShipList* list, channelSide_t side) {
     }
 }
 
-/**
- * @brief Updates the position of all ships in the waiting line.
- * @param list Pointer to the ship list.
- */
 void updateWaitingLine(ShipList* list) {
     for (int i=0; i<getShipCount(list); i++) {
         asignShipPosition(getShipByPosition(list, i), i);
@@ -375,10 +367,6 @@ void sortShipsByPriority(ShipList* list) {
     updateWaitingLine(list);
 }
 
-/**
- * @brief Sorts the ships in the list based on their remaining time in ascending order.
- * @param list Pointer to the ship list to be sorted.
- */
 void sortShipsByShortestTime(ShipList* list) {
     if (list->head == NULL || list->head->next == NULL) {
         return;

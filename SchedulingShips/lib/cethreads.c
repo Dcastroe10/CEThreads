@@ -167,7 +167,41 @@ void CEthread_pause(double pause) {
 	cethreadList[currentcethread].pause = 0;
 }
 
+void returnMainContext(){
+	printf("Incethread %d \n", incethread);
+    printf("current thread %d \n", currentcethread);
+    swapcontext(&cethreadList[7].context, &mainContext);
+
+}
+
+int set_MainContext(){
+	if (1 < activeThreads)
+	{
+		printf("MAIN CONTEXT \n");
+		currentcethread = 0;
+
+		incethread = 1;
+		swapcontext(&mainContext, &cethreadList[currentcethread].context);
+		incethread = 0;
+		cethreadList[currentcethread].active = 1;
+		return 1;
+	}
+	else
+	{
+		cethreadList[7].active == 0;
+		printf("Main cethread has finished.\n");
+		free(cethreadList[7].context.uc_stack.ss_sp);
+		--activeThreads;
+
+		return 0;
+		
+	}
+	
+	
+}
+
 int set_context(int i) {
+	printf("set context \n");
 	currentcethread = i;
 
 	incethread = 1;
