@@ -1,7 +1,7 @@
-CHANNEL_SIZE: 10
+CHANNEL_SIZE: 12
 MAX_SHIPS: 10
 scheduler: 1
-workflow: 1
+workflow: 2
 EQUITY_W: 2
-SIGN_TIME: 4
+SIGN_TIME: 12
 QUANTUM: 2

@@ -129,20 +129,45 @@ void MainWindow::on_actionright_triggered()
     //delete boat2;
 }
 
+QThread *updatingThread = nullptr; // Declarar esto en la clase MainWindow como miembro
+
 void MainWindow::on_pruebaStructs_clicked()
 {
     qDebug() << "on prueba clicked ";
 
     displayQueues();
+
+    // Verifica si el thread sigue corriendo
+    if (updatingThread && updatingThread->isRunning()) {
+        qDebug() << "Still running.";
+        return; // Evita la creación de un nuevo hilo si el actual no ha terminado
+    }
+
     handle_scheduler(schedulerDefined, &leftList, &rightList);
     displayQueues();
 
-    QThread *updatingThread = QThread::create([=]() {
+    // Crea el thread solo si no hay otro en ejecución
+    updatingThread = QThread::create([=]() {
         handle_workflow(workflowDefined, &leftList, &rightList, &letrero);
+
+        if (schedulerDefined != RR) {
+            handle_workflow(workflowDefined, &leftList, &rightList, &letrero);
+        }
     });
+
     connect(updatingThread, &QThread::finished, updatingThread, &QObject::deleteLater);
+
+    // Importante: una vez que el hilo termine, liberar el puntero
+    connect(updatingThread, &QThread::finished, [=]() {
+        updatingThread = nullptr;  // Permitir la creación de un nuevo hilo en el futuro
+        leftCounter = 1;
+        rightCounter = 1;
+        qDebug() << "Finished.";
+    });
+
     updatingThread->start();
 }
+
 
 void MainWindow::setupQueues()
 {
@@ -315,7 +340,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     else if(event->key() == Qt::Key_G){
 
         int fd = serial_init("/dev/ttyUSB0",9600);
-        serial_send(fd,"sentFromCpp");
+        serial_send(fd,"test:");
         serial_close(fd);
     }
 
@@ -398,7 +423,6 @@ void MainWindow::Ships_movement() {
     }
 
     if(letrero == RIGHT){
-        qDebug()<<"DERECHA";
         QPixmap signal (":/DERECHA.png");
         label_letrero->clear();
         label_letrero->setPixmap(signal.transformed(QTransform().scale(-1,1)));
