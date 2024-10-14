@@ -23,8 +23,8 @@ debug/
 release/
 
 # Archivos de CMake
-CMakeLists.txt.user
-CMakeLists.txt.user.*
+CEThreads_GUI/CMakeLists.txt.user
+CEThreads_GUI/CMakeLists.txt.user.*
 
 # Archivos de qmake
 Makefile
@@ -52,8 +52,5 @@ Thumbs.db
 Desktop.ini
 
 
-
-
-# End of https://mrkandreev.name/snippets/gitignore-generator/#C
 SchedulingShips/lib/threadTester
 SchedulingShips/src/scheduler
