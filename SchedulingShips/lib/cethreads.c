@@ -143,7 +143,6 @@ int CEthread_wait() {
 
 int CEthread_end() {
 	cethreadList[currentcethread].active = 0;
-    activeThreads--;
 	return 0;
 }
 
@@ -202,10 +201,6 @@ int set_context_with_quantum(int i, int quantum) {
             free(cethreadList[currentcethread].context.uc_stack.ss_sp);
             --activeThreads;
 
-            if (currentcethread != activeThreads) {
-                cethreadList[currentcethread] = cethreadList[activeThreads];
-            }
-            cethreadList[activeThreads].active = 0;
             return 0; // The thread has finished
         }
 
