@@ -484,7 +484,7 @@ void handle_workflow(workflow_t workflow, ShipList* leftSideShips, ShipList* rig
         free(shipsRowSign);
     } else if(workflow == TICO){
         printf("\nProcessing TICO workflow.\n");
-    }else{
+
         if (workflow != TICO) {
             printf("\nUnknown workflow type, falling back to default behavior.\n");
         }

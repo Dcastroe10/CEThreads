@@ -73,11 +73,10 @@ MainWindow::MainWindow(QWidget *parent)
     initList(&rightList);
 
 
+    initCEthreads();
+    CEmutex_init();
 
-    //initCEthreads();
-    //CEmutex_init();
-
-    //srand(time(0));
+    srand(time(0));
 
 
 
@@ -122,7 +121,6 @@ void MainWindow::on_actionright_triggered()
 
 void MainWindow::on_pruebaStructs_clicked()
 {
-    handle_scheduler(REAL_TIME, &leftList, &rightList);//___________________________________
 
     qDebug() << "on prueba clicked ";
 
@@ -159,6 +157,15 @@ void MainWindow::on_pruebaStructs_clicked()
         current2 = current2->next;
 
     }
+
+
+    handle_scheduler(PRIORITY, &leftList, &rightList);//___________________________________
+
+    displayQueues();
+
+
+    handle_workflow(TICO,&leftList,&rightList);
+
 
 }
 
@@ -287,26 +294,37 @@ QPixmap MainWindow::selectShipSprite(int type){
 
 void MainWindow::create_struct(int queue)
 {
+
+
+    int position = 0;
+
+
     if(rightCounter + leftCounter < 12  ){
 
-//rand() % 4
+
 
     if(queue == 0){
+        position =  getNextShipPosition(&leftList, LEFT) ;
 
             if(leftCounter < 6){
                 shipType_t type = (shipType_t)((rand() % 3) + 1);
-                ship_t *shipTemp = create_ship(type, LEFT, (rand() % 21),leftCounter);
+                ship_t *shipTemp = create_ship(type, LEFT, (rand() % 21),position);
                 addShip(&leftList,shipTemp);
                 leftCounter++;
+
             }
     }else if(queue == 1){
 
+        position = getNextShipPosition(&rightList, RIGHT);
+
         if(rightCounter < 6){
                 shipType_t type = (shipType_t)((rand() % 3) + 1);
-                ship_t *shipTemp = create_ship(type, RIGHT, (rand() % 21),rightCounter);
+                ship_t *shipTemp = create_ship(type, RIGHT, (rand() % 21),position);
                 addShip(&rightList,shipTemp);
                 rightCounter++;
+
         }
+
     }else if(queue == 2){
 
     }else{
