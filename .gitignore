@@ -51,6 +51,108 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+
+# Qt-es
+object_script.*.Release
+object_script.*.Debug
+*_plugin_import.cpp
+/.qmake.cache
+/.qmake.stash
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.moc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.qmlc
+*.jsc
+Makefile*
+*build-*
+*.qm
+*.prl
+
+# Qt unit tests
+target_wrapper.*
+
+# QtCreator
+*.autosave
+
+# QtCreator Qml
+*.qmlproject.user
+*.qmlproject.user.*
+
+# QtCreator CMake
+CMakeLists.txt.user*
+
+# QtCreator 4.8< compilation database 
+compile_commands.json
+
+# QtCreator local machine specific files for imported projects
+*creator.user*
+
+# AtH stuff
+*.swp
+debug/
+saves/
+
+# Archivos de QtCreator
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.creator.user
+*.creator.user.*
+*.autosave
+*.creator
+
+# Archivos de compilación
+*.o
+*.a
+*.so
+*.so.*
+*.dll
+*.dylib
+*.lib
+
+# Directorios de construcción
+build-*/
+debug/
+release/
+
+# Archivos de CMake
+CMakeLists.txt.user
+CMakeLists.txt.user.*
+
+# Archivos de qmake
+Makefile
+Makefile.*
+
+# Archivos de sesión de QtCreator
+*.cproject
+*.project
+*.workspace
+*.replacetokens
+
+# Archivos temporales y logs
+*.log
+*.bak
+*.swp
+*.swm
+*.swo
+*.swn
+
+# Archivos de Mac
+.DS_Store
+
+# Archivos de Windows
+Thumbs.db
+Desktop.ini
+
+
+
 # End of https://mrkandreev.name/snippets/gitignore-generator/#C
 SchedulingShips/lib/threadTester
 SchedulingShips/src/scheduler
